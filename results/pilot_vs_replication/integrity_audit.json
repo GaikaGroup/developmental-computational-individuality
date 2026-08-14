@@ -1,0 +1,93 @@
+{
+  "Pilot 1": {
+    "checks": {
+      "expected_run_files": true,
+      "complete_seed_triplets": true,
+      "no_duplicate_seed_condition_runs": true,
+      "no_missing_seeds": true,
+      "initial_checksum_matching": true,
+      "no_nan_or_inf_metrics": true,
+      "exposure_matching": true,
+      "common_mature_schedule_matching": true,
+      "checkpoint_completeness": true,
+      "configuration_hash_consistent": false,
+      "source_hash_consistent": false,
+      "source_commit_available": false
+    },
+    "statuses": {
+      "expected_run_files": "PASS",
+      "complete_seed_triplets": "PASS",
+      "no_duplicate_seed_condition_runs": "PASS",
+      "no_missing_seeds": "PASS",
+      "initial_checksum_matching": "PASS",
+      "no_nan_or_inf_metrics": "PASS",
+      "exposure_matching": "PASS",
+      "common_mature_schedule_matching": "PASS",
+      "checkpoint_completeness": "PASS",
+      "configuration_hash_consistent": "WARN",
+      "source_hash_consistent": "WARN",
+      "source_commit_available": "WARN"
+    },
+    "pass": true,
+    "n_runs": 60,
+    "n_paired_seeds": 20,
+    "checkpoint_count": 240,
+    "metadata_values": {
+      "git_commit": [
+        "unknown"
+      ],
+      "config_hash": [
+        "None"
+      ],
+      "source_hash": [
+        "None"
+      ]
+    }
+  },
+  "Replication 1": {
+    "checks": {
+      "expected_run_files": true,
+      "complete_seed_triplets": true,
+      "no_duplicate_seed_condition_runs": true,
+      "no_missing_seeds": true,
+      "initial_checksum_matching": true,
+      "no_nan_or_inf_metrics": true,
+      "exposure_matching": true,
+      "common_mature_schedule_matching": true,
+      "checkpoint_completeness": true,
+      "configuration_hash_consistent": true,
+      "source_hash_consistent": true,
+      "source_commit_available": true
+    },
+    "statuses": {
+      "expected_run_files": "PASS",
+      "complete_seed_triplets": "PASS",
+      "no_duplicate_seed_condition_runs": "PASS",
+      "no_missing_seeds": "PASS",
+      "initial_checksum_matching": "PASS",
+      "no_nan_or_inf_metrics": "PASS",
+      "exposure_matching": "PASS",
+      "common_mature_schedule_matching": "PASS",
+      "checkpoint_completeness": "PASS",
+      "configuration_hash_consistent": "PASS",
+      "source_hash_consistent": "PASS",
+      "source_commit_available": "PASS"
+    },
+    "pass": true,
+    "n_runs": 60,
+    "n_paired_seeds": 20,
+    "checkpoint_count": 240,
+    "metadata_values": {
+      "git_commit": [
+        "639569694249e4190b7c669ef9c97a3fa79e5422"
+      ],
+      "config_hash": [
+        "98418baa8ff0cbae73da1da4890c733826971c25f275c9a78eaffb2ed629b7cf"
+      ],
+      "source_hash": [
+        "7134c58ae5317b2ee47d0aa59adf252783b37e5ef5edf63a1977304da3908a40"
+      ]
+    }
+  },
+  "cross_experiment_sources_separate": true
+}

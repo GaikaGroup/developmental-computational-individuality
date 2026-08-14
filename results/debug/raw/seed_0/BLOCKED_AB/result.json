@@ -1,0 +1,109 @@
+{
+  "seed": 0,
+  "condition": "BLOCKED_AB",
+  "initial_checksum": "4ef88c718f674bdfbcbbe1ed198059839f66770dc4d299a42c645720e76f1c29",
+  "accuracy_A": 0.4921875,
+  "bce_A": 0.7165640592575073,
+  "accuracy_B": 0.4609375,
+  "bce_B": 0.7267401218414307,
+  "routing_A": [
+    0.5191389918327332,
+    0.48086100816726685
+  ],
+  "routing_B": [
+    0.5175510048866272,
+    0.4824489951133728
+  ],
+  "routing_specialization": 0.001587986946105957,
+  "router_entropy": 0.6924726963043213,
+  "ablation": {
+    "expert_1": {
+      "delta_A": -0.015625,
+      "delta_B": -0.0234375
+    },
+    "expert_2": {
+      "delta_A": 0.0,
+      "delta_B": 0.0078125
+    }
+  },
+  "causal_specialization": 0.0078125,
+  "history": [
+    {
+      "accuracy_A": 0.484375,
+      "bce_A": 0.7189159393310547,
+      "accuracy_B": 0.46875,
+      "bce_B": 0.7321330904960632,
+      "routing_A": [
+        0.5193292498588562,
+        0.4806707501411438
+      ],
+      "routing_B": [
+        0.5177783370018005,
+        0.4822216033935547
+      ],
+      "routing_specialization": 0.0015508830547332764,
+      "router_entropy": 0.6924573183059692,
+      "step": 10,
+      "training_loss": 0.6868644952774048,
+      "mean_router": [
+        0.5200968980789185,
+        0.47990307211875916
+      ]
+    },
+    {
+      "accuracy_A": 0.4921875,
+      "bce_A": 0.7165640592575073,
+      "accuracy_B": 0.4609375,
+      "bce_B": 0.7267401218414307,
+      "routing_A": [
+        0.5191389918327332,
+        0.48086100816726685
+      ],
+      "routing_B": [
+        0.5175510048866272,
+        0.4824489951133728
+      ],
+      "routing_specialization": 0.001587986946105957,
+      "router_entropy": 0.6924726963043213,
+      "step": 20,
+      "training_loss": 0.737502932548523,
+      "mean_router": [
+        0.517595648765564,
+        0.48240435123443604
+      ]
+    }
+  ],
+  "metadata": {
+    "model_seed": 0,
+    "data_seed": 1729,
+    "condition": "BLOCKED_AB",
+    "git_commit": "unknown",
+    "PyTorch_version": "2.13.0",
+    "Python_version": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "device": "auto",
+    "parameter_count": 151427,
+    "seed": 0,
+    "batch_size": 16,
+    "steps": 20,
+    "early_steps": 10,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 1.0,
+    "balance_lambda": 0.01,
+    "warmup_steps": 2,
+    "test_examples": 128,
+    "checkpoints": [
+      10,
+      20
+    ],
+    "eval_steps": [
+      0,
+      10,
+      20
+    ],
+    "optimizer": "AdamW",
+    "training_steps": 20,
+    "curriculum_definition": "BLOCKED_AB",
+    "timestamp": "2026-08-13T09:31:13.117841+00:00"
+  }
+}

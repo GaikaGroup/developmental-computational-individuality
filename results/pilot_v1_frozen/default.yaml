@@ -1,0 +1,15 @@
+seed: 0
+data_seed: 1729
+device: auto
+batch_size: 256
+steps: 20000
+early_steps: 4000
+learning_rate: 0.0003
+weight_decay: 0.0001
+gradient_clip_norm: 1.0
+balance_lambda: 0.01
+warmup_steps: 500
+test_examples: 50000
+checkpoints: [4000, 10000, 20000]
+eval_steps: [0, 250, 500, 1000, 2000, 3000, 4000, 5000, 7500, 10000, 15000, 20000]
+

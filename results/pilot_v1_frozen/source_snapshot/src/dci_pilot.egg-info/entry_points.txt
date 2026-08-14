@@ -1,0 +1,3 @@
+[console_scripts]
+dci-detailed-report = dci_pilot.detailed_report:main
+dci-train = dci_pilot.train:main

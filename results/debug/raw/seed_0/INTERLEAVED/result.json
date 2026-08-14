@@ -1,0 +1,109 @@
+{
+  "seed": 0,
+  "condition": "INTERLEAVED",
+  "initial_checksum": "4ef88c718f674bdfbcbbe1ed198059839f66770dc4d299a42c645720e76f1c29",
+  "accuracy_A": 0.484375,
+  "bce_A": 0.719513475894928,
+  "accuracy_B": 0.453125,
+  "bce_B": 0.7240052223205566,
+  "routing_A": [
+    0.5190767645835876,
+    0.48092323541641235
+  ],
+  "routing_B": [
+    0.5172954797744751,
+    0.4827045202255249
+  ],
+  "routing_specialization": 0.0017812848091125488,
+  "router_entropy": 0.6924840211868286,
+  "ablation": {
+    "expert_1": {
+      "delta_A": -0.015625,
+      "delta_B": -0.03125
+    },
+    "expert_2": {
+      "delta_A": 0.0078125,
+      "delta_B": -0.0078125
+    }
+  },
+  "causal_specialization": 0.015625,
+  "history": [
+    {
+      "accuracy_A": 0.4765625,
+      "bce_A": 0.7232851982116699,
+      "accuracy_B": 0.4609375,
+      "bce_B": 0.7308664917945862,
+      "routing_A": [
+        0.5192989110946655,
+        0.4807010889053345
+      ],
+      "routing_B": [
+        0.5175859928131104,
+        0.48241400718688965
+      ],
+      "routing_specialization": 0.0017129182815551758,
+      "router_entropy": 0.6924653053283691,
+      "step": 10,
+      "training_loss": 0.7508020401000977,
+      "mean_router": [
+        0.5209890007972717,
+        0.4790109694004059
+      ]
+    },
+    {
+      "accuracy_A": 0.484375,
+      "bce_A": 0.719513475894928,
+      "accuracy_B": 0.453125,
+      "bce_B": 0.7240052223205566,
+      "routing_A": [
+        0.5190767645835876,
+        0.48092323541641235
+      ],
+      "routing_B": [
+        0.5172954797744751,
+        0.4827045202255249
+      ],
+      "routing_specialization": 0.0017812848091125488,
+      "router_entropy": 0.6924840211868286,
+      "step": 20,
+      "training_loss": 0.7467907667160034,
+      "mean_router": [
+        0.5174013376235962,
+        0.48259860277175903
+      ]
+    }
+  ],
+  "metadata": {
+    "model_seed": 0,
+    "data_seed": 1729,
+    "condition": "INTERLEAVED",
+    "git_commit": "unknown",
+    "PyTorch_version": "2.13.0",
+    "Python_version": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "device": "auto",
+    "parameter_count": 151427,
+    "seed": 0,
+    "batch_size": 16,
+    "steps": 20,
+    "early_steps": 10,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 1.0,
+    "balance_lambda": 0.01,
+    "warmup_steps": 2,
+    "test_examples": 128,
+    "checkpoints": [
+      10,
+      20
+    ],
+    "eval_steps": [
+      0,
+      10,
+      20
+    ],
+    "optimizer": "AdamW",
+    "training_steps": 20,
+    "curriculum_definition": "INTERLEAVED",
+    "timestamp": "2026-08-13T09:31:12.973685+00:00"
+  }
+}

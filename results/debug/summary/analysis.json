@@ -1,0 +1,11 @@
+{
+  "n": 3,
+  "paired": {
+    "mean_difference": -0.005859375,
+    "ci_low": -0.005859375,
+    "ci_high": -0.005859375,
+    "cohens_dz": 0.0,
+    "paired_t_p": NaN,
+    "wilcoxon_p": 1.0
+  }
+}

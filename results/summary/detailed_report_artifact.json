@@ -1,0 +1,2422 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Developmental Computational Individuality — Full Technical Report",
+    "description": "Implementation, results, statistical audit, limitations, and reproducibility for the 60-model pilot.",
+    "generatedAt": "2026-08-13T15:32:48.693401+00:00",
+    "charts": [
+      {
+        "id": "behavior",
+        "title": "Final held-out accuracy by condition and task",
+        "subtitle": "Means over 20 paired seeds; full bounded scale supports the equivalence reading",
+        "type": "bar",
+        "intent": "comparison",
+        "question": "Do all curricula end with comparable behavior?",
+        "rationale": "Grouped bars compare the same bounded accuracy measure across condition and task.",
+        "dataset": "behavior",
+        "valueFormat": "percent",
+        "palette": {
+          "kind": "categorical"
+        },
+        "legend": {
+          "position": "bottom",
+          "interactive": true
+        },
+        "encodings": {
+          "x": {
+            "field": "condition",
+            "type": "nominal",
+            "label": "Condition"
+          },
+          "y": {
+            "field": "accuracy",
+            "type": "quantitative",
+            "label": "Accuracy",
+            "format": "percent"
+          },
+          "color": {
+            "field": "task",
+            "type": "nominal",
+            "label": "Task"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: behavior",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"behavior\"",
+            "description": "Reads the reviewed behavior rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "behavior"
+            ]
+          }
+        }
+      },
+      {
+        "id": "causal",
+        "title": "Final causal specialization",
+        "subtitle": "20 seeds per condition; S_causal is invariant to expert-label swapping",
+        "type": "boxPlot",
+        "intent": "distribution",
+        "question": "How does causal specialization vary by curriculum?",
+        "rationale": "The box plot exposes the distributional shift and seed-level spread.",
+        "dataset": "per_run",
+        "encodings": {
+          "x": {
+            "field": "condition_label",
+            "type": "nominal",
+            "label": "Condition"
+          },
+          "y": {
+            "field": "causal_specialization",
+            "type": "quantitative",
+            "label": "S_causal"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: per_run",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"per_run\"",
+            "description": "Reads the reviewed per_run rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "per_run"
+            ]
+          }
+        }
+      },
+      {
+        "id": "paired",
+        "title": "Blocked-minus-interleaved effect by seed",
+        "subtitle": "D_s > 0 supports the directional prediction; 16/20 seeds are positive",
+        "type": "bar",
+        "intent": "comparison",
+        "question": "Is the developmental effect consistent within paired seeds?",
+        "rationale": "Signed bars preserve every paired observation and show counterexamples.",
+        "dataset": "seed_effects",
+        "palette": {
+          "kind": "diverging",
+          "midpoint": 0
+        },
+        "referenceLines": [
+          {
+            "axis": "y",
+            "value": 0,
+            "label": "No difference",
+            "color": "neutral",
+            "lineStyle": "solid"
+          }
+        ],
+        "encodings": {
+          "x": {
+            "field": "seed_label",
+            "type": "ordinal",
+            "label": "Seed"
+          },
+          "y": {
+            "field": "causal_difference",
+            "type": "quantitative",
+            "label": "D_s"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: seed_effects",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"seed_effects\"",
+            "description": "Reads the reviewed seed_effects rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "seed_effects"
+            ]
+          }
+        }
+      },
+      {
+        "id": "routing",
+        "title": "Final routing specialization",
+        "subtitle": "Routing separates more after blocked curricula but remains a secondary endpoint",
+        "type": "boxPlot",
+        "intent": "distribution",
+        "question": "Does task-conditioned routing differ by curriculum?",
+        "rationale": "A distribution view shows broad seed variability without elevating routing to the causal endpoint.",
+        "dataset": "per_run",
+        "encodings": {
+          "x": {
+            "field": "condition_label",
+            "type": "nominal",
+            "label": "Condition"
+          },
+          "y": {
+            "field": "routing_specialization",
+            "type": "quantitative",
+            "label": "S_route"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: per_run",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"per_run\"",
+            "description": "Reads the reviewed per_run rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "per_run"
+            ]
+          }
+        }
+      },
+      {
+        "id": "dynamics",
+        "title": "Routing specialization through training",
+        "subtitle": "Mean over 20 seeds at 12 checkpoints; step 4,000 separates early and common phases",
+        "type": "line",
+        "intent": "trend",
+        "question": "When do routing differences emerge and persist?",
+        "rationale": "Twelve ordered checkpoints support a multi-series trajectory view.",
+        "dataset": "dynamics",
+        "palette": {
+          "kind": "categorical"
+        },
+        "legend": {
+          "position": "bottom",
+          "interactive": true
+        },
+        "referenceLines": [
+          {
+            "axis": "x",
+            "value": 4000,
+            "label": "Early/common boundary",
+            "color": "neutral",
+            "lineStyle": "dashed"
+          }
+        ],
+        "encodings": {
+          "x": {
+            "field": "step",
+            "type": "quantitative",
+            "label": "Optimizer step"
+          },
+          "y": {
+            "field": "routing_specialization",
+            "type": "quantitative",
+            "label": "Mean S_route"
+          },
+          "color": {
+            "field": "condition",
+            "type": "nominal",
+            "label": "Condition"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: dynamics",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"dynamics\"",
+            "description": "Reads the reviewed dynamics rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "dynamics"
+            ]
+          }
+        }
+      },
+      {
+        "id": "ablation",
+        "title": "Mean causal contribution after expert knockout",
+        "subtitle": "Normal accuracy minus accuracy after removing the named expert",
+        "type": "heatmap",
+        "intent": "relationship",
+        "question": "Which experts causally support which tasks?",
+        "rationale": "A matrix preserves the condition, task, and expert structure.",
+        "dataset": "ablations",
+        "palette": {
+          "kind": "sequential"
+        },
+        "encodings": {
+          "x": {
+            "field": "condition_task",
+            "type": "ordinal",
+            "label": "Condition and task"
+          },
+          "y": {
+            "field": "mean_accuracy_drop",
+            "type": "quantitative",
+            "label": "Accuracy drop"
+          },
+          "color": {
+            "field": "expert",
+            "type": "nominal",
+            "label": "Knocked-out expert"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: ablations",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"ablations\"",
+            "description": "Reads the reviewed ablations rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "ablations"
+            ]
+          }
+        }
+      },
+      {
+        "id": "distance",
+        "title": "Permutation-invariant organizational distance",
+        "subtitle": "Combined routing/ablation matrix after minimizing over identity and expert swap",
+        "type": "boxPlot",
+        "intent": "distribution",
+        "question": "Does organizational difference survive expert-label alignment?",
+        "rationale": "Paired distance distributions summarize both blocked orderings after alignment.",
+        "dataset": "distances",
+        "encodings": {
+          "x": {
+            "field": "comparison",
+            "type": "nominal",
+            "label": "Comparison"
+          },
+          "y": {
+            "field": "distance",
+            "type": "quantitative",
+            "label": "Frobenius distance"
+          }
+        },
+        "source": {
+          "label": "SQLite report dataset: distances",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"distances\"",
+            "description": "Reads the reviewed distances rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "distances"
+            ]
+          }
+        }
+      }
+    ],
+    "tables": [
+      {
+        "id": "criteria",
+        "title": "Pilot success criteria",
+        "subtitle": "All three required criteria from the frozen specification",
+        "dataset": "criteria",
+        "defaultSort": {
+          "field": "criterion",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "criterion",
+            "label": "Criterion"
+          },
+          {
+            "field": "status",
+            "label": "Status"
+          },
+          {
+            "field": "evidence",
+            "label": "Evidence"
+          }
+        ],
+        "source": {
+          "label": "SQLite report dataset: criteria",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"criteria\"",
+            "description": "Reads the reviewed criteria rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "criteria"
+            ]
+          }
+        }
+      },
+      {
+        "id": "conditions",
+        "title": "Condition-level final metrics",
+        "subtitle": "Mean and sample SD over 20 seeds",
+        "dataset": "condition_summary",
+        "defaultSort": {
+          "field": "condition",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "condition",
+            "label": "Condition"
+          },
+          {
+            "field": "accuracy_A_mean",
+            "label": "Acc A mean",
+            "format": "percent"
+          },
+          {
+            "field": "accuracy_A_sd",
+            "label": "Acc A SD",
+            "format": "percent"
+          },
+          {
+            "field": "accuracy_B_mean",
+            "label": "Acc B mean",
+            "format": "percent"
+          },
+          {
+            "field": "accuracy_B_sd",
+            "label": "Acc B SD",
+            "format": "percent"
+          },
+          {
+            "field": "routing_specialization_mean",
+            "label": "S_route mean",
+            "format": "number"
+          },
+          {
+            "field": "causal_specialization_mean",
+            "label": "S_causal mean",
+            "format": "number"
+          },
+          {
+            "field": "causal_specialization_sd",
+            "label": "S_causal SD",
+            "format": "number"
+          }
+        ],
+        "source": {
+          "label": "SQLite report dataset: condition_summary",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"condition_summary\"",
+            "description": "Reads the reviewed condition_summary rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "condition_summary"
+            ]
+          }
+        }
+      },
+      {
+        "id": "seeds",
+        "title": "Complete paired-seed audit",
+        "subtitle": "Every initialization seed; negative D_s values are retained",
+        "dataset": "seed_effects",
+        "defaultSort": {
+          "field": "seed",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "seed",
+            "label": "Seed",
+            "format": "number"
+          },
+          {
+            "field": "interleaved_causal",
+            "label": "Interleaved S_causal",
+            "format": "number"
+          },
+          {
+            "field": "blocked_mean_causal",
+            "label": "Blocked mean",
+            "format": "number"
+          },
+          {
+            "field": "causal_difference",
+            "label": "D_s",
+            "format": "number",
+            "semantic": "movement"
+          },
+          {
+            "field": "interleaved_balanced_accuracy",
+            "label": "Interleaved acc",
+            "format": "percent"
+          },
+          {
+            "field": "blocked_balanced_accuracy",
+            "label": "Blocked acc",
+            "format": "percent"
+          },
+          {
+            "field": "accuracy_difference",
+            "label": "Acc diff",
+            "format": "percent",
+            "semantic": "movement"
+          }
+        ],
+        "source": {
+          "label": "SQLite report dataset: seed_effects",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"seed_effects\"",
+            "description": "Reads the reviewed seed_effects rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "seed_effects"
+            ]
+          }
+        }
+      },
+      {
+        "id": "fidelity",
+        "title": "Implementation and data-integrity audit",
+        "subtitle": "Read-only checks against the final result set and frozen config",
+        "dataset": "fidelity",
+        "defaultSort": {
+          "field": "check",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "check",
+            "label": "Check"
+          },
+          {
+            "field": "status",
+            "label": "Status"
+          },
+          {
+            "field": "evidence",
+            "label": "Evidence"
+          }
+        ],
+        "source": {
+          "label": "SQLite report dataset: fidelity",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"fidelity\"",
+            "description": "Reads the reviewed fidelity rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "fidelity"
+            ]
+          }
+        }
+      },
+      {
+        "id": "files",
+        "title": "Artifact and source-file inventory",
+        "subtitle": "Primary report, evidence, snapshot, code, tests, and figures",
+        "dataset": "files",
+        "defaultSort": {
+          "field": "category",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "category",
+            "label": "Category"
+          },
+          {
+            "field": "path",
+            "label": "Path"
+          },
+          {
+            "field": "purpose",
+            "label": "Purpose"
+          }
+        ],
+        "source": {
+          "label": "SQLite report dataset: files",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "query": {
+            "engine": "SQLite",
+            "language": "sql",
+            "sql": "SELECT * FROM \"files\"",
+            "description": "Reads the reviewed files rows materialized by dci_pilot.detailed_report.",
+            "executed_at": "2026-08-13T15:32:48.693401+00:00",
+            "tables_used": [
+              "files"
+            ]
+          }
+        }
+      }
+    ],
+    "sources": [
+      {
+        "id": "analysis",
+        "label": "Frozen paired analysis",
+        "path": "results/summary/analysis.json"
+      },
+      {
+        "id": "raw",
+        "label": "60 per-run results",
+        "path": "results/raw/"
+      },
+      {
+        "id": "config",
+        "label": "Frozen configuration",
+        "path": "configs/default.yaml"
+      },
+      {
+        "id": "code",
+        "label": "Pilot implementation",
+        "path": "src/dci_pilot/"
+      },
+      {
+        "id": "log",
+        "label": "Final sweep log",
+        "path": "results/progress.jsonl"
+      },
+      {
+        "id": "snapshot",
+        "label": "Checksummed frozen snapshot",
+        "path": "results/summary/frozen_snapshot/"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# Developmental Computational Individuality — Full Technical Report"
+      },
+      {
+        "id": "summary",
+        "type": "markdown",
+        "body": "## Technical summary\n\n**The pilot satisfies all three predefined success criteria, but the conclusion is limited to one toy system.** Sixty models (20 paired initialization seeds × 3 curricula) reached nearly identical behavior: mean balanced accuracy `98.83%`, with a blocked/interleaved gap of only `0.05` percentage points. Blocked curricula nevertheless produced greater final causal specialization: mean paired `D_s=0.14885`, 95% bootstrap CI `[0.06372, 0.22642]`, Cohen's `dz=0.771`.\n\n**The effect is not universal.** Sixteen of 20 seeds are positive; seeds 9, 10, 14, 17 are negative, including the strong counterexample seed 9 (`−0.3359`). The defensible claim is that blocked early order increased persistent causal specialization *on average* in this frozen configuration.\n\n**Scientific status:** `SUPPORTED IN THIS PILOT`, not “the general hypothesis is proven.” The next defensible step is an exact independent replication after correcting diagnostic provenance issues, not tuning a new architecture after observing a positive result.",
+        "sourceId": "analysis"
+      },
+      {
+        "id": "criteria",
+        "type": "table",
+        "tableId": "criteria"
+      },
+      {
+        "id": "behavior_text",
+        "type": "markdown",
+        "body": "## Final behavior is practically equivalent\n\nAll 60 models exceeded 95% on both Task A and Task B. Mean balanced accuracy was `0.9880` for Interleaved, `0.9886` for Blocked A→B, and `0.9884` for Blocked B→A. The mean blocked-minus-interleaved gap was `+0.0005` (`+0.05 pp`), far below the specified 1–2 pp tolerance.\n\nThis satisfies the specification's practical equivalence criterion, but it is not a formal TOST with preregistered statistical margins. The causal result cannot reasonably be attributed to a material performance failure in one curriculum.",
+        "sourceId": "raw"
+      },
+      {
+        "id": "behavior",
+        "type": "chart",
+        "chartId": "behavior",
+        "layout": "full"
+      },
+      {
+        "id": "conditions",
+        "type": "table",
+        "tableId": "conditions",
+        "layout": "full"
+      },
+      {
+        "id": "causal_text",
+        "type": "markdown",
+        "body": "## Blocked experience increased causal specialization\n\nMean `S_causal` increased from `0.2471` for Interleaved to `0.4238` for A→B and `0.3681` for B→A. The primary endpoint averages the two blocked orders within each seed before comparing them with the paired Interleaved model.\n\nMean `D_s=0.14885`, median `0.15220`, SD `0.19303`, 95% percentile-bootstrap CI `[0.06372, 0.22642]`, paired t-test `p=0.00269`, Wilcoxon `p=0.00315`, and `dz=0.771`. The A→B versus B→A difference remains descriptive because the primary hypothesis used their mean.",
+        "sourceId": "analysis"
+      },
+      {
+        "id": "causal",
+        "type": "chart",
+        "chartId": "causal",
+        "layout": "full"
+      },
+      {
+        "id": "paired",
+        "type": "chart",
+        "chartId": "paired",
+        "layout": "full"
+      },
+      {
+        "id": "seeds",
+        "type": "table",
+        "tableId": "seeds",
+        "layout": "full"
+      },
+      {
+        "id": "routing_text",
+        "type": "markdown",
+        "body": "## Routing differs, but it does not replace the causal endpoint\n\nMean final `S_route` was `0.4459` for Interleaved, `0.6786` for A→B, and `0.5986` for B→A. Routing and causal organization move in the same direction, but router probabilities describe computational path selection, whereas knockout tests whether an expert is required for task performance.\n\nThe dynamics use 12 checkpoints and 4,096 held-out examples per task for intermediate evaluation; final metrics use 50,000 per task. The vertical line at step 4,000 separates the early developmental phase from the common mature phase.",
+        "sourceId": "raw"
+      },
+      {
+        "id": "routing",
+        "type": "chart",
+        "chartId": "routing",
+        "layout": "full"
+      },
+      {
+        "id": "dynamics",
+        "type": "chart",
+        "chartId": "dynamics",
+        "layout": "full"
+      },
+      {
+        "id": "ablation_text",
+        "type": "markdown",
+        "body": "## Expert knockout demonstrates nontrivial functional dependence\n\nFor a knockout, the selected expert is removed, routing mass is assigned to the survivor (weight 1), and no retraining occurs. `Δ_e,T = Acc_T(normal) − Acc_T(−e)`; the mean per-run maximum `|Δ|` is `0.4833`, so the experts are not functionally interchangeable. Expert IDs receive no semantic interpretation: swapping E1 and E2 does not change `S_causal`.",
+        "sourceId": "raw"
+      },
+      {
+        "id": "ablation",
+        "type": "chart",
+        "chartId": "ablation",
+        "layout": "full"
+      },
+      {
+        "id": "distance_text",
+        "type": "markdown",
+        "body": "## Organizational differences survive expert-label alignment\n\nThe supplementary matrix uses expert rows `[routing_A, routing_B, delta_A, delta_B]`; distance is the minimum Frobenius norm over identity and expert swap. Mean distance is `0.4788` for Interleaved→A→B and `0.4782` for Interleaved→B→A. This is a descriptive label-invariant audit without a separate null distribution; primary inference remains `D_s`.",
+        "sourceId": "analysis"
+      },
+      {
+        "id": "distance",
+        "type": "chart",
+        "chartId": "distance",
+        "layout": "full"
+      },
+      {
+        "id": "scope",
+        "type": "markdown",
+        "body": "## What was implemented and run\n\nThe minimal `dci_pilot` package includes deterministic synthetic data, three curricula, a soft two-expert MoE, paired initialization, AdamW training, fixed held-out evaluation, routing metrics, causal knockout, paired statistics, plots, progress logging, checkpoints, and a frozen snapshot.\n\nTask A is `x0*x1+x2*x3>0`; Task B is `x8*x9−x10*x11>0`; 16 Gaussian features are augmented with a 2D one-hot task indicator. An independent 100k balance check gave `P(A=1)=0.5004` and `P(B=1)=0.5016`. The model uses an `18→128→128` encoder, `128→2` router, two `128→256→128` experts, residual LayerNorm, and a binary head: `151,427` parameters.\n\nIntentionally excluded: artificial hemispheres, multimodality, Transformers, agents or robotics, deprivation, more than two experts, distributed training, and architecture sweeps.",
+        "sourceId": "code"
+      },
+      {
+        "id": "design",
+        "type": "markdown",
+        "body": "## The design isolates the temporal order of early experience\n\nFor seeds 0–19, the three conditions begin with tensor-equal parameters and the same initialization checksum. Every run receives 10,000 A and 10,000 B batches of 256 examples. The first 4,000 steps use balanced shuffled interleaving, A→B blocks, or B→A blocks. The 16,000-step mature phase uses the same balanced task order and the same per-task example streams within each paired seed.\n\nAdamW uses LR `3e-4`, weight decay `1e-4`, clipping `1.0`, 500-step warmup plus cosine decay; loss is BCE + `0.01×balance`. The sweep contains 60 runs, 60 completion events, and zero failure events; every run has initial, 4k, 10k, and 20k checkpoints plus a final JSON result.",
+        "sourceId": "config"
+      },
+      {
+        "id": "metrics",
+        "type": "markdown",
+        "body": "## Metrics separate routing from causal organization\n\n- `q_T,e = E[p_e|T]`; `S_route = 0.5 Σ_e |q_A,e−q_B,e|`.\n- `Δ_e,T = Acc_T(normal)−Acc_T(−e)`; `S_causal = 0.5 Σ_e |Δ_e,A−Δ_e,B|`.\n- `D_s = mean(S_causal,AB,s, S_causal,BA,s)−S_causal,INTERLEAVED,s`.\n- “Balanced accuracy” here is the mean of the two task accuracies, not within-task class-balanced accuracy.\n\nWeights are not an endpoint. Routing is secondary evidence. The knockout matrix and `S_causal` are the primary representation and score of causal organization.",
+        "sourceId": "code"
+      },
+      {
+        "id": "stats",
+        "type": "markdown",
+        "body": "## Statistical inference preserves the paired-seed design\n\nThe primary sample size is `n=20` initialization seeds, not `n=60` models. One `D_s` is computed for each seed. The report includes the mean, median, sample SD, every seed value, a 10,000-resample percentile bootstrap CI with bootstrap seed 0, a paired one-sample t-test, Wilcoxon signed-rank, and Cohen's dz. Secondary routing and distance outputs are not presented as additional confirmatory tests.",
+        "sourceId": "analysis"
+      },
+      {
+        "id": "fidelity_text",
+        "type": "markdown",
+        "body": "## The audit supports integrity of the final result set\n\nRead-only checks confirm 20 complete triplets, exact paired initialization checksums, exposure matching, identical mature schedules, balanced labels, complete checkpoints, and no global router collapse at logged evaluations. The frozen snapshot contains the config, requirements, pip environment, runtime manifest, and SHA-256 hashes for all 60 result JSON files.\n\nThe snapshot protects the current result set from silent subsequent changes, but it does not replace Git history or an external preregistration timestamp created before the sweep.",
+        "sourceId": "snapshot"
+      },
+      {
+        "id": "fidelity",
+        "type": "table",
+        "tableId": "fidelity",
+        "layout": "full"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## Limitations and boundaries of confidence\n\n1. **External validity:** one synthetic task pair, one model architecture, two experts, and one optimizer regime.\n2. **Heterogeneity:** seeds 9, 10, 14, 17 have negative effects; the mechanism has not been diagnosed.\n3. **Equivalence is practical, not formal:** TOST and formal statistical equivalence bounds were not used.\n4. **Causal scope:** the intervention establishes dependence inside a trained model, not a biological mechanism of individuality.\n5. **No intermediate causal trajectories:** ablations were saved only at the final step; steps 4k and 10k have routing and accuracy but not `S_causal(t)`.\n6. **Entropy proxy:** JSON `router_entropy` is the entropy of task-mean routing vectors, not mean per-example entropy; the primary test does not depend on it.\n7. **Device metadata defect:** the checkpoint confirms `mps:0`, but the metadata field was overwritten with the config value `auto`.\n8. **Determinism was not forced:** seeds were set, but `torch.use_deterministic_algorithms(True)` was not enabled; bitwise MPS reproducibility across runtimes is not guaranteed.\n9. **No Git or preregistration timestamp:** the snapshot was created after the sweep and cannot prove the config was unchanged before results were inspected.\n10. **No independent replication:** this is one complete sweep in one software and hardware environment.\n11. **Shared fixed test set:** uncertainty reflects initialization variability for this sample, not dataset variability.\n12. **Distance is descriptive:** the combined Q/C scale is not calibrated against a within-condition null distribution."
+      },
+      {
+        "id": "files_text",
+        "type": "markdown",
+        "body": "## Files, evidence, and reproducibility\n\nThe primary deliverable is a self-contained HTML report. The canonical artifact JSON, exact CSV tables, raw JSON and checkpoints, frozen snapshot, code, tests, and static figures are listed below. Raw result JSON files remain the source of truth; summaries can be regenerated from them.",
+        "sourceId": "snapshot"
+      },
+      {
+        "id": "files",
+        "type": "table",
+        "tableId": "files",
+        "layout": "full"
+      },
+      {
+        "id": "next",
+        "type": "markdown",
+        "body": "## Recommended next steps\n\n1. Correct resolved-device metadata, true per-example entropy, and the formal prolonged-collapse rule.\n2. Add causal ablation at steps 4,000 and 10,000 without changing the frozen training setup.\n3. Put the project under Git and preregister a replication manifest before running it.\n4. Run an exact independent replication on 20 new seeds or a second runtime without tuning.\n5. Only after replication, open a separately labeled exploratory follow-up for architecture experiments."
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## Open questions\n\n- Why do seeds 9, 10, 14, and 17 oppose the mean effect?\n- When does causal specialization emerge, and does it survive the transition at step 4,000?\n- Where does routing diverge from causal contribution?\n- Does the effect replicate under a new fixed data seed?\n- What is the within-condition baseline for permutation-invariant distance?"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-13T15:32:48.693401+00:00",
+    "status": "ready",
+    "datasets": {
+      "headline": [
+        {
+          "completed_runs": 60,
+          "balanced_accuracy": 0.9883373315135638,
+          "paired_causal_effect": 0.1488509975373745,
+          "cohens_dz": 0.7711424477218386,
+          "positive_seed_share": 0.8
+        }
+      ],
+      "criteria": [
+        {
+          "criterion": "A — Behavioral equivalence",
+          "status": "PASS",
+          "evidence": "60/60 models ≥95% on both tasks; blocked/interleaved gap = 0.05 pp"
+        },
+        {
+          "criterion": "B — Persistent causal difference",
+          "status": "PASS",
+          "evidence": "mean D=0.14885; 95% CI [0.06372, 0.22642]"
+        },
+        {
+          "criterion": "C — Nontrivial causal effect",
+          "status": "PASS",
+          "evidence": "Mean per-run max |knockout Δaccuracy| = 0.4833; audit threshold = 0.05"
+        }
+      ],
+      "behavior": [
+        {
+          "condition": "Interleaved",
+          "task": "Task A",
+          "accuracy": 0.9880779951810836
+        },
+        {
+          "condition": "Interleaved",
+          "task": "Task B",
+          "accuracy": 0.9879299998283386
+        },
+        {
+          "condition": "Blocked A→B",
+          "task": "Task A",
+          "accuracy": 0.989119005203247
+        },
+        {
+          "condition": "Blocked A→B",
+          "task": "Task B",
+          "accuracy": 0.9881109982728958
+        },
+        {
+          "condition": "Blocked B→A",
+          "task": "Task A",
+          "accuracy": 0.9880969971418381
+        },
+        {
+          "condition": "Blocked B→A",
+          "task": "Task B",
+          "accuracy": 0.9886889934539795
+        }
+      ],
+      "condition_summary": [
+        {
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "runs": 20,
+          "accuracy_A_mean": 0.9880779951810836,
+          "accuracy_A_sd": 0.000727191037182039,
+          "accuracy_B_mean": 0.9879299998283386,
+          "accuracy_B_sd": 0.0007480062542172026,
+          "balanced_accuracy_mean": 0.9880039975047111,
+          "balanced_accuracy_sd": 0.0005072776585064274,
+          "routing_specialization_mean": 0.44590269923210146,
+          "routing_specialization_sd": 0.2763251860791304,
+          "causal_specialization_mean": 0.24710749909281732,
+          "causal_specialization_sd": 0.1429928442740596,
+          "router_entropy_proxy_mean": 0.5432820498943329,
+          "router_entropy_proxy_sd": 0.13059236005296634
+        },
+        {
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "runs": 20,
+          "accuracy_A_mean": 0.989119005203247,
+          "accuracy_A_sd": 0.00039781372627662305,
+          "accuracy_B_mean": 0.9881109982728958,
+          "accuracy_B_sd": 0.0006405436095134394,
+          "balanced_accuracy_mean": 0.9886150017380715,
+          "balanced_accuracy_sd": 0.00044159350190515253,
+          "routing_specialization_mean": 0.6785586230456829,
+          "routing_specialization_sd": 0.20324936794178583,
+          "causal_specialization_mean": 0.4238149970769882,
+          "causal_specialization_sd": 0.09738301577023456,
+          "router_entropy_proxy_mean": 0.40628639087080953,
+          "router_entropy_proxy_sd": 0.11944405061768111
+        },
+        {
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "runs": 20,
+          "accuracy_A_mean": 0.9880969971418381,
+          "accuracy_A_sd": 0.0008033759874375933,
+          "accuracy_B_mean": 0.9886889934539795,
+          "accuracy_B_sd": 0.0008065675128724984,
+          "balanced_accuracy_mean": 0.9883929952979088,
+          "balanced_accuracy_sd": 0.0007258663221293771,
+          "routing_specialization_mean": 0.5985908515751361,
+          "routing_specialization_sd": 0.2978276886747764,
+          "causal_specialization_mean": 0.3681019961833954,
+          "causal_specialization_sd": 0.1587692710130955,
+          "router_entropy_proxy_mean": 0.4365125149488449,
+          "router_entropy_proxy_sd": 0.16704666713159266
+        }
+      ],
+      "per_run": [
+        {
+          "seed": 0,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9894000291824341,
+          "accuracy_B": 0.9882799983024597,
+          "balanced_accuracy": 0.9888400137424469,
+          "routing_specialization": 0.8063019514083862,
+          "causal_specialization": 0.47731995582580566,
+          "router_entropy_proxy": 0.30628204345703125
+        },
+        {
+          "seed": 0,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9878399968147278,
+          "accuracy_B": 0.9887199997901917,
+          "balanced_accuracy": 0.9882799983024597,
+          "routing_specialization": 0.8262499570846558,
+          "causal_specialization": 0.4637099802494049,
+          "router_entropy_proxy": 0.29473257064819336
+        },
+        {
+          "seed": 0,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9881799817085266,
+          "accuracy_B": 0.9891600012779236,
+          "balanced_accuracy": 0.9886699914932251,
+          "routing_specialization": 0.513237714767456,
+          "causal_specialization": 0.3279799520969391,
+          "router_entropy_proxy": 0.5549459457397461
+        },
+        {
+          "seed": 1,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9899600148200989,
+          "accuracy_B": 0.988099992275238,
+          "balanced_accuracy": 0.9890300035476685,
+          "routing_specialization": 0.6807646751403809,
+          "causal_specialization": 0.4413900077342987,
+          "router_entropy_proxy": 0.4390013813972473
+        },
+        {
+          "seed": 1,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9886199831962585,
+          "accuracy_B": 0.9889000058174133,
+          "balanced_accuracy": 0.9887599945068359,
+          "routing_specialization": 0.8517768383026123,
+          "causal_specialization": 0.494670033454895,
+          "router_entropy_proxy": 0.2612903416156769
+        },
+        {
+          "seed": 1,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9881200194358826,
+          "accuracy_B": 0.9876000285148621,
+          "balanced_accuracy": 0.9878600239753723,
+          "routing_specialization": 0.05355510115623474,
+          "causal_specialization": 0.03385999798774719,
+          "router_entropy_proxy": 0.6901609301567078
+        },
+        {
+          "seed": 10,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9896600246429443,
+          "accuracy_B": 0.9888799786567688,
+          "balanced_accuracy": 0.9892700016498566,
+          "routing_specialization": 0.7671273946762085,
+          "causal_specialization": 0.473609983921051,
+          "router_entropy_proxy": 0.3471781611442566
+        },
+        {
+          "seed": 10,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.988099992275238,
+          "accuracy_B": 0.988319993019104,
+          "balanced_accuracy": 0.988209992647171,
+          "routing_specialization": 0.13527964055538177,
+          "causal_specialization": 0.05724000930786133,
+          "router_entropy_proxy": 0.6795741319656372
+        },
+        {
+          "seed": 10,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9889000058174133,
+          "accuracy_B": 0.9868999719619751,
+          "balanced_accuracy": 0.9878999888896942,
+          "routing_specialization": 0.6221521496772766,
+          "causal_specialization": 0.3105199933052063,
+          "router_entropy_proxy": 0.4828745722770691
+        },
+        {
+          "seed": 11,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9891999959945679,
+          "accuracy_B": 0.9886999726295471,
+          "balanced_accuracy": 0.9889499843120575,
+          "routing_specialization": 0.6703994274139404,
+          "causal_specialization": 0.43573999404907227,
+          "router_entropy_proxy": 0.44345277547836304
+        },
+        {
+          "seed": 11,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.988319993019104,
+          "accuracy_B": 0.9894599914550781,
+          "balanced_accuracy": 0.9888899922370911,
+          "routing_specialization": 0.818407416343689,
+          "causal_specialization": 0.5026999711990356,
+          "router_entropy_proxy": 0.3019130229949951
+        },
+        {
+          "seed": 11,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9880200028419495,
+          "accuracy_B": 0.9881799817085266,
+          "balanced_accuracy": 0.988099992275238,
+          "routing_specialization": 0.07719121873378754,
+          "causal_specialization": 0.039110004901885986,
+          "router_entropy_proxy": 0.6900249719619751
+        },
+        {
+          "seed": 12,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9893800020217896,
+          "accuracy_B": 0.9891200065612793,
+          "balanced_accuracy": 0.9892500042915344,
+          "routing_specialization": 0.789268434047699,
+          "causal_specialization": 0.4649699926376343,
+          "router_entropy_proxy": 0.32795971632003784
+        },
+        {
+          "seed": 12,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.989300012588501,
+          "accuracy_B": 0.9894199967384338,
+          "balanced_accuracy": 0.9893600046634674,
+          "routing_specialization": 0.8453531265258789,
+          "causal_specialization": 0.482479989528656,
+          "router_entropy_proxy": 0.2721294164657593
+        },
+        {
+          "seed": 12,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9886800050735474,
+          "accuracy_B": 0.9886400103569031,
+          "balanced_accuracy": 0.9886600077152252,
+          "routing_specialization": 0.20258523523807526,
+          "causal_specialization": 0.09245002269744873,
+          "router_entropy_proxy": 0.6724165678024292
+        },
+        {
+          "seed": 13,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9887999892234802,
+          "accuracy_B": 0.9879000186920166,
+          "balanced_accuracy": 0.9883500039577484,
+          "routing_specialization": 0.7325209379196167,
+          "causal_specialization": 0.4450100064277649,
+          "router_entropy_proxy": 0.3921613097190857
+        },
+        {
+          "seed": 13,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9874600172042847,
+          "accuracy_B": 0.9892799854278564,
+          "balanced_accuracy": 0.9883700013160706,
+          "routing_specialization": 0.5100442171096802,
+          "causal_specialization": 0.37351998686790466,
+          "router_entropy_proxy": 0.556742787361145
+        },
+        {
+          "seed": 13,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9886199831962585,
+          "accuracy_B": 0.987779974937439,
+          "balanced_accuracy": 0.9881999790668488,
+          "routing_specialization": 0.30410969257354736,
+          "causal_specialization": 0.12231998145580292,
+          "router_entropy_proxy": 0.646148145198822
+        },
+        {
+          "seed": 14,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9887199997901917,
+          "accuracy_B": 0.9876000285148621,
+          "balanced_accuracy": 0.9881600141525269,
+          "routing_specialization": 0.3714013695716858,
+          "causal_specialization": 0.20550000667572021,
+          "router_entropy_proxy": 0.61808180809021
+        },
+        {
+          "seed": 14,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9886000156402588,
+          "accuracy_B": 0.9894999861717224,
+          "balanced_accuracy": 0.9890500009059906,
+          "routing_specialization": 0.7821956276893616,
+          "causal_specialization": 0.45885998010635376,
+          "router_entropy_proxy": 0.3372664749622345
+        },
+        {
+          "seed": 14,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9883999824523926,
+          "accuracy_B": 0.9880399703979492,
+          "balanced_accuracy": 0.9882199764251709,
+          "routing_specialization": 0.7063591480255127,
+          "causal_specialization": 0.35850998759269714,
+          "router_entropy_proxy": 0.41606205701828003
+        },
+        {
+          "seed": 15,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9895200133323669,
+          "accuracy_B": 0.9886400103569031,
+          "balanced_accuracy": 0.989080011844635,
+          "routing_specialization": 0.7565637826919556,
+          "causal_specialization": 0.48027998208999634,
+          "router_entropy_proxy": 0.36913663148880005
+        },
+        {
+          "seed": 15,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9871799945831299,
+          "accuracy_B": 0.9887800216674805,
+          "balanced_accuracy": 0.9879800081253052,
+          "routing_specialization": 0.7017999887466431,
+          "causal_specialization": 0.43007001280784607,
+          "router_entropy_proxy": 0.4209437072277069
+        },
+        {
+          "seed": 15,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9876599907875061,
+          "accuracy_B": 0.9879800081253052,
+          "balanced_accuracy": 0.9878199994564056,
+          "routing_specialization": 0.38211530447006226,
+          "causal_specialization": 0.19291001558303833,
+          "router_entropy_proxy": 0.6170091032981873
+        },
+        {
+          "seed": 16,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9890000224113464,
+          "accuracy_B": 0.9879800081253052,
+          "balanced_accuracy": 0.9884900152683258,
+          "routing_specialization": 0.6616852283477783,
+          "causal_specialization": 0.4154300093650818,
+          "router_entropy_proxy": 0.43770653009414673
+        },
+        {
+          "seed": 16,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9880399703979492,
+          "accuracy_B": 0.9882599711418152,
+          "balanced_accuracy": 0.9881499707698822,
+          "routing_specialization": 0.219156876206398,
+          "causal_specialization": 0.1780499815940857,
+          "router_entropy_proxy": 0.6678650379180908
+        },
+        {
+          "seed": 16,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9880599975585938,
+          "accuracy_B": 0.9882799983024597,
+          "balanced_accuracy": 0.9881699979305267,
+          "routing_specialization": 0.06273236870765686,
+          "causal_specialization": 0.06759998202323914,
+          "router_entropy_proxy": 0.6906571388244629
+        },
+        {
+          "seed": 17,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9887800216674805,
+          "accuracy_B": 0.9876999855041504,
+          "balanced_accuracy": 0.9882400035858154,
+          "routing_specialization": 0.8036068677902222,
+          "causal_specialization": 0.4787200093269348,
+          "router_entropy_proxy": 0.31799042224884033
+        },
+        {
+          "seed": 17,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9876800179481506,
+          "accuracy_B": 0.9868599772453308,
+          "balanced_accuracy": 0.9872699975967407,
+          "routing_specialization": 0.06662879884243011,
+          "causal_specialization": 0.11225995421409607,
+          "router_entropy_proxy": 0.6899634599685669
+        },
+        {
+          "seed": 17,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9883599877357483,
+          "accuracy_B": 0.9872000217437744,
+          "balanced_accuracy": 0.9877800047397614,
+          "routing_specialization": 0.6297143697738647,
+          "causal_specialization": 0.3803099989891052,
+          "router_entropy_proxy": 0.479062020778656
+        },
+        {
+          "seed": 18,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9889199733734131,
+          "accuracy_B": 0.98853999376297,
+          "balanced_accuracy": 0.9887299835681915,
+          "routing_specialization": 0.7613785266876221,
+          "causal_specialization": 0.47126999497413635,
+          "router_entropy_proxy": 0.3634570837020874
+        },
+        {
+          "seed": 18,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9869599938392639,
+          "accuracy_B": 0.9884399771690369,
+          "balanced_accuracy": 0.9876999855041504,
+          "routing_specialization": 0.1333049088716507,
+          "causal_specialization": 0.21098995208740234,
+          "router_entropy_proxy": 0.6839008331298828
+        },
+        {
+          "seed": 18,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9879599809646606,
+          "accuracy_B": 0.9886599779129028,
+          "balanced_accuracy": 0.9883099794387817,
+          "routing_specialization": 0.1679764688014984,
+          "causal_specialization": 0.10324999690055847,
+          "router_entropy_proxy": 0.6789010763168335
+        },
+        {
+          "seed": 19,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9888799786567688,
+          "accuracy_B": 0.9876999855041504,
+          "balanced_accuracy": 0.9882899820804596,
+          "routing_specialization": 0.7676074504852295,
+          "causal_specialization": 0.48431000113487244,
+          "router_entropy_proxy": 0.3581489324569702
+        },
+        {
+          "seed": 19,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9882400035858154,
+          "accuracy_B": 0.9887599945068359,
+          "balanced_accuracy": 0.9884999990463257,
+          "routing_specialization": 0.8319486379623413,
+          "causal_specialization": 0.4796600341796875,
+          "router_entropy_proxy": 0.28764474391937256
+        },
+        {
+          "seed": 19,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9875800013542175,
+          "accuracy_B": 0.9861000180244446,
+          "balanced_accuracy": 0.986840009689331,
+          "routing_specialization": 0.7323000431060791,
+          "causal_specialization": 0.35728999972343445,
+          "router_entropy_proxy": 0.39131417870521545
+        },
+        {
+          "seed": 2,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9894400238990784,
+          "accuracy_B": 0.9871000051498413,
+          "balanced_accuracy": 0.9882700145244598,
+          "routing_specialization": 0.36494937539100647,
+          "causal_specialization": 0.28988000750541687,
+          "router_entropy_proxy": 0.622443437576294
+        },
+        {
+          "seed": 2,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9899200201034546,
+          "accuracy_B": 0.9901599884033203,
+          "balanced_accuracy": 0.9900400042533875,
+          "routing_specialization": 0.7861422300338745,
+          "causal_specialization": 0.495930016040802,
+          "router_entropy_proxy": 0.33682742714881897
+        },
+        {
+          "seed": 2,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9870799779891968,
+          "accuracy_B": 0.9871000051498413,
+          "balanced_accuracy": 0.987089991569519,
+          "routing_specialization": 0.2699509859085083,
+          "causal_specialization": 0.15749001502990723,
+          "router_entropy_proxy": 0.6560960412025452
+        },
+        {
+          "seed": 3,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9896399974822998,
+          "accuracy_B": 0.9881799817085266,
+          "balanced_accuracy": 0.9889099895954132,
+          "routing_specialization": 0.7803077101707458,
+          "causal_specialization": 0.49480003118515015,
+          "router_entropy_proxy": 0.34592968225479126
+        },
+        {
+          "seed": 3,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.987559974193573,
+          "accuracy_B": 0.9888399839401245,
+          "balanced_accuracy": 0.9881999790668488,
+          "routing_specialization": 0.7801730632781982,
+          "causal_specialization": 0.46931999921798706,
+          "router_entropy_proxy": 0.3403467535972595
+        },
+        {
+          "seed": 3,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9877200126647949,
+          "accuracy_B": 0.9887199997901917,
+          "balanced_accuracy": 0.9882200062274933,
+          "routing_specialization": 0.6556274890899658,
+          "causal_specialization": 0.3768700063228607,
+          "router_entropy_proxy": 0.45846083760261536
+        },
+        {
+          "seed": 4,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9885600209236145,
+          "accuracy_B": 0.9864199757575989,
+          "balanced_accuracy": 0.9874899983406067,
+          "routing_specialization": 0.6494489908218384,
+          "causal_specialization": 0.3677399754524231,
+          "router_entropy_proxy": 0.4631883502006531
+        },
+        {
+          "seed": 4,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9870399832725525,
+          "accuracy_B": 0.987280011177063,
+          "balanced_accuracy": 0.9871599972248077,
+          "routing_specialization": 0.5182526707649231,
+          "causal_specialization": 0.289650022983551,
+          "router_entropy_proxy": 0.5283917784690857
+        },
+        {
+          "seed": 4,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9887199997901917,
+          "accuracy_B": 0.9879199862480164,
+          "balanced_accuracy": 0.988319993019104,
+          "routing_specialization": 0.5630453824996948,
+          "causal_specialization": 0.2889699935913086,
+          "router_entropy_proxy": 0.5248957872390747
+        },
+        {
+          "seed": 5,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9890599846839905,
+          "accuracy_B": 0.9890000224113464,
+          "balanced_accuracy": 0.9890300035476685,
+          "routing_specialization": 0.6683664321899414,
+          "causal_specialization": 0.4335099756717682,
+          "router_entropy_proxy": 0.4488387405872345
+        },
+        {
+          "seed": 5,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9886199831962585,
+          "accuracy_B": 0.9892399907112122,
+          "balanced_accuracy": 0.9889299869537354,
+          "routing_specialization": 0.8185526132583618,
+          "causal_specialization": 0.48924002051353455,
+          "router_entropy_proxy": 0.3029029965400696
+        },
+        {
+          "seed": 5,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9870799779891968,
+          "accuracy_B": 0.9875800013542175,
+          "balanced_accuracy": 0.9873299896717072,
+          "routing_specialization": 0.6401376724243164,
+          "causal_specialization": 0.29951000213623047,
+          "router_entropy_proxy": 0.46866264939308167
+        },
+        {
+          "seed": 6,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9887199997901917,
+          "accuracy_B": 0.988099992275238,
+          "balanced_accuracy": 0.9884099960327148,
+          "routing_specialization": 0.8399090766906738,
+          "causal_specialization": 0.48781999945640564,
+          "router_entropy_proxy": 0.27453023195266724
+        },
+        {
+          "seed": 6,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9875400066375732,
+          "accuracy_B": 0.9887400269508362,
+          "balanced_accuracy": 0.9881400167942047,
+          "routing_specialization": 0.7517365217208862,
+          "causal_specialization": 0.45573002099990845,
+          "router_entropy_proxy": 0.3742769956588745
+        },
+        {
+          "seed": 6,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9861599802970886,
+          "accuracy_B": 0.9889000058174133,
+          "balanced_accuracy": 0.987529993057251,
+          "routing_specialization": 0.016560643911361694,
+          "causal_specialization": 0.12968003749847412,
+          "router_entropy_proxy": 0.6925379633903503
+        },
+        {
+          "seed": 7,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.98853999376297,
+          "accuracy_B": 0.9881200194358826,
+          "balanced_accuracy": 0.9883300065994263,
+          "routing_specialization": 0.8680458068847656,
+          "causal_specialization": 0.4915600121021271,
+          "router_entropy_proxy": 0.2430063635110855
+        },
+        {
+          "seed": 7,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.987559974193573,
+          "accuracy_B": 0.987339973449707,
+          "balanced_accuracy": 0.98744997382164,
+          "routing_specialization": 0.657989501953125,
+          "causal_specialization": 0.3878999948501587,
+          "router_entropy_proxy": 0.45460057258605957
+        },
+        {
+          "seed": 7,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9887400269508362,
+          "accuracy_B": 0.9874399900436401,
+          "balanced_accuracy": 0.9880900084972382,
+          "routing_specialization": 0.7316238880157471,
+          "causal_specialization": 0.39594998955726624,
+          "router_entropy_proxy": 0.3939340114593506
+        },
+        {
+          "seed": 8,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9891999959945679,
+          "accuracy_B": 0.9880200028419495,
+          "balanced_accuracy": 0.9886099994182587,
+          "routing_specialization": 0.8060356974601746,
+          "causal_specialization": 0.4851699769496918,
+          "router_entropy_proxy": 0.3148903250694275
+        },
+        {
+          "seed": 8,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9894400238990784,
+          "accuracy_B": 0.9890000224113464,
+          "balanced_accuracy": 0.9892200231552124,
+          "routing_specialization": 0.863102912902832,
+          "causal_specialization": 0.48684999346733093,
+          "router_entropy_proxy": 0.2485131025314331
+        },
+        {
+          "seed": 8,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9892600178718567,
+          "accuracy_B": 0.9883400201797485,
+          "balanced_accuracy": 0.9888000190258026,
+          "routing_specialization": 0.8012565970420837,
+          "causal_specialization": 0.47391998767852783,
+          "router_entropy_proxy": 0.3214285671710968
+        },
+        {
+          "seed": 9,
+          "condition": "BLOCKED_AB",
+          "condition_label": "Blocked A→B",
+          "accuracy_A": 0.9890000224113464,
+          "accuracy_B": 0.9881399869918823,
+          "balanced_accuracy": 0.9885700047016144,
+          "routing_specialization": 0.025483325123786926,
+          "causal_specialization": 0.15227001905441284,
+          "router_entropy_proxy": 0.6923438906669617
+        },
+        {
+          "seed": 9,
+          "condition": "BLOCKED_BA",
+          "condition_label": "Blocked B→A",
+          "accuracy_A": 0.9879199862480164,
+          "accuracy_B": 0.9884799718856812,
+          "balanced_accuracy": 0.9881999790668488,
+          "routing_specialization": 0.07372148334980011,
+          "causal_specialization": 0.043209969997406006,
+          "router_entropy_proxy": 0.6904241442680359
+        },
+        {
+          "seed": 9,
+          "condition": "INTERLEAVED",
+          "condition_label": "Interleaved",
+          "accuracy_A": 0.9882599711418152,
+          "accuracy_B": 0.9880800247192383,
+          "balanced_accuracy": 0.9881699979305267,
+          "routing_specialization": 0.7858225107192993,
+          "causal_specialization": 0.43365001678466797,
+          "router_entropy_proxy": 0.3400484323501587
+        }
+      ],
+      "seed_effects": [
+        {
+          "seed": 0,
+          "seed_label": "0",
+          "interleaved_causal": 0.3279799520969391,
+          "blocked_mean_causal": 0.4705149680376053,
+          "causal_difference": 0.1425350159406662,
+          "interleaved_balanced_accuracy": 0.9886699914932251,
+          "blocked_balanced_accuracy": 0.9885600060224533,
+          "accuracy_difference": -0.00010998547077178955
+        },
+        {
+          "seed": 1,
+          "seed_label": "1",
+          "interleaved_causal": 0.03385999798774719,
+          "blocked_mean_causal": 0.46803002059459686,
+          "causal_difference": 0.43417002260684967,
+          "interleaved_balanced_accuracy": 0.9878600239753723,
+          "blocked_balanced_accuracy": 0.9888949990272522,
+          "accuracy_difference": 0.0010349750518798828
+        },
+        {
+          "seed": 2,
+          "seed_label": "2",
+          "interleaved_causal": 0.15749001502990723,
+          "blocked_mean_causal": 0.39290501177310944,
+          "causal_difference": 0.2354149967432022,
+          "interleaved_balanced_accuracy": 0.987089991569519,
+          "blocked_balanced_accuracy": 0.9891550093889236,
+          "accuracy_difference": 0.002065017819404602
+        },
+        {
+          "seed": 3,
+          "seed_label": "3",
+          "interleaved_causal": 0.3768700063228607,
+          "blocked_mean_causal": 0.4820600152015686,
+          "causal_difference": 0.10519000887870789,
+          "interleaved_balanced_accuracy": 0.9882200062274933,
+          "blocked_balanced_accuracy": 0.988554984331131,
+          "accuracy_difference": 0.0003349781036376953
+        },
+        {
+          "seed": 4,
+          "seed_label": "4",
+          "interleaved_causal": 0.2889699935913086,
+          "blocked_mean_causal": 0.32869499921798706,
+          "causal_difference": 0.03972500562667847,
+          "interleaved_balanced_accuracy": 0.988319993019104,
+          "blocked_balanced_accuracy": 0.9873249977827072,
+          "accuracy_difference": -0.0009949952363967896
+        },
+        {
+          "seed": 5,
+          "seed_label": "5",
+          "interleaved_causal": 0.29951000213623047,
+          "blocked_mean_causal": 0.46137499809265137,
+          "causal_difference": 0.1618649959564209,
+          "interleaved_balanced_accuracy": 0.9873299896717072,
+          "blocked_balanced_accuracy": 0.9889799952507019,
+          "accuracy_difference": 0.001650005578994751
+        },
+        {
+          "seed": 6,
+          "seed_label": "6",
+          "interleaved_causal": 0.12968003749847412,
+          "blocked_mean_causal": 0.47177501022815704,
+          "causal_difference": 0.3420949727296829,
+          "interleaved_balanced_accuracy": 0.987529993057251,
+          "blocked_balanced_accuracy": 0.9882750064134598,
+          "accuracy_difference": 0.0007450133562088013
+        },
+        {
+          "seed": 7,
+          "seed_label": "7",
+          "interleaved_causal": 0.39594998955726624,
+          "blocked_mean_causal": 0.4397300034761429,
+          "causal_difference": 0.04378001391887665,
+          "interleaved_balanced_accuracy": 0.9880900084972382,
+          "blocked_balanced_accuracy": 0.9878899902105331,
+          "accuracy_difference": -0.0002000182867050171
+        },
+        {
+          "seed": 8,
+          "seed_label": "8",
+          "interleaved_causal": 0.47391998767852783,
+          "blocked_mean_causal": 0.48600998520851135,
+          "causal_difference": 0.01208999752998352,
+          "interleaved_balanced_accuracy": 0.9888000190258026,
+          "blocked_balanced_accuracy": 0.9889150112867355,
+          "accuracy_difference": 0.00011499226093292236
+        },
+        {
+          "seed": 9,
+          "seed_label": "9",
+          "interleaved_causal": 0.43365001678466797,
+          "blocked_mean_causal": 0.09773999452590942,
+          "causal_difference": -0.33591002225875854,
+          "interleaved_balanced_accuracy": 0.9881699979305267,
+          "blocked_balanced_accuracy": 0.9883849918842316,
+          "accuracy_difference": 0.00021499395370483398
+        },
+        {
+          "seed": 10,
+          "seed_label": "10",
+          "interleaved_causal": 0.3105199933052063,
+          "blocked_mean_causal": 0.2654249966144562,
+          "causal_difference": -0.04509499669075012,
+          "interleaved_balanced_accuracy": 0.9878999888896942,
+          "blocked_balanced_accuracy": 0.9887399971485138,
+          "accuracy_difference": 0.0008400082588195801
+        },
+        {
+          "seed": 11,
+          "seed_label": "11",
+          "interleaved_causal": 0.039110004901885986,
+          "blocked_mean_causal": 0.46921998262405396,
+          "causal_difference": 0.43010997772216797,
+          "interleaved_balanced_accuracy": 0.988099992275238,
+          "blocked_balanced_accuracy": 0.9889199882745743,
+          "accuracy_difference": 0.0008199959993362427
+        },
+        {
+          "seed": 12,
+          "seed_label": "12",
+          "interleaved_causal": 0.09245002269744873,
+          "blocked_mean_causal": 0.47372499108314514,
+          "causal_difference": 0.3812749683856964,
+          "interleaved_balanced_accuracy": 0.9886600077152252,
+          "blocked_balanced_accuracy": 0.9893050044775009,
+          "accuracy_difference": 0.0006449967622756958
+        },
+        {
+          "seed": 13,
+          "seed_label": "13",
+          "interleaved_causal": 0.12231998145580292,
+          "blocked_mean_causal": 0.4092649966478348,
+          "causal_difference": 0.28694501519203186,
+          "interleaved_balanced_accuracy": 0.9881999790668488,
+          "blocked_balanced_accuracy": 0.9883600026369095,
+          "accuracy_difference": 0.00016002357006072998
+        },
+        {
+          "seed": 14,
+          "seed_label": "14",
+          "interleaved_causal": 0.35850998759269714,
+          "blocked_mean_causal": 0.332179993391037,
+          "causal_difference": -0.026329994201660156,
+          "interleaved_balanced_accuracy": 0.9882199764251709,
+          "blocked_balanced_accuracy": 0.9886050075292587,
+          "accuracy_difference": 0.0003850311040878296
+        },
+        {
+          "seed": 15,
+          "seed_label": "15",
+          "interleaved_causal": 0.19291001558303833,
+          "blocked_mean_causal": 0.4551749974489212,
+          "causal_difference": 0.2622649818658829,
+          "interleaved_balanced_accuracy": 0.9878199994564056,
+          "blocked_balanced_accuracy": 0.9885300099849701,
+          "accuracy_difference": 0.0007100105285644531
+        },
+        {
+          "seed": 16,
+          "seed_label": "16",
+          "interleaved_causal": 0.06759998202323914,
+          "blocked_mean_causal": 0.29673999547958374,
+          "causal_difference": 0.2291400134563446,
+          "interleaved_balanced_accuracy": 0.9881699979305267,
+          "blocked_balanced_accuracy": 0.988319993019104,
+          "accuracy_difference": 0.0001499950885772705
+        },
+        {
+          "seed": 17,
+          "seed_label": "17",
+          "interleaved_causal": 0.3803099989891052,
+          "blocked_mean_causal": 0.29548998177051544,
+          "causal_difference": -0.08482001721858978,
+          "interleaved_balanced_accuracy": 0.9877800047397614,
+          "blocked_balanced_accuracy": 0.9877550005912781,
+          "accuracy_difference": -2.5004148483276367e-05
+        },
+        {
+          "seed": 18,
+          "seed_label": "18",
+          "interleaved_causal": 0.10324999690055847,
+          "blocked_mean_causal": 0.34112997353076935,
+          "causal_difference": 0.23787997663021088,
+          "interleaved_balanced_accuracy": 0.9883099794387817,
+          "blocked_balanced_accuracy": 0.988214984536171,
+          "accuracy_difference": -9.499490261077881e-05
+        },
+        {
+          "seed": 19,
+          "seed_label": "19",
+          "interleaved_causal": 0.35728999972343445,
+          "blocked_mean_causal": 0.48198501765727997,
+          "causal_difference": 0.12469501793384552,
+          "interleaved_balanced_accuracy": 0.986840009689331,
+          "blocked_balanced_accuracy": 0.9883949905633926,
+          "accuracy_difference": 0.0015549808740615845
+        }
+      ],
+      "dynamics": [
+        {
+          "step": 0,
+          "condition": "Interleaved",
+          "routing_specialization": 0.004615801572799683,
+          "accuracy_A": 0.4979248046875,
+          "accuracy_B": 0.5015625
+        },
+        {
+          "step": 250,
+          "condition": "Interleaved",
+          "routing_specialization": 0.004486411064863205,
+          "accuracy_A": 0.65938720703125,
+          "accuracy_B": 0.654248046875
+        },
+        {
+          "step": 500,
+          "condition": "Interleaved",
+          "routing_specialization": 0.008474718779325485,
+          "accuracy_A": 0.72554931640625,
+          "accuracy_B": 0.729296875
+        },
+        {
+          "step": 1000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.10790566578507424,
+          "accuracy_A": 0.7884765625,
+          "accuracy_B": 0.80694580078125
+        },
+        {
+          "step": 2000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.3379026859998703,
+          "accuracy_A": 0.93411865234375,
+          "accuracy_B": 0.93970947265625
+        },
+        {
+          "step": 3000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.3907892867922783,
+          "accuracy_A": 0.95284423828125,
+          "accuracy_B": 0.94761962890625
+        },
+        {
+          "step": 4000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.4176445253193378,
+          "accuracy_A": 0.9598876953125,
+          "accuracy_B": 0.961572265625
+        },
+        {
+          "step": 5000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.43243977054953575,
+          "accuracy_A": 0.96131591796875,
+          "accuracy_B": 0.96407470703125
+        },
+        {
+          "step": 7500,
+          "condition": "Interleaved",
+          "routing_specialization": 0.4444787837564945,
+          "accuracy_A": 0.9720947265625,
+          "accuracy_B": 0.96802978515625
+        },
+        {
+          "step": 10000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.4463456429541111,
+          "accuracy_A": 0.9776611328125,
+          "accuracy_B": 0.97591552734375
+        },
+        {
+          "step": 15000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.4452952861785889,
+          "accuracy_A": 0.98482666015625,
+          "accuracy_B": 0.98648681640625
+        },
+        {
+          "step": 20000,
+          "condition": "Interleaved",
+          "routing_specialization": 0.44600791707634924,
+          "accuracy_A": 0.98765869140625,
+          "accuracy_B": 0.98817138671875
+        },
+        {
+          "step": 0,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.004615801572799683,
+          "accuracy_A": 0.4979248046875,
+          "accuracy_B": 0.5015625
+        },
+        {
+          "step": 250,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.005705457180738449,
+          "accuracy_A": 0.7728759765625,
+          "accuracy_B": 0.5002197265625
+        },
+        {
+          "step": 500,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.009594856947660445,
+          "accuracy_A": 0.94600830078125,
+          "accuracy_B": 0.50030517578125
+        },
+        {
+          "step": 1000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.011069826036691665,
+          "accuracy_A": 0.9603515625,
+          "accuracy_B": 0.49984130859375
+        },
+        {
+          "step": 2000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.012625083327293396,
+          "accuracy_A": 0.970263671875,
+          "accuracy_B": 0.50050048828125
+        },
+        {
+          "step": 3000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.028378769755363464,
+          "accuracy_A": 0.48946533203125,
+          "accuracy_B": 0.96591796875
+        },
+        {
+          "step": 4000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.024984702467918396,
+          "accuracy_A": 0.49068603515625,
+          "accuracy_B": 0.9712158203125
+        },
+        {
+          "step": 5000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.6000307649374008,
+          "accuracy_A": 0.95867919921875,
+          "accuracy_B": 0.96531982421875
+        },
+        {
+          "step": 7500,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.6663631148636341,
+          "accuracy_A": 0.973095703125,
+          "accuracy_B": 0.972412109375
+        },
+        {
+          "step": 10000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.6752836659550667,
+          "accuracy_A": 0.977880859375,
+          "accuracy_B": 0.97965087890625
+        },
+        {
+          "step": 15000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.6775487452745438,
+          "accuracy_A": 0.98631591796875,
+          "accuracy_B": 0.98726806640625
+        },
+        {
+          "step": 20000,
+          "condition": "Blocked A→B",
+          "routing_specialization": 0.6786941319704056,
+          "accuracy_A": 0.9886474609375,
+          "accuracy_B": 0.988916015625
+        },
+        {
+          "step": 0,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.004615801572799683,
+          "accuracy_A": 0.4979248046875,
+          "accuracy_B": 0.5015625
+        },
+        {
+          "step": 250,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.005396056920289993,
+          "accuracy_A": 0.49786376953125,
+          "accuracy_B": 0.7955078125
+        },
+        {
+          "step": 500,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.00798209235072136,
+          "accuracy_A": 0.4889404296875,
+          "accuracy_B": 0.9497314453125
+        },
+        {
+          "step": 1000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.008742934465408326,
+          "accuracy_A": 0.48876953125,
+          "accuracy_B": 0.96654052734375
+        },
+        {
+          "step": 2000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.009862715005874633,
+          "accuracy_A": 0.488916015625,
+          "accuracy_B": 0.970703125
+        },
+        {
+          "step": 3000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.03125004842877388,
+          "accuracy_A": 0.96094970703125,
+          "accuracy_B": 0.50386962890625
+        },
+        {
+          "step": 4000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.02814565449953079,
+          "accuracy_A": 0.97227783203125,
+          "accuracy_B": 0.503515625
+        },
+        {
+          "step": 5000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.5303560763597488,
+          "accuracy_A": 0.9640380859375,
+          "accuracy_B": 0.959521484375
+        },
+        {
+          "step": 7500,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.5885095171630382,
+          "accuracy_A": 0.973779296875,
+          "accuracy_B": 0.9721923828125
+        },
+        {
+          "step": 10000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.5953848019242287,
+          "accuracy_A": 0.9776123046875,
+          "accuracy_B": 0.98013916015625
+        },
+        {
+          "step": 15000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.5976172454655171,
+          "accuracy_A": 0.98516845703125,
+          "accuracy_B": 0.98717041015625
+        },
+        {
+          "step": 20000,
+          "condition": "Blocked B→A",
+          "routing_specialization": 0.5987904697656632,
+          "accuracy_A": 0.98790283203125,
+          "accuracy_B": 0.98924560546875
+        }
+      ],
+      "ablations": [
+        {
+          "condition_task": "Interleaved · Task A",
+          "expert": "Expert 1",
+          "mean_accuracy_drop": 0.2981979951262474
+        },
+        {
+          "condition_task": "Interleaved · Task A",
+          "expert": "Expert 2",
+          "mean_accuracy_drop": 0.3547310009598732
+        },
+        {
+          "condition_task": "Interleaved · Task B",
+          "expert": "Expert 1",
+          "mean_accuracy_drop": 0.3628770038485527
+        },
+        {
+          "condition_task": "Interleaved · Task B",
+          "expert": "Expert 2",
+          "mean_accuracy_drop": 0.30421099811792374
+        },
+        {
+          "condition_task": "Blocked A→B · Task A",
+          "expert": "Expert 1",
+          "mean_accuracy_drop": 0.29275500774383545
+        },
+        {
+          "condition_task": "Blocked A→B · Task A",
+          "expert": "Expert 2",
+          "mean_accuracy_drop": 0.2756400093436241
+        },
+        {
+          "condition_task": "Blocked A→B · Task B",
+          "expert": "Expert 1",
+          "mean_accuracy_drop": 0.260404996573925
+        },
+        {
+          "condition_task": "Blocked A→B · Task B",
+          "expert": "Expert 2",
+          "mean_accuracy_drop": 0.2897759944200516
+        },
+        {
+          "condition_task": "Blocked B→A · Task A",
+          "expert": "Expert 1",
+          "mean_accuracy_drop": 0.26626700162887573
+        },
+        {
+          "condition_task": "Blocked B→A · Task A",
+          "expert": "Expert 2",
+          "mean_accuracy_drop": 0.32721399813890456
+        },
+        {
+          "condition_task": "Blocked B→A · Task B",
+          "expert": "Expert 1",
+          "mean_accuracy_drop": 0.3267069965600967
+        },
+        {
+          "condition_task": "Blocked B→A · Task B",
+          "expert": "Expert 2",
+          "mean_accuracy_drop": 0.28509399145841596
+        }
+      ],
+      "distances": [
+        {
+          "seed": 19,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.1850271075963974
+        },
+        {
+          "seed": 19,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.20193372666835785
+        },
+        {
+          "seed": 10,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.30886131525039673
+        },
+        {
+          "seed": 10,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.5793558955192566
+        },
+        {
+          "seed": 17,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.21578343212604523
+        },
+        {
+          "seed": 17,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.7213369011878967
+        },
+        {
+          "seed": 16,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.7772519588470459
+        },
+        {
+          "seed": 16,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.26951566338539124
+        },
+        {
+          "seed": 11,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.8226504325866699
+        },
+        {
+          "seed": 11,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.951900839805603
+        },
+        {
+          "seed": 18,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.7703070640563965
+        },
+        {
+          "seed": 18,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.23715688288211823
+        },
+        {
+          "seed": 2,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.32513561844825745
+        },
+        {
+          "seed": 2,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.6515051126480103
+        },
+        {
+          "seed": 5,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.22263099253177643
+        },
+        {
+          "seed": 5,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.3044947683811188
+        },
+        {
+          "seed": 4,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.14961203932762146
+        },
+        {
+          "seed": 4,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.26516106724739075
+        },
+        {
+          "seed": 3,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.18373534083366394
+        },
+        {
+          "seed": 3,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.17815199494361877
+        },
+        {
+          "seed": 14,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.41018375754356384
+        },
+        {
+          "seed": 14,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.1879003793001175
+        },
+        {
+          "seed": 13,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.6261412501335144
+        },
+        {
+          "seed": 13,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.41439828276634216
+        },
+        {
+          "seed": 12,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.7825378179550171
+        },
+        {
+          "seed": 12,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.8306861519813538
+        },
+        {
+          "seed": 15,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.525050938129425
+        },
+        {
+          "seed": 15,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.4887465834617615
+        },
+        {
+          "seed": 6,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.9676342606544495
+        },
+        {
+          "seed": 6,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.8861504793167114
+        },
+        {
+          "seed": 1,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.8512210249900818
+        },
+        {
+          "seed": 1,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 1.0058972835540771
+        },
+        {
+          "seed": 8,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.01860646717250347
+        },
+        {
+          "seed": 8,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.09063362330198288
+        },
+        {
+          "seed": 9,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.9060777425765991
+        },
+        {
+          "seed": 9,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.8441735506057739
+        },
+        {
+          "seed": 0,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.34777289628982544
+        },
+        {
+          "seed": 0,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.3486733138561249
+        },
+        {
+          "seed": 7,
+          "comparison": "Interleaved → Blocked A→B",
+          "distance": 0.17980720102787018
+        },
+        {
+          "seed": 7,
+          "comparison": "Interleaved → Blocked B→A",
+          "distance": 0.10673634707927704
+        }
+      ],
+      "fidelity": [
+        {
+          "check": "Run completeness",
+          "status": "PASS",
+          "evidence": "60/60 result.json files; 20/20 complete paired seeds"
+        },
+        {
+          "check": "Paired initialization",
+          "status": "PASS",
+          "evidence": "identical initial checksum within every three-condition seed group"
+        },
+        {
+          "check": "Exposure matching",
+          "status": "PASS",
+          "evidence": "10,000 A + 10,000 B batches in every run"
+        },
+        {
+          "check": "Common mature phase",
+          "status": "PASS",
+          "evidence": "identical 16,000-label mature task sequence within every paired seed"
+        },
+        {
+          "check": "Label balance",
+          "status": "PASS",
+          "evidence": "100k sample: A=0.5004; B=0.5016"
+        },
+        {
+          "check": "Model size",
+          "status": "PASS",
+          "evidence": "151,427 parameters; target 50k–250k"
+        },
+        {
+          "check": "Checkpoint completeness",
+          "status": "PASS",
+          "evidence": "initial.pt=60/60; step_4000.pt=60/60; step_10000.pt=60/60; step_20000.pt=60/60"
+        },
+        {
+          "check": "Sweep failures",
+          "status": "PASS",
+          "evidence": "completed=60; failed=0"
+        },
+        {
+          "check": "Router collapse",
+          "status": "PASS",
+          "evidence": "0/60 crossed global mean routing >95% at a logged evaluation"
+        },
+        {
+          "check": "Compute device provenance",
+          "status": "WARN",
+          "evidence": "checkpoint=mps:0; metadata.device incorrectly contains the config value 'auto'"
+        }
+      ],
+      "files": [
+        {
+          "category": "Primary report",
+          "path": "results/summary/detailed_report.html",
+          "purpose": "Self-contained technical report"
+        },
+        {
+          "category": "Report source",
+          "path": "results/summary/detailed_report_artifact.json",
+          "purpose": "Validated canonical payload"
+        },
+        {
+          "category": "Report evidence",
+          "path": "results/summary/detailed_report_data.sqlite",
+          "purpose": "Runnable SQLite source for report charts and tables"
+        },
+        {
+          "category": "Summary",
+          "path": "results/summary/pilot_report.md",
+          "purpose": "Compact automated report"
+        },
+        {
+          "category": "Analysis",
+          "path": "results/summary/analysis.json",
+          "purpose": "Statistics, criteria, distances"
+        },
+        {
+          "category": "Audit CSV",
+          "path": "results/summary/seed_level_results.csv",
+          "purpose": "All paired seed values"
+        },
+        {
+          "category": "Audit CSV",
+          "path": "results/summary/condition_summary.csv",
+          "purpose": "Condition means and SDs"
+        },
+        {
+          "category": "Snapshot",
+          "path": "results/summary/frozen_snapshot/",
+          "purpose": "Config, environment, checksums"
+        },
+        {
+          "category": "Raw evidence",
+          "path": "results/raw/seed_<0..19>/<condition>/result.json",
+          "purpose": "Per-run metrics and histories"
+        },
+        {
+          "category": "Checkpoints",
+          "path": "results/raw/seed_<0..19>/<condition>/*.pt",
+          "purpose": "Initial, 4k, 10k, 20k states"
+        },
+        {
+          "category": "Log",
+          "path": "results/progress.jsonl",
+          "purpose": "Final sweep event log"
+        },
+        {
+          "category": "Config",
+          "path": "configs/default.yaml",
+          "purpose": "Frozen experiment settings"
+        },
+        {
+          "category": "Code",
+          "path": "src/dci_pilot/",
+          "purpose": "Complete implementation"
+        },
+        {
+          "category": "Tests",
+          "path": "tests/",
+          "purpose": "Automated verification"
+        },
+        {
+          "category": "Figures",
+          "path": "figures/figure_1_behavior.png … figure_6_dynamics.png",
+          "purpose": "Static publication-style figures"
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "analysis",
+      "label": "Frozen paired analysis",
+      "path": "results/summary/analysis.json"
+    },
+    {
+      "id": "raw",
+      "label": "60 per-run results",
+      "path": "results/raw/"
+    },
+    {
+      "id": "config",
+      "label": "Frozen configuration",
+      "path": "configs/default.yaml"
+    },
+    {
+      "id": "code",
+      "label": "Pilot implementation",
+      "path": "src/dci_pilot/"
+    },
+    {
+      "id": "log",
+      "label": "Final sweep log",
+      "path": "results/progress.jsonl"
+    },
+    {
+      "id": "snapshot",
+      "label": "Checksummed frozen snapshot",
+      "path": "results/summary/frozen_snapshot/"
+    }
+  ]
+}
