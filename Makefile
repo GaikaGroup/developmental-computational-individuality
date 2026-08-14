@@ -1,4 +1,4 @@
-.PHONY: test pilot pilot-background analyze replication replication-background replication-analyze
+.PHONY: test pilot pilot-background analyze replication replication-background replication-analyze compare-experiments
 
 test:
 	.venv/bin/python -m pytest -q
@@ -26,3 +26,7 @@ replication-background:
 
 replication-analyze:
 	.venv/bin/python -m dci_pilot.replication_analysis
+
+compare-experiments:
+	.venv/bin/python -m pytest -q
+	.venv/bin/python -m dci_pilot.compare_experiments
