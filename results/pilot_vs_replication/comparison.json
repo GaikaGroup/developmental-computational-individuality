@@ -1,0 +1,2671 @@
+{
+  "source_files": {
+    "pilot_raw": "results/pilot_v1_frozen/raw/",
+    "pilot_posthoc": "results/pilot_v1_posthoc/analysis.json",
+    "pilot_config": "configs/default.yaml",
+    "replication_raw": "results/replication/raw/",
+    "replication_checkpoint_analysis": "results/replication/checkpoint_analysis/analysis.json",
+    "replication_config": "replication_config.yaml"
+  },
+  "configuration": {
+    "pilot_1": {
+      "architecture": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+      "parameter_count": 151427,
+      "Task A": "1[x0*x1 + x2*x3 > 0]",
+      "Task B": "1[x8*x9 - x10*x11 > 0]",
+      "input_dimensions": "16 Gaussian features + 2D one-hot task indicator = 18",
+      "router_architecture": "Linear(128,2), Softmax(dim=-1)",
+      "expert_architecture": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+      "optimizer": "AdamW",
+      "learning_rate": 0.0003,
+      "lr_schedule": "500-step linear warmup then cosine decay",
+      "weight_decay": 0.0001,
+      "batch_size": 256,
+      "training_steps": 20000,
+      "early_phase_steps": 4000,
+      "common_phase_steps": 16000,
+      "lambda_balance": 0.01,
+      "evaluation_examples_per_task": 50000,
+      "S_route_definition": "0.5 * sum_e abs(q_A,e - q_B,e)",
+      "S_causal_definition": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+      "D_s_definition": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+      "primary_knockout": "renormalized: survivor weight 1",
+      "curricula": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+      "training_data_seed": 1729,
+      "test_data_seed": 9001729,
+      "requested_device": "auto",
+      "router_entropy_definition": "entropy of task-mean routing vectors in original result JSON",
+      "deterministic_algorithms": "not enabled in original Pilot",
+      "metadata_hashes": "config/source hashes unavailable in original result metadata",
+      "knockout_variants": "renormalized primary only"
+    },
+    "replication_1": {
+      "architecture": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+      "parameter_count": 151427,
+      "Task A": "1[x0*x1 + x2*x3 > 0]",
+      "Task B": "1[x8*x9 - x10*x11 > 0]",
+      "input_dimensions": "16 Gaussian features + 2D one-hot task indicator = 18",
+      "router_architecture": "Linear(128,2), Softmax(dim=-1)",
+      "expert_architecture": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+      "optimizer": "AdamW",
+      "learning_rate": 0.0003,
+      "lr_schedule": "500-step linear warmup then cosine decay",
+      "weight_decay": 0.0001,
+      "batch_size": 256,
+      "training_steps": 20000,
+      "early_phase_steps": 4000,
+      "common_phase_steps": 16000,
+      "lambda_balance": 0.01,
+      "evaluation_examples_per_task": 50000,
+      "S_route_definition": "0.5 * sum_e abs(q_A,e - q_B,e)",
+      "S_causal_definition": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+      "D_s_definition": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+      "primary_knockout": "renormalized: survivor weight 1",
+      "curricula": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+      "training_data_seed": 271828,
+      "test_data_seed": 314159,
+      "requested_device": "auto",
+      "router_entropy_definition": "true mean per-example entropy",
+      "deterministic_algorithms": "enabled with strict unsupported-operation failure",
+      "metadata_hashes": "config hash and source hash recorded per run",
+      "knockout_variants": "renormalized primary and non-renormalized secondary"
+    },
+    "diff": [
+      {
+        "field": "D_s_definition",
+        "pilot_1": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+        "replication_1": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+        "status": "MATCH"
+      },
+      {
+        "field": "S_causal_definition",
+        "pilot_1": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+        "replication_1": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+        "status": "MATCH"
+      },
+      {
+        "field": "S_route_definition",
+        "pilot_1": "0.5 * sum_e abs(q_A,e - q_B,e)",
+        "replication_1": "0.5 * sum_e abs(q_A,e - q_B,e)",
+        "status": "MATCH"
+      },
+      {
+        "field": "Task A",
+        "pilot_1": "1[x0*x1 + x2*x3 > 0]",
+        "replication_1": "1[x0*x1 + x2*x3 > 0]",
+        "status": "MATCH"
+      },
+      {
+        "field": "Task B",
+        "pilot_1": "1[x8*x9 - x10*x11 > 0]",
+        "replication_1": "1[x8*x9 - x10*x11 > 0]",
+        "status": "MATCH"
+      },
+      {
+        "field": "architecture",
+        "pilot_1": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+        "replication_1": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+        "status": "MATCH"
+      },
+      {
+        "field": "batch_size",
+        "pilot_1": 256,
+        "replication_1": 256,
+        "status": "MATCH"
+      },
+      {
+        "field": "common_phase_steps",
+        "pilot_1": 16000,
+        "replication_1": 16000,
+        "status": "MATCH"
+      },
+      {
+        "field": "curricula",
+        "pilot_1": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+        "replication_1": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+        "status": "MATCH"
+      },
+      {
+        "field": "deterministic_algorithms",
+        "pilot_1": "not enabled in original Pilot",
+        "replication_1": "enabled with strict unsupported-operation failure",
+        "status": "DIFFERENCE"
+      },
+      {
+        "field": "early_phase_steps",
+        "pilot_1": 4000,
+        "replication_1": 4000,
+        "status": "MATCH"
+      },
+      {
+        "field": "evaluation_examples_per_task",
+        "pilot_1": 50000,
+        "replication_1": 50000,
+        "status": "MATCH"
+      },
+      {
+        "field": "expert_architecture",
+        "pilot_1": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+        "replication_1": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+        "status": "MATCH"
+      },
+      {
+        "field": "input_dimensions",
+        "pilot_1": "16 Gaussian features + 2D one-hot task indicator = 18",
+        "replication_1": "16 Gaussian features + 2D one-hot task indicator = 18",
+        "status": "MATCH"
+      },
+      {
+        "field": "knockout_variants",
+        "pilot_1": "renormalized primary only",
+        "replication_1": "renormalized primary and non-renormalized secondary",
+        "status": "DIFFERENCE"
+      },
+      {
+        "field": "lambda_balance",
+        "pilot_1": 0.01,
+        "replication_1": 0.01,
+        "status": "MATCH"
+      },
+      {
+        "field": "learning_rate",
+        "pilot_1": 0.0003,
+        "replication_1": 0.0003,
+        "status": "MATCH"
+      },
+      {
+        "field": "lr_schedule",
+        "pilot_1": "500-step linear warmup then cosine decay",
+        "replication_1": "500-step linear warmup then cosine decay",
+        "status": "MATCH"
+      },
+      {
+        "field": "metadata_hashes",
+        "pilot_1": "config/source hashes unavailable in original result metadata",
+        "replication_1": "config hash and source hash recorded per run",
+        "status": "DIFFERENCE"
+      },
+      {
+        "field": "optimizer",
+        "pilot_1": "AdamW",
+        "replication_1": "AdamW",
+        "status": "MATCH"
+      },
+      {
+        "field": "parameter_count",
+        "pilot_1": 151427,
+        "replication_1": 151427,
+        "status": "MATCH"
+      },
+      {
+        "field": "primary_knockout",
+        "pilot_1": "renormalized: survivor weight 1",
+        "replication_1": "renormalized: survivor weight 1",
+        "status": "MATCH"
+      },
+      {
+        "field": "requested_device",
+        "pilot_1": "auto",
+        "replication_1": "auto",
+        "status": "MATCH"
+      },
+      {
+        "field": "router_architecture",
+        "pilot_1": "Linear(128,2), Softmax(dim=-1)",
+        "replication_1": "Linear(128,2), Softmax(dim=-1)",
+        "status": "MATCH"
+      },
+      {
+        "field": "router_entropy_definition",
+        "pilot_1": "entropy of task-mean routing vectors in original result JSON",
+        "replication_1": "true mean per-example entropy",
+        "status": "DIFFERENCE"
+      },
+      {
+        "field": "test_data_seed",
+        "pilot_1": 9001729,
+        "replication_1": 314159,
+        "status": "DIFFERENCE"
+      },
+      {
+        "field": "training_data_seed",
+        "pilot_1": 1729,
+        "replication_1": 271828,
+        "status": "DIFFERENCE"
+      },
+      {
+        "field": "training_steps",
+        "pilot_1": 20000,
+        "replication_1": 20000,
+        "status": "MATCH"
+      },
+      {
+        "field": "weight_decay",
+        "pilot_1": 0.0001,
+        "replication_1": 0.0001,
+        "status": "MATCH"
+      }
+    ]
+  },
+  "integrity": {
+    "Pilot 1": {
+      "checks": {
+        "expected_run_files": true,
+        "complete_seed_triplets": true,
+        "no_duplicate_seed_condition_runs": true,
+        "no_missing_seeds": true,
+        "initial_checksum_matching": true,
+        "no_nan_or_inf_metrics": true,
+        "exposure_matching": true,
+        "common_mature_schedule_matching": true,
+        "checkpoint_completeness": true,
+        "configuration_hash_consistent": false,
+        "source_hash_consistent": false,
+        "source_commit_available": false
+      },
+      "statuses": {
+        "expected_run_files": "PASS",
+        "complete_seed_triplets": "PASS",
+        "no_duplicate_seed_condition_runs": "PASS",
+        "no_missing_seeds": "PASS",
+        "initial_checksum_matching": "PASS",
+        "no_nan_or_inf_metrics": "PASS",
+        "exposure_matching": "PASS",
+        "common_mature_schedule_matching": "PASS",
+        "checkpoint_completeness": "PASS",
+        "configuration_hash_consistent": "WARN",
+        "source_hash_consistent": "WARN",
+        "source_commit_available": "WARN"
+      },
+      "pass": true,
+      "n_runs": 60,
+      "n_paired_seeds": 20,
+      "checkpoint_count": 240,
+      "metadata_values": {
+        "git_commit": [
+          "unknown"
+        ],
+        "config_hash": [
+          "None"
+        ],
+        "source_hash": [
+          "None"
+        ]
+      }
+    },
+    "Replication 1": {
+      "checks": {
+        "expected_run_files": true,
+        "complete_seed_triplets": true,
+        "no_duplicate_seed_condition_runs": true,
+        "no_missing_seeds": true,
+        "initial_checksum_matching": true,
+        "no_nan_or_inf_metrics": true,
+        "exposure_matching": true,
+        "common_mature_schedule_matching": true,
+        "checkpoint_completeness": true,
+        "configuration_hash_consistent": true,
+        "source_hash_consistent": true,
+        "source_commit_available": true
+      },
+      "statuses": {
+        "expected_run_files": "PASS",
+        "complete_seed_triplets": "PASS",
+        "no_duplicate_seed_condition_runs": "PASS",
+        "no_missing_seeds": "PASS",
+        "initial_checksum_matching": "PASS",
+        "no_nan_or_inf_metrics": "PASS",
+        "exposure_matching": "PASS",
+        "common_mature_schedule_matching": "PASS",
+        "checkpoint_completeness": "PASS",
+        "configuration_hash_consistent": "PASS",
+        "source_hash_consistent": "PASS",
+        "source_commit_available": "PASS"
+      },
+      "pass": true,
+      "n_runs": 60,
+      "n_paired_seeds": 20,
+      "checkpoint_count": 240,
+      "metadata_values": {
+        "git_commit": [
+          "639569694249e4190b7c669ef9c97a3fa79e5422"
+        ],
+        "config_hash": [
+          "98418baa8ff0cbae73da1da4890c733826971c25f275c9a78eaffb2ed629b7cf"
+        ],
+        "source_hash": [
+          "7134c58ae5317b2ee47d0aa59adf252783b37e5ef5edf63a1977304da3908a40"
+        ]
+      }
+    },
+    "cross_experiment_sources_separate": true
+  },
+  "accuracy": [
+    {
+      "experiment": "Pilot 1",
+      "condition": "INTERLEAVED",
+      "n": 20,
+      "accuracy_A_mean": 0.9880779951810836,
+      "accuracy_A_sd": 0.0007271910371820391,
+      "accuracy_A_min": 0.9861599802970886,
+      "accuracy_B_mean": 0.9879299998283386,
+      "accuracy_B_sd": 0.0007480062542172026,
+      "accuracy_B_min": 0.9861000180244446,
+      "balanced_accuracy_mean": 0.9880039975047111,
+      "balanced_accuracy_sd": 0.0005072776585064275,
+      "balanced_accuracy_min": 0.986840009689331,
+      "blocked_minus_interleaved_accuracy_A": 0.000530005991458915,
+      "blocked_minus_interleaved_accuracy_B": 0.00046999603509911836,
+      "blocked_minus_interleaved_balanced_accuracy": 0.0005000010132790722
+    },
+    {
+      "experiment": "Pilot 1",
+      "condition": "BLOCKED_AB",
+      "n": 20,
+      "accuracy_A_mean": 0.989119005203247,
+      "accuracy_A_sd": 0.0003978137262766231,
+      "accuracy_A_min": 0.98853999376297,
+      "accuracy_B_mean": 0.9881109982728958,
+      "accuracy_B_sd": 0.0006405436095134394,
+      "accuracy_B_min": 0.9864199757575989,
+      "balanced_accuracy_mean": 0.9886150017380715,
+      "balanced_accuracy_sd": 0.00044159350190515253,
+      "balanced_accuracy_min": 0.9874899983406067,
+      "blocked_minus_interleaved_accuracy_A": null,
+      "blocked_minus_interleaved_accuracy_B": null,
+      "blocked_minus_interleaved_balanced_accuracy": null
+    },
+    {
+      "experiment": "Pilot 1",
+      "condition": "BLOCKED_BA",
+      "n": 20,
+      "accuracy_A_mean": 0.9880969971418381,
+      "accuracy_A_sd": 0.0008033759874375933,
+      "accuracy_A_min": 0.9869599938392639,
+      "accuracy_B_mean": 0.9886889934539795,
+      "accuracy_B_sd": 0.0008065675128724983,
+      "accuracy_B_min": 0.9868599772453308,
+      "balanced_accuracy_mean": 0.9883929952979088,
+      "balanced_accuracy_sd": 0.0007258663221293771,
+      "balanced_accuracy_min": 0.9871599972248077,
+      "blocked_minus_interleaved_accuracy_A": null,
+      "blocked_minus_interleaved_accuracy_B": null,
+      "blocked_minus_interleaved_balanced_accuracy": null
+    },
+    {
+      "experiment": "Replication 1",
+      "condition": "INTERLEAVED",
+      "n": 20,
+      "accuracy_A_mean": 0.9881179958581925,
+      "accuracy_A_sd": 0.0007119373756344249,
+      "accuracy_A_min": 0.9868800044059753,
+      "accuracy_B_mean": 0.9880650073289872,
+      "accuracy_B_sd": 0.0007826206007940801,
+      "accuracy_B_min": 0.9869800209999084,
+      "balanced_accuracy_mean": 0.9880915015935898,
+      "balanced_accuracy_sd": 0.0005452371247762986,
+      "balanced_accuracy_min": 0.987060010433197,
+      "blocked_minus_interleaved_accuracy_A": 0.0007850036025047746,
+      "blocked_minus_interleaved_accuracy_B": 0.000828492641448908,
+      "blocked_minus_interleaved_balanced_accuracy": 0.0008067481219767858
+    },
+    {
+      "experiment": "Replication 1",
+      "condition": "BLOCKED_AB",
+      "n": 20,
+      "accuracy_A_mean": 0.989138999581337,
+      "accuracy_A_sd": 0.0006175867239738294,
+      "accuracy_A_min": 0.9878600239753723,
+      "accuracy_B_mean": 0.988425001502037,
+      "accuracy_B_sd": 0.0007174787420907762,
+      "accuracy_B_min": 0.9871199727058411,
+      "balanced_accuracy_mean": 0.988782000541687,
+      "balanced_accuracy_sd": 0.0005348564136547473,
+      "balanced_accuracy_min": 0.9878300130367279,
+      "blocked_minus_interleaved_accuracy_A": null,
+      "blocked_minus_interleaved_accuracy_B": null,
+      "blocked_minus_interleaved_balanced_accuracy": null
+    },
+    {
+      "experiment": "Replication 1",
+      "condition": "BLOCKED_BA",
+      "n": 20,
+      "accuracy_A_mean": 0.9886669993400574,
+      "accuracy_A_sd": 0.000485850326067218,
+      "accuracy_A_min": 0.9877200126647949,
+      "accuracy_B_mean": 0.9893619984388351,
+      "accuracy_B_sd": 0.0005349138667552353,
+      "accuracy_B_min": 0.9883800148963928,
+      "balanced_accuracy_mean": 0.9890144988894463,
+      "balanced_accuracy_sd": 0.0003420444273838036,
+      "balanced_accuracy_min": 0.9884200096130371,
+      "blocked_minus_interleaved_accuracy_A": null,
+      "blocked_minus_interleaved_accuracy_B": null,
+      "blocked_minus_interleaved_balanced_accuracy": null
+    }
+  ],
+  "primary_D_s": {
+    "Pilot 1": {
+      "n": 20,
+      "mean_difference": 0.1488509975373745,
+      "median_difference": 0.15220000594854355,
+      "sd_difference": 0.1930265905827389,
+      "ci_low": 0.06543799361214042,
+      "ci_high": 0.22871452668681735,
+      "bootstrap_samples": 10000,
+      "bootstrap_seed": 0,
+      "cohens_dz": 0.7711424477218386,
+      "positive_seeds": 16,
+      "negative_seeds": 4,
+      "zero_seeds": 0,
+      "paired_t_p": 0.0026911198596382534,
+      "wilcoxon_p": 0.0031528472900390625,
+      "min_D_s": -0.33591002225875854,
+      "max_D_s": 0.43417002260684967,
+      "q1": 0.03281625360250473,
+      "q3": 0.2684349901974201,
+      "source_n_models": 60,
+      "seed_values": [
+        {
+          "seed": 0,
+          "D_s": 0.1425350159406662
+        },
+        {
+          "seed": 1,
+          "D_s": 0.43417002260684967
+        },
+        {
+          "seed": 2,
+          "D_s": 0.2354149967432022
+        },
+        {
+          "seed": 3,
+          "D_s": 0.10519000887870789
+        },
+        {
+          "seed": 4,
+          "D_s": 0.03972500562667847
+        },
+        {
+          "seed": 5,
+          "D_s": 0.1618649959564209
+        },
+        {
+          "seed": 6,
+          "D_s": 0.3420949727296829
+        },
+        {
+          "seed": 7,
+          "D_s": 0.04378001391887665
+        },
+        {
+          "seed": 8,
+          "D_s": 0.01208999752998352
+        },
+        {
+          "seed": 9,
+          "D_s": -0.33591002225875854
+        },
+        {
+          "seed": 10,
+          "D_s": -0.04509499669075012
+        },
+        {
+          "seed": 11,
+          "D_s": 0.43010997772216797
+        },
+        {
+          "seed": 12,
+          "D_s": 0.3812749683856964
+        },
+        {
+          "seed": 13,
+          "D_s": 0.28694501519203186
+        },
+        {
+          "seed": 14,
+          "D_s": -0.026329994201660156
+        },
+        {
+          "seed": 15,
+          "D_s": 0.2622649818658829
+        },
+        {
+          "seed": 16,
+          "D_s": 0.2291400134563446
+        },
+        {
+          "seed": 17,
+          "D_s": -0.08482001721858978
+        },
+        {
+          "seed": 18,
+          "D_s": 0.23787997663021088
+        },
+        {
+          "seed": 19,
+          "D_s": 0.12469501793384552
+        }
+      ]
+    },
+    "Replication 1": {
+      "n": 20,
+      "mean_difference": 0.12314824797213078,
+      "median_difference": 0.11324000358581543,
+      "sd_difference": 0.08741396053135132,
+      "ci_low": 0.08718200838193298,
+      "ci_high": 0.1621494788955897,
+      "bootstrap_samples": 10000,
+      "bootstrap_seed": 0,
+      "cohens_dz": 1.4087938267934128,
+      "positive_seeds": 20,
+      "negative_seeds": 0,
+      "zero_seeds": 0,
+      "paired_t_p": 4.7738557772165085e-06,
+      "wilcoxon_p": 1.9073486328125e-06,
+      "min_D_s": 0.005959987640380859,
+      "max_D_s": 0.2939399927854538,
+      "q1": 0.05674872361123562,
+      "q3": 0.1738850101828575,
+      "source_n_models": 60,
+      "seed_values": [
+        {
+          "seed": 100,
+          "D_s": 0.05567999184131622
+        },
+        {
+          "seed": 101,
+          "D_s": 0.2939399927854538
+        },
+        {
+          "seed": 102,
+          "D_s": 0.25457997620105743
+        },
+        {
+          "seed": 103,
+          "D_s": 0.06044501066207886
+        },
+        {
+          "seed": 104,
+          "D_s": 0.007409974932670593
+        },
+        {
+          "seed": 105,
+          "D_s": 0.1300399899482727
+        },
+        {
+          "seed": 106,
+          "D_s": 0.10583503544330597
+        },
+        {
+          "seed": 107,
+          "D_s": 0.10644501447677612
+        },
+        {
+          "seed": 108,
+          "D_s": 0.12995000183582306
+        },
+        {
+          "seed": 109,
+          "D_s": 0.05355998873710632
+        },
+        {
+          "seed": 110,
+          "D_s": 0.070685014128685
+        },
+        {
+          "seed": 111,
+          "D_s": 0.01931498944759369
+        },
+        {
+          "seed": 112,
+          "D_s": 0.17424502968788147
+        },
+        {
+          "seed": 113,
+          "D_s": 0.005959987640380859
+        },
+        {
+          "seed": 114,
+          "D_s": 0.17806996405124664
+        },
+        {
+          "seed": 115,
+          "D_s": 0.12003499269485474
+        },
+        {
+          "seed": 116,
+          "D_s": 0.17376500368118286
+        },
+        {
+          "seed": 117,
+          "D_s": 0.057104967534542084
+        },
+        {
+          "seed": 118,
+          "D_s": 0.17210501432418823
+        },
+        {
+          "seed": 119,
+          "D_s": 0.29379501938819885
+        }
+      ]
+    }
+  },
+  "causal_specialization": {
+    "Pilot 1": {
+      "renormalized": [
+        {
+          "condition": "INTERLEAVED",
+          "n": 20,
+          "accuracy_A_mean": 0.9880779951810836,
+          "accuracy_A_sd": 0.0007271910371820391,
+          "accuracy_B_mean": 0.9879299998283386,
+          "accuracy_B_sd": 0.0007480062542172026,
+          "balanced_accuracy_mean": 0.9880039975047111,
+          "balanced_accuracy_sd": 0.0005072776585064275,
+          "routing_specialization_mean": 0.44590269923210146,
+          "routing_specialization_sd": 0.2763251860791304,
+          "router_entropy_mean": 0.5170865558087826,
+          "router_entropy_sd": 0.12008895923069718,
+          "causal_specialization_mean": 0.24710749909281732,
+          "causal_specialization_sd": 0.1429928442740596,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.46041999757289886,
+          "max_absolute_knockout_effect_sd": 0.06593101314187175
+        },
+        {
+          "condition": "BLOCKED_AB",
+          "n": 20,
+          "accuracy_A_mean": 0.989119005203247,
+          "accuracy_A_sd": 0.0003978137262766231,
+          "accuracy_B_mean": 0.9881109982728958,
+          "accuracy_B_sd": 0.0006405436095134394,
+          "balanced_accuracy_mean": 0.9886150017380715,
+          "balanced_accuracy_sd": 0.00044159350190515253,
+          "routing_specialization_mean": 0.6785586230456829,
+          "routing_specialization_sd": 0.20324936794178583,
+          "router_entropy_mean": 0.3934296503663063,
+          "router_entropy_sd": 0.10558862485597141,
+          "causal_specialization_mean": 0.4238149970769882,
+          "causal_specialization_sd": 0.09738301577023456,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.4984590008854866,
+          "max_absolute_knockout_effect_sd": 0.014962363954158855
+        },
+        {
+          "condition": "BLOCKED_BA",
+          "n": 20,
+          "accuracy_A_mean": 0.9880969971418381,
+          "accuracy_A_sd": 0.0008033759874375933,
+          "accuracy_B_mean": 0.9886889934539795,
+          "accuracy_B_sd": 0.0008065675128724983,
+          "balanced_accuracy_mean": 0.9883929952979088,
+          "balanced_accuracy_sd": 0.0007258663221293771,
+          "routing_specialization_mean": 0.5985908515751361,
+          "routing_specialization_sd": 0.2978276886747763,
+          "router_entropy_mean": 0.415501493960619,
+          "router_entropy_sd": 0.14673036097464648,
+          "causal_specialization_mean": 0.3681019961833954,
+          "causal_specialization_sd": 0.1587692710130955,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.49090699702501295,
+          "max_absolute_knockout_effect_sd": 0.024509088213455543
+        }
+      ],
+      "non_renormalized": [
+        {
+          "condition": "INTERLEAVED",
+          "n": 20,
+          "accuracy_A_mean": 0.9880779951810836,
+          "accuracy_A_sd": 0.0007271910371820391,
+          "accuracy_B_mean": 0.9879299998283386,
+          "accuracy_B_sd": 0.0007480062542172026,
+          "balanced_accuracy_mean": 0.9880039975047111,
+          "balanced_accuracy_sd": 0.0005072776585064275,
+          "routing_specialization_mean": 0.44590269923210146,
+          "routing_specialization_sd": 0.2763251860791304,
+          "router_entropy_mean": 0.5170865558087826,
+          "router_entropy_sd": 0.12008895923069718,
+          "causal_specialization_mean": 0.22988550513982772,
+          "causal_specialization_sd": 0.12746375886848837,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.43719600439071654,
+          "max_absolute_knockout_effect_sd": 0.07390276006539215
+        },
+        {
+          "condition": "BLOCKED_AB",
+          "n": 20,
+          "accuracy_A_mean": 0.989119005203247,
+          "accuracy_A_sd": 0.0003978137262766231,
+          "accuracy_B_mean": 0.9881109982728958,
+          "accuracy_B_sd": 0.0006405436095134394,
+          "balanced_accuracy_mean": 0.9886150017380715,
+          "balanced_accuracy_sd": 0.00044159350190515253,
+          "routing_specialization_mean": 0.6785586230456829,
+          "routing_specialization_sd": 0.20324936794178583,
+          "router_entropy_mean": 0.3934296503663063,
+          "router_entropy_sd": 0.10558862485597141,
+          "causal_specialization_mean": 0.3475075036287308,
+          "causal_specialization_sd": 0.06542628672687355,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.4305640012025833,
+          "max_absolute_knockout_effect_sd": 0.025304931203544608
+        },
+        {
+          "condition": "BLOCKED_BA",
+          "n": 20,
+          "accuracy_A_mean": 0.9880969971418381,
+          "accuracy_A_sd": 0.0008033759874375933,
+          "accuracy_B_mean": 0.9886889934539795,
+          "accuracy_B_sd": 0.0008065675128724983,
+          "balanced_accuracy_mean": 0.9883929952979088,
+          "balanced_accuracy_sd": 0.0007258663221293771,
+          "routing_specialization_mean": 0.5985908515751361,
+          "routing_specialization_sd": 0.2978276886747763,
+          "router_entropy_mean": 0.415501493960619,
+          "router_entropy_sd": 0.14673036097464648,
+          "causal_specialization_mean": 0.30241299122571946,
+          "causal_specialization_sd": 0.11774527491857706,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.43005199134349825,
+          "max_absolute_knockout_effect_sd": 0.03747562616141834
+        }
+      ]
+    },
+    "Replication 1": {
+      "renormalized": [
+        {
+          "condition": "INTERLEAVED",
+          "n": 20,
+          "accuracy_A_mean": 0.9881179958581925,
+          "accuracy_A_sd": 0.0007119373756344249,
+          "accuracy_B_mean": 0.9880650073289872,
+          "accuracy_B_sd": 0.0007826206007940801,
+          "balanced_accuracy_mean": 0.9880915015935898,
+          "balanced_accuracy_sd": 0.0005452371247762986,
+          "routing_specialization_mean": 0.5653493501245975,
+          "routing_specialization_sd": 0.17945039428919532,
+          "router_entropy_mean": 0.476542991399765,
+          "router_entropy_sd": 0.08861943064766113,
+          "causal_specialization_mean": 0.2987169988453388,
+          "causal_specialization_sd": 0.08831841723852069,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.4831380009651184,
+          "max_absolute_knockout_effect_sd": 0.021449466009970074
+        },
+        {
+          "condition": "BLOCKED_AB",
+          "n": 20,
+          "accuracy_A_mean": 0.989138999581337,
+          "accuracy_A_sd": 0.0006175867239738294,
+          "accuracy_B_mean": 0.988425001502037,
+          "accuracy_B_sd": 0.0007174787420907762,
+          "balanced_accuracy_mean": 0.988782000541687,
+          "balanced_accuracy_sd": 0.0005348564136547473,
+          "routing_specialization_mean": 0.641605856269598,
+          "routing_specialization_sd": 0.2470317154000074,
+          "router_entropy_mean": 0.4044127058237791,
+          "router_entropy_sd": 0.13012294166637445,
+          "causal_specialization_mean": 0.3898124970495701,
+          "causal_specialization_sd": 0.1318132358195401,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.4945850044488907,
+          "max_absolute_knockout_effect_sd": 0.019575630738272867
+        },
+        {
+          "condition": "BLOCKED_BA",
+          "n": 20,
+          "accuracy_A_mean": 0.9886669993400574,
+          "accuracy_A_sd": 0.000485850326067218,
+          "accuracy_B_mean": 0.9893619984388351,
+          "accuracy_B_sd": 0.0005349138667552353,
+          "balanced_accuracy_mean": 0.9890144988894463,
+          "balanced_accuracy_sd": 0.0003420444273838036,
+          "routing_specialization_mean": 0.7470204383134842,
+          "routing_specialization_sd": 0.11632284169450795,
+          "router_entropy_mean": 0.356667597964406,
+          "router_entropy_sd": 0.07747335077942759,
+          "causal_specialization_mean": 0.45391799658536913,
+          "causal_specialization_sd": 0.06661098096051729,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.5036850050091743,
+          "max_absolute_knockout_effect_sd": 0.013358038456940582
+        }
+      ],
+      "non_renormalized": [
+        {
+          "condition": "INTERLEAVED",
+          "n": 20,
+          "accuracy_A_mean": 0.9881179958581925,
+          "accuracy_A_sd": 0.0007119373756344249,
+          "accuracy_B_mean": 0.9880650073289872,
+          "accuracy_B_sd": 0.0007826206007940801,
+          "balanced_accuracy_mean": 0.9880915015935898,
+          "balanced_accuracy_sd": 0.0005452371247762986,
+          "routing_specialization_mean": 0.5653493501245975,
+          "routing_specialization_sd": 0.17945039428919532,
+          "router_entropy_mean": 0.476542991399765,
+          "router_entropy_sd": 0.08861943064766113,
+          "causal_specialization_mean": 0.2814469993114471,
+          "causal_specialization_sd": 0.0765758951742554,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.46049800217151643,
+          "max_absolute_knockout_effect_sd": 0.03695428134466526
+        },
+        {
+          "condition": "BLOCKED_AB",
+          "n": 20,
+          "accuracy_A_mean": 0.989138999581337,
+          "accuracy_A_sd": 0.0006175867239738294,
+          "accuracy_B_mean": 0.988425001502037,
+          "accuracy_B_sd": 0.0007174787420907762,
+          "balanced_accuracy_mean": 0.988782000541687,
+          "balanced_accuracy_sd": 0.0005348564136547473,
+          "routing_specialization_mean": 0.641605856269598,
+          "routing_specialization_sd": 0.2470317154000074,
+          "router_entropy_mean": 0.4044127058237791,
+          "router_entropy_sd": 0.13012294166637445,
+          "causal_specialization_mean": 0.3159364923834801,
+          "causal_specialization_sd": 0.09216680465354314,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.42523799240589144,
+          "max_absolute_knockout_effect_sd": 0.03513038650156337
+        },
+        {
+          "condition": "BLOCKED_BA",
+          "n": 20,
+          "accuracy_A_mean": 0.9886669993400574,
+          "accuracy_A_sd": 0.000485850326067218,
+          "accuracy_B_mean": 0.9893619984388351,
+          "accuracy_B_sd": 0.0005349138667552353,
+          "balanced_accuracy_mean": 0.9890144988894463,
+          "balanced_accuracy_sd": 0.0003420444273838036,
+          "routing_specialization_mean": 0.7470204383134842,
+          "routing_specialization_sd": 0.11632284169450795,
+          "router_entropy_mean": 0.356667597964406,
+          "router_entropy_sd": 0.07747335077942759,
+          "causal_specialization_mean": 0.3607709988951683,
+          "causal_specialization_sd": 0.043806551692694706,
+          "router_collapse_count": 0,
+          "router_collapse_rate": 0.0,
+          "max_absolute_knockout_effect_mean": 0.41846599578857424,
+          "max_absolute_knockout_effect_sd": 0.032054975311941035
+        }
+      ]
+    }
+  },
+  "routing": {
+    "Pilot 1": [
+      {
+        "condition": "INTERLEAVED",
+        "n": 20,
+        "accuracy_A_mean": 0.9880779951810836,
+        "accuracy_A_sd": 0.0007271910371820391,
+        "accuracy_B_mean": 0.9879299998283386,
+        "accuracy_B_sd": 0.0007480062542172026,
+        "balanced_accuracy_mean": 0.9880039975047111,
+        "balanced_accuracy_sd": 0.0005072776585064275,
+        "routing_specialization_mean": 0.44590269923210146,
+        "routing_specialization_sd": 0.2763251860791304,
+        "router_entropy_mean": 0.5170865558087826,
+        "router_entropy_sd": 0.12008895923069718,
+        "causal_specialization_mean": 0.24710749909281732,
+        "causal_specialization_sd": 0.1429928442740596,
+        "router_collapse_count": 0,
+        "router_collapse_rate": 0.0,
+        "max_absolute_knockout_effect_mean": 0.46041999757289886,
+        "max_absolute_knockout_effect_sd": 0.06593101314187175
+      },
+      {
+        "condition": "BLOCKED_AB",
+        "n": 20,
+        "accuracy_A_mean": 0.989119005203247,
+        "accuracy_A_sd": 0.0003978137262766231,
+        "accuracy_B_mean": 0.9881109982728958,
+        "accuracy_B_sd": 0.0006405436095134394,
+        "balanced_accuracy_mean": 0.9886150017380715,
+        "balanced_accuracy_sd": 0.00044159350190515253,
+        "routing_specialization_mean": 0.6785586230456829,
+        "routing_specialization_sd": 0.20324936794178583,
+        "router_entropy_mean": 0.3934296503663063,
+        "router_entropy_sd": 0.10558862485597141,
+        "causal_specialization_mean": 0.4238149970769882,
+        "causal_specialization_sd": 0.09738301577023456,
+        "router_collapse_count": 0,
+        "router_collapse_rate": 0.0,
+        "max_absolute_knockout_effect_mean": 0.4984590008854866,
+        "max_absolute_knockout_effect_sd": 0.014962363954158855
+      },
+      {
+        "condition": "BLOCKED_BA",
+        "n": 20,
+        "accuracy_A_mean": 0.9880969971418381,
+        "accuracy_A_sd": 0.0008033759874375933,
+        "accuracy_B_mean": 0.9886889934539795,
+        "accuracy_B_sd": 0.0008065675128724983,
+        "balanced_accuracy_mean": 0.9883929952979088,
+        "balanced_accuracy_sd": 0.0007258663221293771,
+        "routing_specialization_mean": 0.5985908515751361,
+        "routing_specialization_sd": 0.2978276886747763,
+        "router_entropy_mean": 0.415501493960619,
+        "router_entropy_sd": 0.14673036097464648,
+        "causal_specialization_mean": 0.3681019961833954,
+        "causal_specialization_sd": 0.1587692710130955,
+        "router_collapse_count": 0,
+        "router_collapse_rate": 0.0,
+        "max_absolute_knockout_effect_mean": 0.49090699702501295,
+        "max_absolute_knockout_effect_sd": 0.024509088213455543
+      }
+    ],
+    "Replication 1": [
+      {
+        "condition": "INTERLEAVED",
+        "n": 20,
+        "accuracy_A_mean": 0.9881179958581925,
+        "accuracy_A_sd": 0.0007119373756344249,
+        "accuracy_B_mean": 0.9880650073289872,
+        "accuracy_B_sd": 0.0007826206007940801,
+        "balanced_accuracy_mean": 0.9880915015935898,
+        "balanced_accuracy_sd": 0.0005452371247762986,
+        "routing_specialization_mean": 0.5653493501245975,
+        "routing_specialization_sd": 0.17945039428919532,
+        "router_entropy_mean": 0.476542991399765,
+        "router_entropy_sd": 0.08861943064766113,
+        "causal_specialization_mean": 0.2987169988453388,
+        "causal_specialization_sd": 0.08831841723852069,
+        "router_collapse_count": 0,
+        "router_collapse_rate": 0.0,
+        "max_absolute_knockout_effect_mean": 0.4831380009651184,
+        "max_absolute_knockout_effect_sd": 0.021449466009970074
+      },
+      {
+        "condition": "BLOCKED_AB",
+        "n": 20,
+        "accuracy_A_mean": 0.989138999581337,
+        "accuracy_A_sd": 0.0006175867239738294,
+        "accuracy_B_mean": 0.988425001502037,
+        "accuracy_B_sd": 0.0007174787420907762,
+        "balanced_accuracy_mean": 0.988782000541687,
+        "balanced_accuracy_sd": 0.0005348564136547473,
+        "routing_specialization_mean": 0.641605856269598,
+        "routing_specialization_sd": 0.2470317154000074,
+        "router_entropy_mean": 0.4044127058237791,
+        "router_entropy_sd": 0.13012294166637445,
+        "causal_specialization_mean": 0.3898124970495701,
+        "causal_specialization_sd": 0.1318132358195401,
+        "router_collapse_count": 0,
+        "router_collapse_rate": 0.0,
+        "max_absolute_knockout_effect_mean": 0.4945850044488907,
+        "max_absolute_knockout_effect_sd": 0.019575630738272867
+      },
+      {
+        "condition": "BLOCKED_BA",
+        "n": 20,
+        "accuracy_A_mean": 0.9886669993400574,
+        "accuracy_A_sd": 0.000485850326067218,
+        "accuracy_B_mean": 0.9893619984388351,
+        "accuracy_B_sd": 0.0005349138667552353,
+        "balanced_accuracy_mean": 0.9890144988894463,
+        "balanced_accuracy_sd": 0.0003420444273838036,
+        "routing_specialization_mean": 0.7470204383134842,
+        "routing_specialization_sd": 0.11632284169450795,
+        "router_entropy_mean": 0.356667597964406,
+        "router_entropy_sd": 0.07747335077942759,
+        "causal_specialization_mean": 0.45391799658536913,
+        "causal_specialization_sd": 0.06661098096051729,
+        "router_collapse_count": 0,
+        "router_collapse_rate": 0.0,
+        "max_absolute_knockout_effect_mean": 0.5036850050091743,
+        "max_absolute_knockout_effect_sd": 0.013358038456940582
+      }
+    ]
+  },
+  "dynamics": {
+    "routing": [
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 0,
+        "S_route_mean": 0.004615801572799683
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 250,
+        "S_route_mean": 0.004486411064863205
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 500,
+        "S_route_mean": 0.008474718779325485
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 1000,
+        "S_route_mean": 0.10790566578507424
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 2000,
+        "S_route_mean": 0.3379026859998703
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 3000,
+        "S_route_mean": 0.3907892867922783
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 4000,
+        "S_route_mean": 0.4176445253193378
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 5000,
+        "S_route_mean": 0.43243977054953575
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 7500,
+        "S_route_mean": 0.4444787837564945
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 10000,
+        "S_route_mean": 0.4463456429541111
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 15000,
+        "S_route_mean": 0.4452952861785889
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 20000,
+        "S_route_mean": 0.44600791707634924
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 0,
+        "S_route_mean": 0.004615801572799683
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 250,
+        "S_route_mean": 0.005705457180738449
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 500,
+        "S_route_mean": 0.009594856947660445
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 1000,
+        "S_route_mean": 0.011069826036691665
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 2000,
+        "S_route_mean": 0.012625083327293396
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 3000,
+        "S_route_mean": 0.028378769755363464
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 4000,
+        "S_route_mean": 0.024984702467918396
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 5000,
+        "S_route_mean": 0.6000307649374008
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 7500,
+        "S_route_mean": 0.6663631148636341
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 10000,
+        "S_route_mean": 0.6752836659550667
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 15000,
+        "S_route_mean": 0.6775487452745438
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 20000,
+        "S_route_mean": 0.6786941319704056
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 0,
+        "S_route_mean": 0.004615801572799683
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 250,
+        "S_route_mean": 0.005396056920289993
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 500,
+        "S_route_mean": 0.00798209235072136
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 1000,
+        "S_route_mean": 0.008742934465408326
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 2000,
+        "S_route_mean": 0.009862715005874633
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 3000,
+        "S_route_mean": 0.03125004842877388
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 4000,
+        "S_route_mean": 0.02814565449953079
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 5000,
+        "S_route_mean": 0.5303560763597488
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 7500,
+        "S_route_mean": 0.5885095171630382
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 10000,
+        "S_route_mean": 0.5953848019242287
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 15000,
+        "S_route_mean": 0.5976172454655171
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 20000,
+        "S_route_mean": 0.5987904697656632
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 0,
+        "S_route_mean": 0.0037025563418865205
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 250,
+        "S_route_mean": 0.004002012312412262
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 500,
+        "S_route_mean": 0.008144965022802353
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 1000,
+        "S_route_mean": 0.13388884738087653
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 2000,
+        "S_route_mean": 0.42542011961340903
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 3000,
+        "S_route_mean": 0.48701495230197905
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 4000,
+        "S_route_mean": 0.5213101878762245
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 5000,
+        "S_route_mean": 0.540945041924715
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 7500,
+        "S_route_mean": 0.5612229019403457
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 10000,
+        "S_route_mean": 0.5650012478232384
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 15000,
+        "S_route_mean": 0.5648532375693321
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 20000,
+        "S_route_mean": 0.5652800142765045
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 0,
+        "S_route_mean": 0.0037025563418865205
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 250,
+        "S_route_mean": 0.004662861675024032
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 500,
+        "S_route_mean": 0.0076833397150039675
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 1000,
+        "S_route_mean": 0.00981769934296608
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 2000,
+        "S_route_mean": 0.01170787513256073
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 3000,
+        "S_route_mean": 0.02347880005836487
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 4000,
+        "S_route_mean": 0.02035971134901047
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 5000,
+        "S_route_mean": 0.5677017129957675
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 7500,
+        "S_route_mean": 0.6311633758246898
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 10000,
+        "S_route_mean": 0.6388455137610436
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 15000,
+        "S_route_mean": 0.6406621932983398
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 20000,
+        "S_route_mean": 0.6419229052960873
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 0,
+        "S_route_mean": 0.0037025563418865205
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 250,
+        "S_route_mean": 0.0042841337621212
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 500,
+        "S_route_mean": 0.006724026054143906
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 1000,
+        "S_route_mean": 0.00857522338628769
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 2000,
+        "S_route_mean": 0.010274834930896759
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 3000,
+        "S_route_mean": 0.03814389631152153
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 4000,
+        "S_route_mean": 0.0348957397043705
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 5000,
+        "S_route_mean": 0.6626052409410477
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 7500,
+        "S_route_mean": 0.7352860987186431
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 10000,
+        "S_route_mean": 0.7437366962432861
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 15000,
+        "S_route_mean": 0.7453469842672348
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 20000,
+        "S_route_mean": 0.7466585874557495
+      }
+    ],
+    "causal": [
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 4000,
+        "S_causal_mean": 0.20697050020098687,
+        "n": 20,
+        "label": "POST-HOC EXPLORATORY ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 4000,
+        "S_causal_mean": 0.08092200309038163,
+        "n": 20,
+        "label": "POST-HOC EXPLORATORY ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 4000,
+        "S_causal_mean": 0.09457200020551682,
+        "n": 20,
+        "label": "POST-HOC EXPLORATORY ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 10000,
+        "S_causal_mean": 0.24124600887298583,
+        "n": 20,
+        "label": "POST-HOC EXPLORATORY ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 10000,
+        "S_causal_mean": 0.4127139955759048,
+        "n": 20,
+        "label": "POST-HOC EXPLORATORY ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 10000,
+        "S_causal_mean": 0.3588445007801056,
+        "n": 20,
+        "label": "POST-HOC EXPLORATORY ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "INTERLEAVED",
+        "step": 20000,
+        "S_causal_mean": 0.24710749909281732,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_AB",
+        "step": 20000,
+        "S_causal_mean": 0.4238149970769882,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Pilot 1",
+        "condition": "BLOCKED_BA",
+        "step": 20000,
+        "S_causal_mean": 0.3681019961833954,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 4000,
+        "S_causal_mean": 0.24178100675344466,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 4000,
+        "S_causal_mean": 0.07837450504302979,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 4000,
+        "S_causal_mean": 0.08492299318313598,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 10000,
+        "S_causal_mean": 0.2947370007634163,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 10000,
+        "S_causal_mean": 0.3781270064413548,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 10000,
+        "S_causal_mean": 0.4436644971370697,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "INTERLEAVED",
+        "step": 20000,
+        "S_causal_mean": 0.2987169988453388,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_AB",
+        "step": 20000,
+        "S_causal_mean": 0.3898124970495701,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      },
+      {
+        "experiment": "Replication 1",
+        "condition": "BLOCKED_BA",
+        "step": 20000,
+        "S_causal_mean": 0.45391799658536913,
+        "n": 20,
+        "label": "PRIMARY/SECONDARY CHECKPOINT ANALYSIS"
+      }
+    ]
+  },
+  "permutation_invariant_distance": {
+    "Pilot 1": [
+      {
+        "seed": 0,
+        "interleaved_blocked_ab": 0.34777289628982544,
+        "interleaved_blocked_ba": 0.3486733138561249
+      },
+      {
+        "seed": 1,
+        "interleaved_blocked_ab": 0.8512210249900818,
+        "interleaved_blocked_ba": 1.0058972835540771
+      },
+      {
+        "seed": 2,
+        "interleaved_blocked_ab": 0.32513561844825745,
+        "interleaved_blocked_ba": 0.6515051126480103
+      },
+      {
+        "seed": 3,
+        "interleaved_blocked_ab": 0.18373534083366394,
+        "interleaved_blocked_ba": 0.17815199494361877
+      },
+      {
+        "seed": 4,
+        "interleaved_blocked_ab": 0.14961203932762146,
+        "interleaved_blocked_ba": 0.26516106724739075
+      },
+      {
+        "seed": 5,
+        "interleaved_blocked_ab": 0.22263099253177643,
+        "interleaved_blocked_ba": 0.3044947683811188
+      },
+      {
+        "seed": 6,
+        "interleaved_blocked_ab": 0.9676342606544495,
+        "interleaved_blocked_ba": 0.8861504793167114
+      },
+      {
+        "seed": 7,
+        "interleaved_blocked_ab": 0.17980720102787018,
+        "interleaved_blocked_ba": 0.10673634707927704
+      },
+      {
+        "seed": 8,
+        "interleaved_blocked_ab": 0.01860646717250347,
+        "interleaved_blocked_ba": 0.09063362330198288
+      },
+      {
+        "seed": 9,
+        "interleaved_blocked_ab": 0.9060777425765991,
+        "interleaved_blocked_ba": 0.8441735506057739
+      },
+      {
+        "seed": 10,
+        "interleaved_blocked_ab": 0.30886131525039673,
+        "interleaved_blocked_ba": 0.5793558955192566
+      },
+      {
+        "seed": 11,
+        "interleaved_blocked_ab": 0.8226504325866699,
+        "interleaved_blocked_ba": 0.951900839805603
+      },
+      {
+        "seed": 12,
+        "interleaved_blocked_ab": 0.7825378179550171,
+        "interleaved_blocked_ba": 0.8306861519813538
+      },
+      {
+        "seed": 13,
+        "interleaved_blocked_ab": 0.6261412501335144,
+        "interleaved_blocked_ba": 0.41439828276634216
+      },
+      {
+        "seed": 14,
+        "interleaved_blocked_ab": 0.41018375754356384,
+        "interleaved_blocked_ba": 0.1879003793001175
+      },
+      {
+        "seed": 15,
+        "interleaved_blocked_ab": 0.525050938129425,
+        "interleaved_blocked_ba": 0.4887465834617615
+      },
+      {
+        "seed": 16,
+        "interleaved_blocked_ab": 0.7772519588470459,
+        "interleaved_blocked_ba": 0.26951566338539124
+      },
+      {
+        "seed": 17,
+        "interleaved_blocked_ab": 0.21578343212604523,
+        "interleaved_blocked_ba": 0.7213369011878967
+      },
+      {
+        "seed": 18,
+        "interleaved_blocked_ab": 0.7703070640563965,
+        "interleaved_blocked_ba": 0.23715688288211823
+      },
+      {
+        "seed": 19,
+        "interleaved_blocked_ab": 0.1850271075963974,
+        "interleaved_blocked_ba": 0.20193372666835785
+      }
+    ],
+    "Replication 1": [
+      {
+        "seed": 100,
+        "interleaved_blocked_ab": 0.21813032031059265,
+        "interleaved_blocked_ba": 0.2890447974205017
+      },
+      {
+        "seed": 101,
+        "interleaved_blocked_ab": 0.7367688417434692,
+        "interleaved_blocked_ba": 0.4845048487186432
+      },
+      {
+        "seed": 102,
+        "interleaved_blocked_ab": 0.42897430062294006,
+        "interleaved_blocked_ba": 0.7921064496040344
+      },
+      {
+        "seed": 103,
+        "interleaved_blocked_ab": 0.186465784907341,
+        "interleaved_blocked_ba": 0.18976342678070068
+      },
+      {
+        "seed": 104,
+        "interleaved_blocked_ab": 0.22648365795612335,
+        "interleaved_blocked_ba": 0.34842175245285034
+      },
+      {
+        "seed": 105,
+        "interleaved_blocked_ab": 0.23636896908283234,
+        "interleaved_blocked_ba": 0.17239049077033997
+      },
+      {
+        "seed": 106,
+        "interleaved_blocked_ab": 0.18149863183498383,
+        "interleaved_blocked_ba": 0.23186908662319183
+      },
+      {
+        "seed": 107,
+        "interleaved_blocked_ab": 0.19126616418361664,
+        "interleaved_blocked_ba": 0.15049804747104645
+      },
+      {
+        "seed": 108,
+        "interleaved_blocked_ab": 0.23829032480716705,
+        "interleaved_blocked_ba": 0.21506470441818237
+      },
+      {
+        "seed": 109,
+        "interleaved_blocked_ab": 0.364368736743927,
+        "interleaved_blocked_ba": 0.4611850678920746
+      },
+      {
+        "seed": 110,
+        "interleaved_blocked_ab": 0.18345202505588531,
+        "interleaved_blocked_ba": 0.22604164481163025
+      },
+      {
+        "seed": 111,
+        "interleaved_blocked_ab": 0.04163433611392975,
+        "interleaved_blocked_ba": 0.07080903649330139
+      },
+      {
+        "seed": 112,
+        "interleaved_blocked_ab": 0.3959566056728363,
+        "interleaved_blocked_ba": 0.4269617199897766
+      },
+      {
+        "seed": 113,
+        "interleaved_blocked_ab": 0.6087155938148499,
+        "interleaved_blocked_ba": 0.297512024641037
+      },
+      {
+        "seed": 114,
+        "interleaved_blocked_ab": 0.3581056594848633,
+        "interleaved_blocked_ba": 0.31754037737846375
+      },
+      {
+        "seed": 115,
+        "interleaved_blocked_ab": 0.27074024081230164,
+        "interleaved_blocked_ba": 0.19674929976463318
+      },
+      {
+        "seed": 116,
+        "interleaved_blocked_ab": 0.26438653469085693,
+        "interleaved_blocked_ba": 0.38888800144195557
+      },
+      {
+        "seed": 117,
+        "interleaved_blocked_ab": 0.21533514559268951,
+        "interleaved_blocked_ba": 0.2790794372558594
+      },
+      {
+        "seed": 118,
+        "interleaved_blocked_ab": 0.2685282528400421,
+        "interleaved_blocked_ba": 0.3224419057369232
+      },
+      {
+        "seed": 119,
+        "interleaved_blocked_ab": 0.5116866827011108,
+        "interleaved_blocked_ba": 0.6438379883766174
+      }
+    ]
+  },
+  "seed_level_comparison": [
+    {
+      "pilot_seed": 0,
+      "replication_seed": 100,
+      "pilot_D_s": 0.1425350159406662,
+      "replication_D_s": 0.05567999184131622,
+      "pilot_D_s_renormalized": 0.1425350159406662,
+      "replication_D_s_renormalized": 0.05567999184131622,
+      "pilot_D_s_non_renormalized": 0.09928998351097107,
+      "replication_D_s_non_renormalized": 0.0022699683904647827,
+      "pilot_INTERLEAVED_accuracy_A": 0.9881799817085266,
+      "replication_INTERLEAVED_accuracy_A": 0.9881600141525269,
+      "pilot_INTERLEAVED_accuracy_B": 0.9891600012779236,
+      "replication_INTERLEAVED_accuracy_B": 0.9869800209999084,
+      "pilot_INTERLEAVED_routing_specialization": 0.513237714767456,
+      "replication_INTERLEAVED_routing_specialization": 0.6603268384933472,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.3279799520969391,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3162499964237213,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.27397000789642334,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.3141400218009949,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9894000291824341,
+      "replication_BLOCKED_AB_accuracy_A": 0.9890599846839905,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9882799983024597,
+      "replication_BLOCKED_AB_accuracy_B": 0.9874399900436401,
+      "pilot_BLOCKED_AB_routing_specialization": 0.8063019514083862,
+      "replication_BLOCKED_AB_routing_specialization": 0.4746813178062439,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.47731995582580566,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.26996999979019165,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.36785000562667847,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.24643999338150024,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9878399968147278,
+      "replication_BLOCKED_BA_accuracy_A": 0.9888799786567688,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9887199997901917,
+      "replication_BLOCKED_BA_accuracy_B": 0.9889799952507019,
+      "pilot_BLOCKED_BA_routing_specialization": 0.8262499570846558,
+      "replication_BLOCKED_BA_routing_specialization": 0.7796184420585632,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.4637099802494049,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4738899767398834,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.37866997718811035,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.38637998700141907
+    },
+    {
+      "pilot_seed": 1,
+      "replication_seed": 101,
+      "pilot_D_s": 0.43417002260684967,
+      "replication_D_s": 0.2939399927854538,
+      "pilot_D_s_renormalized": 0.43417002260684967,
+      "replication_D_s_renormalized": 0.2939399927854538,
+      "pilot_D_s_non_renormalized": 0.3270299881696701,
+      "replication_D_s_non_renormalized": 0.22840000689029694,
+      "pilot_INTERLEAVED_accuracy_A": 0.9881200194358826,
+      "replication_INTERLEAVED_accuracy_A": 0.9888799786567688,
+      "pilot_INTERLEAVED_accuracy_B": 0.9876000285148621,
+      "replication_INTERLEAVED_accuracy_B": 0.9886400103569031,
+      "pilot_INTERLEAVED_routing_specialization": 0.05355510115623474,
+      "replication_INTERLEAVED_routing_specialization": 0.1774389147758484,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.03385999798774719,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.14125999808311462,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.039140015840530396,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.12371000647544861,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9899600148200989,
+      "replication_BLOCKED_AB_accuracy_A": 0.9892399907112122,
+      "pilot_BLOCKED_AB_accuracy_B": 0.988099992275238,
+      "replication_BLOCKED_AB_accuracy_B": 0.9889000058174133,
+      "pilot_BLOCKED_AB_routing_specialization": 0.6807646751403809,
+      "replication_BLOCKED_AB_routing_specialization": 0.8067331910133362,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4413900077342987,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.48568999767303467,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.37206000089645386,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3492400050163269,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9886199831962585,
+      "replication_BLOCKED_BA_accuracy_A": 0.9881600141525269,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9889000058174133,
+      "replication_BLOCKED_BA_accuracy_B": 0.9889400005340576,
+      "pilot_BLOCKED_BA_routing_specialization": 0.8517768383026123,
+      "replication_BLOCKED_BA_routing_specialization": 0.5575935244560242,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.494670033454895,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.3847099840641022,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.36028000712394714,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3549800217151642
+    },
+    {
+      "pilot_seed": 2,
+      "replication_seed": 102,
+      "pilot_D_s": 0.2354149967432022,
+      "replication_D_s": 0.25457997620105743,
+      "pilot_D_s_renormalized": 0.2354149967432022,
+      "replication_D_s_renormalized": 0.25457997620105743,
+      "pilot_D_s_non_renormalized": 0.17775996029376984,
+      "replication_D_s_non_renormalized": 0.2189749926328659,
+      "pilot_INTERLEAVED_accuracy_A": 0.9870799779891968,
+      "replication_INTERLEAVED_accuracy_A": 0.9881399869918823,
+      "pilot_INTERLEAVED_accuracy_B": 0.9871000051498413,
+      "replication_INTERLEAVED_accuracy_B": 0.9874200224876404,
+      "pilot_INTERLEAVED_routing_specialization": 0.2699509859085083,
+      "replication_INTERLEAVED_routing_specialization": 0.10617311298847198,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.15749001502990723,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.10976001620292664,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.1429300308227539,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.08037000894546509,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9894400238990784,
+      "replication_BLOCKED_AB_accuracy_A": 0.9890199899673462,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9871000051498413,
+      "replication_BLOCKED_AB_accuracy_B": 0.9886800050735474,
+      "pilot_BLOCKED_AB_routing_specialization": 0.36494937539100647,
+      "replication_BLOCKED_AB_routing_specialization": 0.26052480936050415,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.28988000750541687,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.2512200176715851,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.27150002121925354,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.24426999688148499,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9899200201034546,
+      "replication_BLOCKED_BA_accuracy_A": 0.9887400269508362,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9901599884033203,
+      "replication_BLOCKED_BA_accuracy_B": 0.9896399974822998,
+      "pilot_BLOCKED_BA_routing_specialization": 0.7861422300338745,
+      "replication_BLOCKED_BA_routing_specialization": 0.7898846864700317,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.495930016040802,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.47745996713638306,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.36987996101379395,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.354420006275177
+    },
+    {
+      "pilot_seed": 3,
+      "replication_seed": 103,
+      "pilot_D_s": 0.10519000887870789,
+      "replication_D_s": 0.06044501066207886,
+      "pilot_D_s_renormalized": 0.10519000887870789,
+      "replication_D_s_renormalized": 0.06044501066207886,
+      "pilot_D_s_non_renormalized": 0.010930001735687256,
+      "replication_D_s_non_renormalized": 0.03049999475479126,
+      "pilot_INTERLEAVED_accuracy_A": 0.9877200126647949,
+      "replication_INTERLEAVED_accuracy_A": 0.9891600012779236,
+      "pilot_INTERLEAVED_accuracy_B": 0.9887199997901917,
+      "replication_INTERLEAVED_accuracy_B": 0.9892200231552124,
+      "pilot_INTERLEAVED_routing_specialization": 0.6556274890899658,
+      "replication_INTERLEAVED_routing_specialization": 0.6777666211128235,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.3768700063228607,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.4217199683189392,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.36452001333236694,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.33103999495506287,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9896399974822998,
+      "replication_BLOCKED_AB_accuracy_A": 0.9901400208473206,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9881799817085266,
+      "replication_BLOCKED_AB_accuracy_B": 0.9891200065612793,
+      "pilot_BLOCKED_AB_routing_specialization": 0.7803077101707458,
+      "replication_BLOCKED_AB_routing_specialization": 0.8157024383544922,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.49480003118515015,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4718899726867676,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3668300211429596,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.36191996932029724,
+      "pilot_BLOCKED_BA_accuracy_A": 0.987559974193573,
+      "replication_BLOCKED_BA_accuracy_A": 0.9892799854278564,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9888399839401245,
+      "replication_BLOCKED_BA_accuracy_B": 0.9892600178718567,
+      "pilot_BLOCKED_BA_routing_specialization": 0.7801730632781982,
+      "replication_BLOCKED_BA_routing_specialization": 0.8513823747634888,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.46931999921798706,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.49243998527526855,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3840700089931488,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.361160010099411
+    },
+    {
+      "pilot_seed": 4,
+      "replication_seed": 104,
+      "pilot_D_s": 0.03972500562667847,
+      "replication_D_s": 0.007409974932670593,
+      "pilot_D_s_renormalized": 0.03972500562667847,
+      "replication_D_s_renormalized": 0.007409974932670593,
+      "pilot_D_s_non_renormalized": 0.04559999704360962,
+      "replication_D_s_non_renormalized": -0.05800503492355347,
+      "pilot_INTERLEAVED_accuracy_A": 0.9887199997901917,
+      "replication_INTERLEAVED_accuracy_A": 0.9875400066375732,
+      "pilot_INTERLEAVED_accuracy_B": 0.9879199862480164,
+      "replication_INTERLEAVED_accuracy_B": 0.9888200163841248,
+      "pilot_INTERLEAVED_routing_specialization": 0.5630453824996948,
+      "replication_INTERLEAVED_routing_specialization": 0.6371618509292603,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.2889699935913086,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3230400085449219,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.2786400020122528,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.32221001386642456,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9885600209236145,
+      "replication_BLOCKED_AB_accuracy_A": 0.9890199899673462,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9864199757575989,
+      "replication_BLOCKED_AB_accuracy_B": 0.9890400171279907,
+      "pilot_BLOCKED_AB_routing_specialization": 0.6494489908218384,
+      "replication_BLOCKED_AB_routing_specialization": 0.7197282314300537,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.3677399754524231,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.45702996850013733,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.36847999691963196,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.336249977350235,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9870399832725525,
+      "replication_BLOCKED_BA_accuracy_A": 0.9877200126647949,
+      "pilot_BLOCKED_BA_accuracy_B": 0.987280011177063,
+      "replication_BLOCKED_BA_accuracy_B": 0.9897599816322327,
+      "pilot_BLOCKED_BA_routing_specialization": 0.5182526707649231,
+      "replication_BLOCKED_BA_routing_specialization": 0.3342443108558655,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.289650022983551,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.2038699984550476,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.2800000011920929,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.1921599805355072
+    },
+    {
+      "pilot_seed": 5,
+      "replication_seed": 105,
+      "pilot_D_s": 0.1618649959564209,
+      "replication_D_s": 0.1300399899482727,
+      "pilot_D_s_renormalized": 0.1618649959564209,
+      "replication_D_s_renormalized": 0.1300399899482727,
+      "pilot_D_s_non_renormalized": 0.08561000227928162,
+      "replication_D_s_non_renormalized": 0.05683501064777374,
+      "pilot_INTERLEAVED_accuracy_A": 0.9870799779891968,
+      "replication_INTERLEAVED_accuracy_A": 0.9874399900436401,
+      "pilot_INTERLEAVED_accuracy_B": 0.9875800013542175,
+      "replication_INTERLEAVED_accuracy_B": 0.9881799817085266,
+      "pilot_INTERLEAVED_routing_specialization": 0.6401376724243164,
+      "replication_INTERLEAVED_routing_specialization": 0.6908392906188965,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.29951000213623047,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3363800048828125,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.2987000048160553,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.33410996198654175,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9890599846839905,
+      "replication_BLOCKED_AB_accuracy_A": 0.9890599846839905,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9890000224113464,
+      "replication_BLOCKED_AB_accuracy_B": 0.9894000291824341,
+      "pilot_BLOCKED_AB_routing_specialization": 0.6683664321899414,
+      "replication_BLOCKED_AB_routing_specialization": 0.8087280988693237,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4335099756717682,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4829399883747101,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.38214999437332153,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3769099712371826,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9886199831962585,
+      "replication_BLOCKED_BA_accuracy_A": 0.987820029258728,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9892399907112122,
+      "replication_BLOCKED_BA_accuracy_B": 0.9899399876594543,
+      "pilot_BLOCKED_BA_routing_specialization": 0.8185526132583618,
+      "replication_BLOCKED_BA_routing_specialization": 0.7064096927642822,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.48924002051353455,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4499000012874603,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3864700198173523,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.40497997403144836
+    },
+    {
+      "pilot_seed": 6,
+      "replication_seed": 106,
+      "pilot_D_s": 0.3420949727296829,
+      "replication_D_s": 0.10583503544330597,
+      "pilot_D_s_renormalized": 0.3420949727296829,
+      "replication_D_s_renormalized": 0.10583503544330597,
+      "pilot_D_s_non_renormalized": 0.26310494542121887,
+      "replication_D_s_non_renormalized": -0.0027899891138076782,
+      "pilot_INTERLEAVED_accuracy_A": 0.9861599802970886,
+      "replication_INTERLEAVED_accuracy_A": 0.9883599877357483,
+      "pilot_INTERLEAVED_accuracy_B": 0.9889000058174133,
+      "replication_INTERLEAVED_accuracy_B": 0.9887199997901917,
+      "pilot_INTERLEAVED_routing_specialization": 0.016560643911361694,
+      "replication_INTERLEAVED_routing_specialization": 0.6915368437767029,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.12968003749847412,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3769799768924713,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.11270004510879517,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.3578700125217438,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9887199997901917,
+      "replication_BLOCKED_AB_accuracy_A": 0.9887999892234802,
+      "pilot_BLOCKED_AB_accuracy_B": 0.988099992275238,
+      "replication_BLOCKED_AB_accuracy_B": 0.9883999824523926,
+      "pilot_BLOCKED_AB_routing_specialization": 0.8399090766906738,
+      "replication_BLOCKED_AB_routing_specialization": 0.7942901849746704,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.48781999945640564,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4691600203514099,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3429200053215027,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3743800222873688,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9875400066375732,
+      "replication_BLOCKED_BA_accuracy_A": 0.9884399771690369,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9887400269508362,
+      "replication_BLOCKED_BA_accuracy_B": 0.9899799823760986,
+      "pilot_BLOCKED_BA_routing_specialization": 0.7517365217208862,
+      "replication_BLOCKED_BA_routing_specialization": 0.851398229598999,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.45573002099990845,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.49647000432014465,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.4086899757385254,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3357800245285034
+    },
+    {
+      "pilot_seed": 7,
+      "replication_seed": 107,
+      "pilot_D_s": 0.04378001391887665,
+      "replication_D_s": 0.10644501447677612,
+      "pilot_D_s_renormalized": 0.04378001391887665,
+      "replication_D_s_renormalized": 0.10644501447677612,
+      "pilot_D_s_non_renormalized": -0.014274999499320984,
+      "replication_D_s_non_renormalized": 0.03637498617172241,
+      "pilot_INTERLEAVED_accuracy_A": 0.9887400269508362,
+      "replication_INTERLEAVED_accuracy_A": 0.9876800179481506,
+      "pilot_INTERLEAVED_accuracy_B": 0.9874399900436401,
+      "replication_INTERLEAVED_accuracy_B": 0.9887800216674805,
+      "pilot_INTERLEAVED_routing_specialization": 0.7316238880157471,
+      "replication_INTERLEAVED_routing_specialization": 0.7230013012886047,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.39594998955726624,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.35329997539520264,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.37703999876976013,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.34804999828338623,
+      "pilot_BLOCKED_AB_accuracy_A": 0.98853999376297,
+      "replication_BLOCKED_AB_accuracy_A": 0.9894599914550781,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9881200194358826,
+      "replication_BLOCKED_AB_accuracy_B": 0.9894999861717224,
+      "pilot_BLOCKED_AB_routing_specialization": 0.8680458068847656,
+      "replication_BLOCKED_AB_routing_specialization": 0.8163094520568848,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4915600121021271,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4726099967956543,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3547600209712982,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3826899826526642,
+      "pilot_BLOCKED_BA_accuracy_A": 0.987559974193573,
+      "replication_BLOCKED_BA_accuracy_A": 0.9886599779129028,
+      "pilot_BLOCKED_BA_accuracy_B": 0.987339973449707,
+      "replication_BLOCKED_BA_accuracy_B": 0.9896399974822998,
+      "pilot_BLOCKED_BA_routing_specialization": 0.657989501953125,
+      "replication_BLOCKED_BA_routing_specialization": 0.7750194668769836,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.3878999948501587,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4468799829483032,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3707699775695801,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3861599862575531
+    },
+    {
+      "pilot_seed": 8,
+      "replication_seed": 108,
+      "pilot_D_s": 0.01208999752998352,
+      "replication_D_s": 0.12995000183582306,
+      "pilot_D_s_renormalized": 0.01208999752998352,
+      "replication_D_s_renormalized": 0.12995000183582306,
+      "pilot_D_s_non_renormalized": 0.013784989714622498,
+      "replication_D_s_non_renormalized": 0.05904999375343323,
+      "pilot_INTERLEAVED_accuracy_A": 0.9892600178718567,
+      "replication_INTERLEAVED_accuracy_A": 0.9877399802207947,
+      "pilot_INTERLEAVED_accuracy_B": 0.9883400201797485,
+      "replication_INTERLEAVED_accuracy_B": 0.9877200126647949,
+      "pilot_INTERLEAVED_routing_specialization": 0.8012565970420837,
+      "replication_INTERLEAVED_routing_specialization": 0.6929172277450562,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.47391998767852783,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3324599862098694,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.3367599844932556,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.3297100067138672,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9891999959945679,
+      "replication_BLOCKED_AB_accuracy_A": 0.9893400073051453,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9880200028419495,
+      "replication_BLOCKED_AB_accuracy_B": 0.989359974861145,
+      "pilot_BLOCKED_AB_routing_specialization": 0.8060356974601746,
+      "replication_BLOCKED_AB_routing_specialization": 0.8007108569145203,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4851699769496918,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.47824999690055847,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3690699636936188,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3742699921131134,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9894400238990784,
+      "replication_BLOCKED_BA_accuracy_A": 0.9882599711418152,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9890000224113464,
+      "replication_BLOCKED_BA_accuracy_B": 0.9886199831962585,
+      "pilot_BLOCKED_BA_routing_specialization": 0.863102912902832,
+      "replication_BLOCKED_BA_routing_specialization": 0.7396106123924255,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.48684999346733093,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4465699791908264,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.33201998472213745,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.4032500088214874
+    },
+    {
+      "pilot_seed": 9,
+      "replication_seed": 109,
+      "pilot_D_s": -0.33591002225875854,
+      "replication_D_s": 0.05355998873710632,
+      "pilot_D_s_renormalized": -0.33591002225875854,
+      "replication_D_s_renormalized": 0.05355998873710632,
+      "pilot_D_s_non_renormalized": -0.2983050048351288,
+      "replication_D_s_non_renormalized": -0.012450024485588074,
+      "pilot_INTERLEAVED_accuracy_A": 0.9882599711418152,
+      "replication_INTERLEAVED_accuracy_A": 0.9888200163841248,
+      "pilot_INTERLEAVED_accuracy_B": 0.9880800247192383,
+      "replication_INTERLEAVED_accuracy_B": 0.987559974193573,
+      "pilot_INTERLEAVED_routing_specialization": 0.7858225107192993,
+      "replication_INTERLEAVED_routing_specialization": 0.4716067314147949,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.43365001678466797,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.2341499924659729,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.39713001251220703,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.23778003454208374,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9890000224113464,
+      "replication_BLOCKED_AB_accuracy_A": 0.9894999861717224,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9881399869918823,
+      "replication_BLOCKED_AB_accuracy_B": 0.9871199727058411,
+      "pilot_BLOCKED_AB_routing_specialization": 0.025483325123786926,
+      "replication_BLOCKED_AB_routing_specialization": 0.1379004418849945,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.15227001905441284,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.1050499677658081,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.15550002455711365,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.08663001656532288,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9879199862480164,
+      "replication_BLOCKED_BA_accuracy_A": 0.989080011844635,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9884799718856812,
+      "replication_BLOCKED_BA_accuracy_B": 0.989300012588501,
+      "pilot_BLOCKED_BA_routing_specialization": 0.07372148334980011,
+      "replication_BLOCKED_BA_routing_specialization": 0.7855156064033508,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.043209969997406006,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.47036999464035034,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.04214999079704285,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.36403000354766846
+    },
+    {
+      "pilot_seed": 10,
+      "replication_seed": 110,
+      "pilot_D_s": -0.04509499669075012,
+      "replication_D_s": 0.070685014128685,
+      "pilot_D_s_renormalized": -0.04509499669075012,
+      "replication_D_s_renormalized": 0.070685014128685,
+      "pilot_D_s_non_renormalized": -0.09555502235889435,
+      "replication_D_s_non_renormalized": 0.06418001651763916,
+      "pilot_INTERLEAVED_accuracy_A": 0.9889000058174133,
+      "replication_INTERLEAVED_accuracy_A": 0.9875800013542175,
+      "pilot_INTERLEAVED_accuracy_B": 0.9868999719619751,
+      "replication_INTERLEAVED_accuracy_B": 0.9880800247192383,
+      "pilot_INTERLEAVED_routing_specialization": 0.6221521496772766,
+      "replication_INTERLEAVED_routing_specialization": 0.591975212097168,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.3105199933052063,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.26513999700546265,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.30619001388549805,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.2659199833869934,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9896600246429443,
+      "replication_BLOCKED_AB_accuracy_A": 0.9884799718856812,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9888799786567688,
+      "replication_BLOCKED_AB_accuracy_B": 0.9878000020980835,
+      "pilot_BLOCKED_AB_routing_specialization": 0.7671273946762085,
+      "replication_BLOCKED_AB_routing_specialization": 0.4849393367767334,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.473609983921051,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.27320000529289246,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.371069997549057,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.2748100161552429,
+      "pilot_BLOCKED_BA_accuracy_A": 0.988099992275238,
+      "replication_BLOCKED_BA_accuracy_A": 0.9886599779129028,
+      "pilot_BLOCKED_BA_accuracy_B": 0.988319993019104,
+      "replication_BLOCKED_BA_accuracy_B": 0.9889600276947021,
+      "pilot_BLOCKED_BA_routing_specialization": 0.13527964055538177,
+      "replication_BLOCKED_BA_routing_specialization": 0.7134393453598022,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.05724000930786133,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.39845001697540283,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.05019998550415039,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3853899836540222
+    },
+    {
+      "pilot_seed": 11,
+      "replication_seed": 111,
+      "pilot_D_s": 0.43010997772216797,
+      "replication_D_s": 0.01931498944759369,
+      "pilot_D_s_renormalized": 0.43010997772216797,
+      "replication_D_s_renormalized": 0.01931498944759369,
+      "pilot_D_s_non_renormalized": 0.3211500346660614,
+      "replication_D_s_non_renormalized": 0.00950002670288086,
+      "pilot_INTERLEAVED_accuracy_A": 0.9880200028419495,
+      "replication_INTERLEAVED_accuracy_A": 0.9889199733734131,
+      "pilot_INTERLEAVED_accuracy_B": 0.9881799817085266,
+      "replication_INTERLEAVED_accuracy_B": 0.9893800020217896,
+      "pilot_INTERLEAVED_routing_specialization": 0.07719121873378754,
+      "replication_INTERLEAVED_routing_specialization": 0.8297727704048157,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.039110004901885986,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.4766499996185303,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.04312998056411743,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.34554997086524963,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9891999959945679,
+      "replication_BLOCKED_AB_accuracy_A": 0.9894400238990784,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9886999726295471,
+      "replication_BLOCKED_AB_accuracy_B": 0.9887999892234802,
+      "pilot_BLOCKED_AB_routing_specialization": 0.6703994274139404,
+      "replication_BLOCKED_AB_routing_specialization": 0.8509899377822876,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.43573999404907227,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4996500015258789,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.37890002131462097,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3416299819946289,
+      "pilot_BLOCKED_BA_accuracy_A": 0.988319993019104,
+      "replication_BLOCKED_BA_accuracy_A": 0.9893400073051453,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9894599914550781,
+      "replication_BLOCKED_BA_accuracy_B": 0.9891999959945679,
+      "pilot_BLOCKED_BA_routing_specialization": 0.818407416343689,
+      "replication_BLOCKED_BA_routing_specialization": 0.7875024080276489,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.5026999711990356,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.492279976606369,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3496600091457367,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3684700131416321
+    },
+    {
+      "pilot_seed": 12,
+      "replication_seed": 112,
+      "pilot_D_s": 0.3812749683856964,
+      "replication_D_s": 0.17424502968788147,
+      "pilot_D_s_renormalized": 0.3812749683856964,
+      "replication_D_s_renormalized": 0.17424502968788147,
+      "pilot_D_s_non_renormalized": 0.2821200042963028,
+      "replication_D_s_non_renormalized": 0.0676649808883667,
+      "pilot_INTERLEAVED_accuracy_A": 0.9886800050735474,
+      "replication_INTERLEAVED_accuracy_A": 0.9890199899673462,
+      "pilot_INTERLEAVED_accuracy_B": 0.9886400103569031,
+      "replication_INTERLEAVED_accuracy_B": 0.9872199892997742,
+      "pilot_INTERLEAVED_routing_specialization": 0.20258523523807526,
+      "replication_INTERLEAVED_routing_specialization": 0.45505332946777344,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.09245002269744873,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.31926000118255615,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.09656000137329102,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.29221001267433167,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9893800020217896,
+      "replication_BLOCKED_AB_accuracy_A": 0.9894800186157227,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9891200065612793,
+      "replication_BLOCKED_AB_accuracy_B": 0.9884600043296814,
+      "pilot_BLOCKED_AB_routing_specialization": 0.789268434047699,
+      "replication_BLOCKED_AB_routing_specialization": 0.7971550822257996,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4649699926376343,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4855700135231018,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.39131999015808105,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3625899851322174,
+      "pilot_BLOCKED_BA_accuracy_A": 0.989300012588501,
+      "replication_BLOCKED_BA_accuracy_A": 0.9895600080490112,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9894199967384338,
+      "replication_BLOCKED_BA_accuracy_B": 0.9898399710655212,
+      "pilot_BLOCKED_BA_routing_specialization": 0.8453531265258789,
+      "replication_BLOCKED_BA_routing_specialization": 0.817435622215271,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.482479989528656,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.5014400482177734,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.36604002118110657,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3571600019931793
+    },
+    {
+      "pilot_seed": 13,
+      "replication_seed": 113,
+      "pilot_D_s": 0.28694501519203186,
+      "replication_D_s": 0.005959987640380859,
+      "pilot_D_s_renormalized": 0.28694501519203186,
+      "replication_D_s_renormalized": 0.005959987640380859,
+      "pilot_D_s_non_renormalized": 0.24910497665405273,
+      "replication_D_s_non_renormalized": -0.044615015387535095,
+      "pilot_INTERLEAVED_accuracy_A": 0.9886199831962585,
+      "replication_INTERLEAVED_accuracy_A": 0.9871000051498413,
+      "pilot_INTERLEAVED_accuracy_B": 0.987779974937439,
+      "replication_INTERLEAVED_accuracy_B": 0.9870200157165527,
+      "pilot_INTERLEAVED_routing_specialization": 0.30410969257354736,
+      "replication_INTERLEAVED_routing_specialization": 0.6078963875770569,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.12231998145580292,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.28161001205444336,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.12490001320838928,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.2807199954986572,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9887999892234802,
+      "replication_BLOCKED_AB_accuracy_A": 0.9891600012779236,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9879000186920166,
+      "replication_BLOCKED_AB_accuracy_B": 0.987820029258728,
+      "pilot_BLOCKED_AB_routing_specialization": 0.7325209379196167,
+      "replication_BLOCKED_AB_routing_specialization": 0.07174666225910187,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4450100064277649,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.1029299795627594,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3961999714374542,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.09403994679450989,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9874600172042847,
+      "replication_BLOCKED_BA_accuracy_A": 0.9882799983024597,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9892799854278564,
+      "replication_BLOCKED_BA_accuracy_B": 0.9885600209236145,
+      "pilot_BLOCKED_BA_routing_specialization": 0.5100442171096802,
+      "replication_BLOCKED_BA_routing_specialization": 0.7752529382705688,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.37351998686790466,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.47221001982688904,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3518100082874298,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3781700134277344
+    },
+    {
+      "pilot_seed": 14,
+      "replication_seed": 114,
+      "pilot_D_s": -0.026329994201660156,
+      "replication_D_s": 0.17806996405124664,
+      "pilot_D_s_renormalized": -0.026329994201660156,
+      "replication_D_s_renormalized": 0.17806996405124664,
+      "pilot_D_s_non_renormalized": -0.06679998338222504,
+      "replication_D_s_non_renormalized": 0.07864505052566528,
+      "pilot_INTERLEAVED_accuracy_A": 0.9883999824523926,
+      "replication_INTERLEAVED_accuracy_A": 0.9876400232315063,
+      "pilot_INTERLEAVED_accuracy_B": 0.9880399703979492,
+      "replication_INTERLEAVED_accuracy_B": 0.9874600172042847,
+      "pilot_INTERLEAVED_routing_specialization": 0.7063591480255127,
+      "replication_INTERLEAVED_routing_specialization": 0.5930778980255127,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.35850998759269714,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.2871500253677368,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.3500499725341797,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.287259966135025,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9887199997901917,
+      "replication_BLOCKED_AB_accuracy_A": 0.9883999824523926,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9876000285148621,
+      "replication_BLOCKED_AB_accuracy_B": 0.9878600239753723,
+      "pilot_BLOCKED_AB_routing_specialization": 0.3714013695716858,
+      "replication_BLOCKED_AB_routing_specialization": 0.8288261890411377,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.20550000667572021,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4685699939727783,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.18828999996185303,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3753700256347656,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9886000156402588,
+      "replication_BLOCKED_BA_accuracy_A": 0.9888200163841248,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9894999861717224,
+      "replication_BLOCKED_BA_accuracy_B": 0.9891200065612793,
+      "pilot_BLOCKED_BA_routing_specialization": 0.7821956276893616,
+      "replication_BLOCKED_BA_routing_specialization": 0.7811846137046814,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.45885998010635376,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4618699848651886,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3782099783420563,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.356440007686615
+    },
+    {
+      "pilot_seed": 15,
+      "replication_seed": 115,
+      "pilot_D_s": 0.2622649818658829,
+      "replication_D_s": 0.12003499269485474,
+      "pilot_D_s_renormalized": 0.2622649818658829,
+      "replication_D_s_renormalized": 0.12003499269485474,
+      "pilot_D_s_non_renormalized": 0.17756500840187073,
+      "replication_D_s_non_renormalized": 0.024154990911483765,
+      "pilot_INTERLEAVED_accuracy_A": 0.9876599907875061,
+      "replication_INTERLEAVED_accuracy_A": 0.9884399771690369,
+      "pilot_INTERLEAVED_accuracy_B": 0.9879800081253052,
+      "replication_INTERLEAVED_accuracy_B": 0.9878399968147278,
+      "pilot_INTERLEAVED_routing_specialization": 0.38211530447006226,
+      "replication_INTERLEAVED_routing_specialization": 0.6203874945640564,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.19291001558303833,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3516699969768524,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.18314000964164734,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.3423199951648712,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9895200133323669,
+      "replication_BLOCKED_AB_accuracy_A": 0.9899600148200989,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9886400103569031,
+      "replication_BLOCKED_AB_accuracy_B": 0.9882000088691711,
+      "pilot_BLOCKED_AB_routing_specialization": 0.7565637826919556,
+      "replication_BLOCKED_AB_routing_specialization": 0.8022083044052124,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.48027998208999634,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.4884200096130371,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.37099000811576843,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3675699830055237,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9871799945831299,
+      "replication_BLOCKED_BA_accuracy_A": 0.989139974117279,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9887800216674805,
+      "replication_BLOCKED_BA_accuracy_B": 0.9883800148963928,
+      "pilot_BLOCKED_BA_routing_specialization": 0.7017999887466431,
+      "replication_BLOCKED_BA_routing_specialization": 0.7273900508880615,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.43007001280784607,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4549899697303772,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.3504200279712677,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3653799891471863
+    },
+    {
+      "pilot_seed": 16,
+      "replication_seed": 116,
+      "pilot_D_s": 0.2291400134563446,
+      "replication_D_s": 0.17376500368118286,
+      "pilot_D_s_renormalized": 0.2291400134563446,
+      "replication_D_s_renormalized": 0.17376500368118286,
+      "pilot_D_s_non_renormalized": 0.21775999665260315,
+      "replication_D_s_non_renormalized": 0.08836495876312256,
+      "pilot_INTERLEAVED_accuracy_A": 0.9880599975585938,
+      "replication_INTERLEAVED_accuracy_A": 0.987339973449707,
+      "pilot_INTERLEAVED_accuracy_B": 0.9882799983024597,
+      "replication_INTERLEAVED_accuracy_B": 0.9874600172042847,
+      "pilot_INTERLEAVED_routing_specialization": 0.06273236870765686,
+      "replication_INTERLEAVED_routing_specialization": 0.5330519676208496,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.06759998202323914,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.280460000038147,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.06564000248908997,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.2755200266838074,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9890000224113464,
+      "replication_BLOCKED_AB_accuracy_A": 0.9879400134086609,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9879800081253052,
+      "replication_BLOCKED_AB_accuracy_B": 0.9877200126647949,
+      "pilot_BLOCKED_AB_routing_specialization": 0.6616852283477783,
+      "replication_BLOCKED_AB_routing_specialization": 0.6997784972190857,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4154300093650818,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.42079001665115356,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.379800021648407,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.384909987449646,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9880399703979492,
+      "replication_BLOCKED_BA_accuracy_A": 0.9884399771690369,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9882599711418152,
+      "replication_BLOCKED_BA_accuracy_B": 0.9891200065612793,
+      "pilot_BLOCKED_BA_routing_specialization": 0.219156876206398,
+      "replication_BLOCKED_BA_routing_specialization": 0.8035637140274048,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.1780499815940857,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4876599907875061,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.18699997663497925,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.34285998344421387
+    },
+    {
+      "pilot_seed": 17,
+      "replication_seed": 117,
+      "pilot_D_s": -0.08482001721858978,
+      "replication_D_s": 0.057104967534542084,
+      "pilot_D_s_renormalized": -0.08482001721858978,
+      "replication_D_s_renormalized": 0.057104967534542084,
+      "pilot_D_s_non_renormalized": -0.10846005380153656,
+      "replication_D_s_non_renormalized": 0.01879999041557312,
+      "pilot_INTERLEAVED_accuracy_A": 0.9883599877357483,
+      "replication_INTERLEAVED_accuracy_A": 0.9868800044059753,
+      "pilot_INTERLEAVED_accuracy_B": 0.9872000217437744,
+      "replication_INTERLEAVED_accuracy_B": 0.989139974117279,
+      "pilot_INTERLEAVED_routing_specialization": 0.6297143697738647,
+      "replication_INTERLEAVED_routing_specialization": 0.5854393243789673,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.3803099989891052,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.2961200177669525,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.3557300269603729,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.2905200123786926,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9887800216674805,
+      "replication_BLOCKED_AB_accuracy_A": 0.9878600239753723,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9876999855041504,
+      "replication_BLOCKED_AB_accuracy_B": 0.98853999376297,
+      "pilot_BLOCKED_AB_routing_specialization": 0.8036068677902222,
+      "replication_BLOCKED_AB_routing_specialization": 0.39524543285369873,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.4787200093269348,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.23184998333454132,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3813300132751465,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.2281300127506256,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9876800179481506,
+      "replication_BLOCKED_BA_accuracy_A": 0.9889400005340576,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9868599772453308,
+      "replication_BLOCKED_BA_accuracy_B": 0.9897199869155884,
+      "pilot_BLOCKED_BA_routing_specialization": 0.06662879884243011,
+      "replication_BLOCKED_BA_routing_specialization": 0.7374489307403564,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.11225995421409607,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4745999872684479,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.11320993304252625,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3905099928379059
+    },
+    {
+      "pilot_seed": 18,
+      "replication_seed": 118,
+      "pilot_D_s": 0.23787997663021088,
+      "replication_D_s": 0.17210501432418823,
+      "pilot_D_s_renormalized": 0.23787997663021088,
+      "replication_D_s_renormalized": 0.17210501432418823,
+      "pilot_D_s_non_renormalized": 0.18964001536369324,
+      "replication_D_s_non_renormalized": 0.059890016913414,
+      "pilot_INTERLEAVED_accuracy_A": 0.9879599809646606,
+      "replication_INTERLEAVED_accuracy_A": 0.989080011844635,
+      "pilot_INTERLEAVED_accuracy_B": 0.9886599779129028,
+      "replication_INTERLEAVED_accuracy_B": 0.9871600270271301,
+      "pilot_INTERLEAVED_routing_specialization": 0.1679764688014984,
+      "replication_INTERLEAVED_routing_specialization": 0.618577241897583,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.10324999690055847,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.3098900020122528,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.09539997577667236,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.3090599775314331,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9889199733734131,
+      "replication_BLOCKED_AB_accuracy_A": 0.9900400042533875,
+      "pilot_BLOCKED_AB_accuracy_B": 0.98853999376297,
+      "replication_BLOCKED_AB_accuracy_B": 0.9889000058174133,
+      "pilot_BLOCKED_AB_routing_specialization": 0.7613785266876221,
+      "replication_BLOCKED_AB_routing_specialization": 0.7715011835098267,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.47126999497413635,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.46533000469207764,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.37880998849868774,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3769899904727936,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9869599938392639,
+      "replication_BLOCKED_BA_accuracy_A": 0.9886000156402588,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9884399771690369,
+      "replication_BLOCKED_BA_accuracy_B": 0.9902799725532532,
+      "pilot_BLOCKED_BA_routing_specialization": 0.1333049088716507,
+      "replication_BLOCKED_BA_routing_specialization": 0.8170363903045654,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.21098995208740234,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.49866002798080444,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.19126999378204346,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.36090999841690063
+    },
+    {
+      "pilot_seed": 19,
+      "replication_seed": 119,
+      "pilot_D_s": 0.12469501793384552,
+      "replication_D_s": 0.29379501938819885,
+      "pilot_D_s_renormalized": 0.12469501793384552,
+      "replication_D_s_renormalized": 0.29379501938819885,
+      "pilot_D_s_non_renormalized": 0.02444000542163849,
+      "replication_D_s_non_renormalized": 0.2123900055885315,
+      "pilot_INTERLEAVED_accuracy_A": 0.9875800013542175,
+      "replication_INTERLEAVED_accuracy_A": 0.9884399771690369,
+      "pilot_INTERLEAVED_accuracy_B": 0.9861000180244446,
+      "replication_INTERLEAVED_accuracy_B": 0.9884999990463257,
+      "pilot_INTERLEAVED_routing_specialization": 0.7323000431060791,
+      "replication_INTERLEAVED_routing_specialization": 0.3429866433143616,
+      "pilot_INTERLEAVED_S_causal_renormalized": 0.35728999972343445,
+      "replication_INTERLEAVED_S_causal_renormalized": 0.16109000146389008,
+      "pilot_INTERLEAVED_S_causal_non_renormalized": 0.3554399907588959,
+      "replication_INTERLEAVED_S_causal_non_renormalized": 0.16086998581886292,
+      "pilot_BLOCKED_AB_accuracy_A": 0.9888799786567688,
+      "replication_BLOCKED_AB_accuracy_A": 0.9893800020217896,
+      "pilot_BLOCKED_AB_accuracy_B": 0.9876999855041504,
+      "replication_BLOCKED_AB_accuracy_B": 0.9874399900436401,
+      "pilot_BLOCKED_AB_routing_specialization": 0.7676074504852295,
+      "replication_BLOCKED_AB_routing_specialization": 0.6944174766540527,
+      "pilot_BLOCKED_AB_S_causal_renormalized": 0.48431000113487244,
+      "replication_BLOCKED_AB_S_causal_renormalized": 0.416130006313324,
+      "pilot_BLOCKED_AB_S_causal_non_renormalized": 0.3623200058937073,
+      "replication_BLOCKED_AB_S_causal_non_renormalized": 0.3796899914741516,
+      "pilot_BLOCKED_BA_accuracy_A": 0.9882400035858154,
+      "replication_BLOCKED_BA_accuracy_A": 0.9885200262069702,
+      "pilot_BLOCKED_BA_accuracy_B": 0.9887599945068359,
+      "replication_BLOCKED_BA_accuracy_B": 0.9900000095367432,
+      "pilot_BLOCKED_BA_routing_specialization": 0.8319486379623413,
+      "replication_BLOCKED_BA_routing_specialization": 0.8094778060913086,
+      "pilot_BLOCKED_BA_S_causal_renormalized": 0.4796600341796875,
+      "replication_BLOCKED_BA_S_causal_renormalized": 0.4936400353908539,
+      "pilot_BLOCKED_BA_S_causal_non_renormalized": 0.39743998646736145,
+      "replication_BLOCKED_BA_S_causal_non_renormalized": 0.3668299913406372
+    }
+  ],
+  "quantitative_discrepancies": {
+    "mean_D_s_replication_minus_pilot": -0.02570274956524371,
+    "cohens_dz_replication_minus_pilot": 0.6376513790715742,
+    "bootstrap_CI_width_pilot": 0.16327653307467693,
+    "bootstrap_CI_width_replication": 0.07496747051365672,
+    "positive_seed_proportion_pilot": 0.8,
+    "positive_seed_proportion_replication": 1.0,
+    "mean_balanced_accuracy_pilot": 0.9883373315135638,
+    "mean_balanced_accuracy_replication": 0.9886293336749077,
+    "pilot_replication_data_seed_difference": 270099,
+    "pilot_replication_test_seed_difference": -8687570
+  },
+  "artifacts": [
+    [
+      "Pilot raw results",
+      "results/pilot_v1_frozen/raw/"
+    ],
+    [
+      "Pilot checkpoint ablation",
+      "results/pilot_v1_posthoc/analysis.json"
+    ],
+    [
+      "Pilot configuration",
+      "configs/default.yaml"
+    ],
+    [
+      "Replication raw results",
+      "results/replication/raw/"
+    ],
+    [
+      "Replication checkpoint ablation",
+      "results/replication/checkpoint_analysis/analysis.json"
+    ],
+    [
+      "Replication analysis",
+      "results/replication/analysis.json"
+    ],
+    [
+      "Replication manifest",
+      "replication_manifest.md"
+    ],
+    [
+      "Replication config",
+      "replication_config.yaml"
+    ]
+  ]
+}

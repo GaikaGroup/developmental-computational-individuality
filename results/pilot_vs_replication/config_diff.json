@@ -1,0 +1,240 @@
+{
+  "pilot_1": {
+    "architecture": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+    "parameter_count": 151427,
+    "Task A": "1[x0*x1 + x2*x3 > 0]",
+    "Task B": "1[x8*x9 - x10*x11 > 0]",
+    "input_dimensions": "16 Gaussian features + 2D one-hot task indicator = 18",
+    "router_architecture": "Linear(128,2), Softmax(dim=-1)",
+    "expert_architecture": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "lr_schedule": "500-step linear warmup then cosine decay",
+    "weight_decay": 0.0001,
+    "batch_size": 256,
+    "training_steps": 20000,
+    "early_phase_steps": 4000,
+    "common_phase_steps": 16000,
+    "lambda_balance": 0.01,
+    "evaluation_examples_per_task": 50000,
+    "S_route_definition": "0.5 * sum_e abs(q_A,e - q_B,e)",
+    "S_causal_definition": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+    "D_s_definition": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+    "primary_knockout": "renormalized: survivor weight 1",
+    "curricula": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+    "training_data_seed": 1729,
+    "test_data_seed": 9001729,
+    "requested_device": "auto",
+    "router_entropy_definition": "entropy of task-mean routing vectors in original result JSON",
+    "deterministic_algorithms": "not enabled in original Pilot",
+    "metadata_hashes": "config/source hashes unavailable in original result metadata",
+    "knockout_variants": "renormalized primary only"
+  },
+  "replication_1": {
+    "architecture": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+    "parameter_count": 151427,
+    "Task A": "1[x0*x1 + x2*x3 > 0]",
+    "Task B": "1[x8*x9 - x10*x11 > 0]",
+    "input_dimensions": "16 Gaussian features + 2D one-hot task indicator = 18",
+    "router_architecture": "Linear(128,2), Softmax(dim=-1)",
+    "expert_architecture": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "lr_schedule": "500-step linear warmup then cosine decay",
+    "weight_decay": 0.0001,
+    "batch_size": 256,
+    "training_steps": 20000,
+    "early_phase_steps": 4000,
+    "common_phase_steps": 16000,
+    "lambda_balance": 0.01,
+    "evaluation_examples_per_task": 50000,
+    "S_route_definition": "0.5 * sum_e abs(q_A,e - q_B,e)",
+    "S_causal_definition": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+    "D_s_definition": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+    "primary_knockout": "renormalized: survivor weight 1",
+    "curricula": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+    "training_data_seed": 271828,
+    "test_data_seed": 314159,
+    "requested_device": "auto",
+    "router_entropy_definition": "true mean per-example entropy",
+    "deterministic_algorithms": "enabled with strict unsupported-operation failure",
+    "metadata_hashes": "config hash and source hash recorded per run",
+    "knockout_variants": "renormalized primary and non-renormalized secondary"
+  },
+  "diff": [
+    {
+      "field": "D_s_definition",
+      "pilot_1": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+      "replication_1": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s",
+      "status": "MATCH"
+    },
+    {
+      "field": "S_causal_definition",
+      "pilot_1": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+      "replication_1": "0.5 * sum_e abs(Delta_e,A - Delta_e,B)",
+      "status": "MATCH"
+    },
+    {
+      "field": "S_route_definition",
+      "pilot_1": "0.5 * sum_e abs(q_A,e - q_B,e)",
+      "replication_1": "0.5 * sum_e abs(q_A,e - q_B,e)",
+      "status": "MATCH"
+    },
+    {
+      "field": "Task A",
+      "pilot_1": "1[x0*x1 + x2*x3 > 0]",
+      "replication_1": "1[x0*x1 + x2*x3 > 0]",
+      "status": "MATCH"
+    },
+    {
+      "field": "Task B",
+      "pilot_1": "1[x8*x9 - x10*x11 > 0]",
+      "replication_1": "1[x8*x9 - x10*x11 > 0]",
+      "status": "MATCH"
+    },
+    {
+      "field": "architecture",
+      "pilot_1": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+      "replication_1": "18\u2192128\u2192128 shared encoder; Linear(128,2) softmax router; two Linear(128,256)\u2192128 experts; residual LayerNorm; Linear(128,1)",
+      "status": "MATCH"
+    },
+    {
+      "field": "batch_size",
+      "pilot_1": 256,
+      "replication_1": 256,
+      "status": "MATCH"
+    },
+    {
+      "field": "common_phase_steps",
+      "pilot_1": 16000,
+      "replication_1": 16000,
+      "status": "MATCH"
+    },
+    {
+      "field": "curricula",
+      "pilot_1": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+      "replication_1": "INTERLEAVED, BLOCKED_AB, BLOCKED_BA with identical 16,000-step common phase",
+      "status": "MATCH"
+    },
+    {
+      "field": "deterministic_algorithms",
+      "pilot_1": "not enabled in original Pilot",
+      "replication_1": "enabled with strict unsupported-operation failure",
+      "status": "DIFFERENCE"
+    },
+    {
+      "field": "early_phase_steps",
+      "pilot_1": 4000,
+      "replication_1": 4000,
+      "status": "MATCH"
+    },
+    {
+      "field": "evaluation_examples_per_task",
+      "pilot_1": 50000,
+      "replication_1": 50000,
+      "status": "MATCH"
+    },
+    {
+      "field": "expert_architecture",
+      "pilot_1": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+      "replication_1": "two identical Linear(128,256)\u2192GELU\u2192Linear(256,128)",
+      "status": "MATCH"
+    },
+    {
+      "field": "input_dimensions",
+      "pilot_1": "16 Gaussian features + 2D one-hot task indicator = 18",
+      "replication_1": "16 Gaussian features + 2D one-hot task indicator = 18",
+      "status": "MATCH"
+    },
+    {
+      "field": "knockout_variants",
+      "pilot_1": "renormalized primary only",
+      "replication_1": "renormalized primary and non-renormalized secondary",
+      "status": "DIFFERENCE"
+    },
+    {
+      "field": "lambda_balance",
+      "pilot_1": 0.01,
+      "replication_1": 0.01,
+      "status": "MATCH"
+    },
+    {
+      "field": "learning_rate",
+      "pilot_1": 0.0003,
+      "replication_1": 0.0003,
+      "status": "MATCH"
+    },
+    {
+      "field": "lr_schedule",
+      "pilot_1": "500-step linear warmup then cosine decay",
+      "replication_1": "500-step linear warmup then cosine decay",
+      "status": "MATCH"
+    },
+    {
+      "field": "metadata_hashes",
+      "pilot_1": "config/source hashes unavailable in original result metadata",
+      "replication_1": "config hash and source hash recorded per run",
+      "status": "DIFFERENCE"
+    },
+    {
+      "field": "optimizer",
+      "pilot_1": "AdamW",
+      "replication_1": "AdamW",
+      "status": "MATCH"
+    },
+    {
+      "field": "parameter_count",
+      "pilot_1": 151427,
+      "replication_1": 151427,
+      "status": "MATCH"
+    },
+    {
+      "field": "primary_knockout",
+      "pilot_1": "renormalized: survivor weight 1",
+      "replication_1": "renormalized: survivor weight 1",
+      "status": "MATCH"
+    },
+    {
+      "field": "requested_device",
+      "pilot_1": "auto",
+      "replication_1": "auto",
+      "status": "MATCH"
+    },
+    {
+      "field": "router_architecture",
+      "pilot_1": "Linear(128,2), Softmax(dim=-1)",
+      "replication_1": "Linear(128,2), Softmax(dim=-1)",
+      "status": "MATCH"
+    },
+    {
+      "field": "router_entropy_definition",
+      "pilot_1": "entropy of task-mean routing vectors in original result JSON",
+      "replication_1": "true mean per-example entropy",
+      "status": "DIFFERENCE"
+    },
+    {
+      "field": "test_data_seed",
+      "pilot_1": 9001729,
+      "replication_1": 314159,
+      "status": "DIFFERENCE"
+    },
+    {
+      "field": "training_data_seed",
+      "pilot_1": 1729,
+      "replication_1": 271828,
+      "status": "DIFFERENCE"
+    },
+    {
+      "field": "training_steps",
+      "pilot_1": 20000,
+      "replication_1": 20000,
+      "status": "MATCH"
+    },
+    {
+      "field": "weight_decay",
+      "pilot_1": 0.0001,
+      "replication_1": 0.0001,
+      "status": "MATCH"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "valid_runs": 60,
+  "result_files": 60,
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "torch": "2.13.0",
+  "numpy": "2.5.2",
+  "git_commit": "unavailable: repository is not under git",
+  "config_sha256": "96c91e5f4ff184bcb1343b6b76e0f796fe294447cbe62294eddacaf5ef3d7e5c",
+  "requirements_sha256": "5f476f06a43d2a0b6f9452f1b7a6f111a1fce5365f488b92a6debe48b55ac2d6",
+  "result_checksums_file": "result_checksums.json"
+}

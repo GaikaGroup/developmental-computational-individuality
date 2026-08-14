@@ -1,0 +1,484 @@
+{
+  "seed": 101,
+  "condition": "BLOCKED_AB",
+  "initial_checksum": "b1ebfe6b817343f5f9b789af58a4bba3d64ecf8444322daec87baca6c8a7d1e9",
+  "accuracy_A": 0.9892399907112122,
+  "bce_A": 0.025986630469560623,
+  "accuracy_B": 0.9889000058174133,
+  "bce_B": 0.0271663386374712,
+  "routing_A": [
+    0.9117352962493896,
+    0.08826460689306259
+  ],
+  "routing_B": [
+    0.10500217974185944,
+    0.8949978351593018
+  ],
+  "routing_specialization": 0.8067331910133362,
+  "router_entropy": 0.31424814462661743,
+  "router_entropy_of_task_means": 0.31722062826156616,
+  "ablation": {
+    "expert_1": {
+      "delta_A": 0.5160199999809265,
+      "delta_B": 0.025160014629364014
+    },
+    "expert_2": {
+      "delta_A": 0.012340009212493896,
+      "delta_B": 0.49286001920700073
+    }
+  },
+  "causal_specialization": 0.48568999767303467,
+  "knockout_renormalized": {
+    "ablation": {
+      "expert_1": {
+        "delta_A": 0.5160199999809265,
+        "delta_B": 0.025160014629364014
+      },
+      "expert_2": {
+        "delta_A": 0.012340009212493896,
+        "delta_B": 0.49286001920700073
+      }
+    },
+    "causal_specialization": 0.48568999767303467
+  },
+  "knockout_non_renormalized": {
+    "ablation": {
+      "expert_1": {
+        "delta_A": 0.3431199789047241,
+        "delta_B": 0.022780001163482666
+      },
+      "expert_2": {
+        "delta_A": 0.011219978332519531,
+        "delta_B": 0.3893600106239319
+      }
+    },
+    "causal_specialization": 0.3492400050163269
+  },
+  "history": [
+    {
+      "accuracy_A": 0.517333984375,
+      "bce_A": 0.7039544582366943,
+      "accuracy_B": 0.510986328125,
+      "bce_B": 0.7083765268325806,
+      "routing_A": [
+        0.540451169013977,
+        0.45954880118370056
+      ],
+      "routing_B": [
+        0.540375828742981,
+        0.4596242308616638
+      ],
+      "routing_specialization": 7.538497447967529e-05,
+      "router_entropy": 0.689006894826889,
+      "router_entropy_of_task_means": 0.6898771524429321,
+      "step": 0,
+      "training_loss": null,
+      "mean_router": null
+    },
+    {
+      "accuracy_A": 0.790283203125,
+      "bce_A": 0.46798306703567505,
+      "accuracy_B": 0.51220703125,
+      "bce_B": 0.8507708311080933,
+      "routing_A": [
+        0.5335954427719116,
+        0.4664045572280884
+      ],
+      "routing_B": [
+        0.532599687576294,
+        0.46740028262138367
+      ],
+      "routing_specialization": 0.000995740294456482,
+      "router_entropy": 0.6892370581626892,
+      "router_entropy_of_task_means": 0.6909542083740234,
+      "step": 250,
+      "training_loss": 0.4577444791793823,
+      "mean_router": [
+        0.5348464846611023,
+        0.4651535153388977
+      ]
+    },
+    {
+      "accuracy_A": 0.943115234375,
+      "bce_A": 0.13071568310260773,
+      "accuracy_B": 0.493896484375,
+      "bce_B": 2.317650079727173,
+      "routing_A": [
+        0.5264405608177185,
+        0.4735594391822815
+      ],
+      "routing_B": [
+        0.5266331434249878,
+        0.4733668565750122
+      ],
+      "routing_specialization": 0.0001925826072692871,
+      "router_entropy": 0.6822403371334076,
+      "router_entropy_of_task_means": 0.6917380094528198,
+      "step": 500,
+      "training_loss": 0.13815194368362427,
+      "mean_router": [
+        0.5301942825317383,
+        0.4698057174682617
+      ]
+    },
+    {
+      "accuracy_A": 0.956298828125,
+      "bce_A": 0.10105907917022705,
+      "accuracy_B": 0.49560546875,
+      "bce_B": 3.1608657836914062,
+      "routing_A": [
+        0.5196895599365234,
+        0.48031044006347656
+      ],
+      "routing_B": [
+        0.5158885717391968,
+        0.4841114282608032
+      ],
+      "routing_specialization": 0.00380098819732666,
+      "router_entropy": 0.6759379506111145,
+      "router_entropy_of_task_means": 0.6925069093704224,
+      "step": 1000,
+      "training_loss": 0.10266675800085068,
+      "mean_router": [
+        0.5151313543319702,
+        0.4848686158657074
+      ]
+    },
+    {
+      "accuracy_A": 0.973876953125,
+      "bce_A": 0.06102275848388672,
+      "accuracy_B": 0.497314453125,
+      "bce_B": 3.5837221145629883,
+      "routing_A": [
+        0.511243999004364,
+        0.488756000995636
+      ],
+      "routing_B": [
+        0.5040119886398315,
+        0.49598801136016846
+      ],
+      "routing_specialization": 0.007232010364532471,
+      "router_entropy": 0.6656681895256042,
+      "router_entropy_of_task_means": 0.6930046677589417,
+      "step": 2000,
+      "training_loss": 0.06487903743982315,
+      "mean_router": [
+        0.5113182067871094,
+        0.4886817932128906
+      ]
+    },
+    {
+      "accuracy_A": 0.492919921875,
+      "bce_A": 3.2297556400299072,
+      "accuracy_B": 0.965576171875,
+      "bce_B": 0.08023001253604889,
+      "routing_A": [
+        0.4679204225540161,
+        0.5320795774459839
+      ],
+      "routing_B": [
+        0.4623371958732605,
+        0.5376627445220947
+      ],
+      "routing_specialization": 0.0055831968784332275,
+      "router_entropy": 0.6654638648033142,
+      "router_entropy_of_task_means": 0.6906975507736206,
+      "step": 3000,
+      "training_loss": 0.06086057052016258,
+      "mean_router": [
+        0.46096378564834595,
+        0.5390362739562988
+      ]
+    },
+    {
+      "accuracy_A": 0.4921875,
+      "bce_A": 3.5572316646575928,
+      "accuracy_B": 0.973388671875,
+      "bce_B": 0.0592317208647728,
+      "routing_A": [
+        0.4687425196170807,
+        0.5312575101852417
+      ],
+      "routing_B": [
+        0.46638786792755127,
+        0.5336121320724487
+      ],
+      "routing_specialization": 0.002354636788368225,
+      "router_entropy": 0.6649456322193146,
+      "router_entropy_of_task_means": 0.6910388469696045,
+      "step": 4000,
+      "training_loss": 0.05074619874358177,
+      "mean_router": [
+        0.465282142162323,
+        0.534717857837677
+      ]
+    },
+    {
+      "accuracy_A": 0.96533203125,
+      "bce_A": 0.08349132537841797,
+      "accuracy_B": 0.9619140625,
+      "bce_B": 0.08803239464759827,
+      "routing_A": [
+        0.8742436170578003,
+        0.1257564127445221
+      ],
+      "routing_B": [
+        0.17988914251327515,
+        0.8201108574867249
+      ],
+      "routing_specialization": 0.6943544149398804,
+      "router_entropy": 0.41828571259975433,
+      "router_entropy_of_task_means": 0.42473238706588745,
+      "step": 5000,
+      "training_loss": 0.07765745371580124,
+      "mean_router": [
+        0.1795235276222229,
+        0.8204764723777771
+      ]
+    },
+    {
+      "accuracy_A": 0.973876953125,
+      "bce_A": 0.06022578477859497,
+      "accuracy_B": 0.973876953125,
+      "bce_B": 0.0556325763463974,
+      "routing_A": [
+        0.9094569683074951,
+        0.09054303169250488
+      ],
+      "routing_B": [
+        0.11637861281633377,
+        0.8836213946342468
+      ],
+      "routing_specialization": 0.7930783629417419,
+      "router_entropy": 0.3280826359987259,
+      "router_entropy_of_task_means": 0.33171969652175903,
+      "step": 7500,
+      "training_loss": 0.06959627568721771,
+      "mean_router": [
+        0.1160164475440979,
+        0.8839835524559021
+      ]
+    },
+    {
+      "accuracy_A": 0.979736328125,
+      "bce_A": 0.045847468078136444,
+      "accuracy_B": 0.979736328125,
+      "bce_B": 0.04644173011183739,
+      "routing_A": [
+        0.9103477001190186,
+        0.08965227007865906
+      ],
+      "routing_B": [
+        0.11222004890441895,
+        0.887779951095581
+      ],
+      "routing_specialization": 0.7981276512145996,
+      "router_entropy": 0.32286396622657776,
+      "router_entropy_of_task_means": 0.3264322280883789,
+      "step": 10000,
+      "training_loss": 0.04324827343225479,
+      "mean_router": [
+        0.9095418453216553,
+        0.09045810997486115
+      ]
+    },
+    {
+      "accuracy_A": 0.985595703125,
+      "bce_A": 0.031006332486867905,
+      "accuracy_B": 0.984619140625,
+      "bce_B": 0.0328645296394825,
+      "routing_A": [
+        0.9108889102935791,
+        0.0891110748052597
+      ],
+      "routing_B": [
+        0.10549932718276978,
+        0.8945006728172302
+      ],
+      "routing_specialization": 0.8053895831108093,
+      "router_entropy": 0.3158133625984192,
+      "router_entropy_of_task_means": 0.3187386095523834,
+      "step": 15000,
+      "training_loss": 0.04633813351392746,
+      "mean_router": [
+        0.10393471270799637,
+        0.8960652947425842
+      ]
+    },
+    {
+      "accuracy_A": 0.9873046875,
+      "bce_A": 0.025970134884119034,
+      "accuracy_B": 0.98828125,
+      "bce_B": 0.025713440030813217,
+      "routing_A": [
+        0.9116755127906799,
+        0.08832447975873947
+      ],
+      "routing_B": [
+        0.10513246059417725,
+        0.8948675394058228
+      ],
+      "routing_specialization": 0.8065430521965027,
+      "router_entropy": 0.3144510090351105,
+      "router_entropy_of_task_means": 0.3174300193786621,
+      "step": 20000,
+      "training_loss": 0.04928354173898697,
+      "mean_router": [
+        0.10776528716087341,
+        0.8922346830368042
+      ]
+    }
+  ],
+  "router_collapse": {
+    "collapsed": false,
+    "expert": null,
+    "start_step": null,
+    "end_step": null,
+    "peak_probability": null
+  },
+  "metadata": {
+    "experiment": "dci_exact_independent_replication_v1",
+    "seeds": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119
+    ],
+    "seed": 100,
+    "data_seed": 271828,
+    "test_data_seed": 314159,
+    "architecture": {
+      "input_dim": 18,
+      "encoder": [
+        "Linear(18,128)",
+        "GELU",
+        "Linear(128,128)",
+        "GELU"
+      ],
+      "router": [
+        "Linear(128,2)",
+        "Softmax(dim=-1)"
+      ],
+      "experts": 2,
+      "expert": [
+        "Linear(128,256)",
+        "GELU",
+        "Linear(256,128)"
+      ],
+      "mixture": "soft_probability_weighted_sum",
+      "residual": "h_plus_mixture",
+      "normalization": "LayerNorm(128)",
+      "output": "Linear(128,1)"
+    },
+    "parameter_count": 151427,
+    "tasks": {
+      "input_distribution": "16 independent standard-normal features",
+      "A": "1[x0*x1 + x2*x3 > 0]",
+      "B": "1[x8*x9 - x10*x11 > 0]"
+    },
+    "task_indicator": {
+      "A": [
+        1,
+        0
+      ],
+      "B": [
+        0,
+        1
+      ]
+    },
+    "optimizer": "AdamW",
+    "batch_size": 256,
+    "steps": 20000,
+    "early_steps": 4000,
+    "common_steps": 16000,
+    "learning_rate": 0.0003,
+    "lr_schedule": "500-step linear warmup then cosine decay",
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 1.0,
+    "balance_lambda": 0.01,
+    "warmup_steps": 500,
+    "test_examples": 50000,
+    "checkpoints": [
+      4000,
+      10000,
+      20000
+    ],
+    "eval_steps": [
+      0,
+      250,
+      500,
+      1000,
+      2000,
+      3000,
+      4000,
+      5000,
+      7500,
+      10000,
+      15000,
+      20000
+    ],
+    "curricula": {
+      "INTERLEAVED": "deterministic randomized 50/50 early ordering",
+      "BLOCKED_AB": "2000 Task A then 2000 Task B early steps",
+      "BLOCKED_BA": "2000 Task B then 2000 Task A early steps",
+      "common_phase": "identical deterministic randomized 50/50 ordering within each seed triplet"
+    },
+    "router_collapse": {
+      "threshold": 0.95,
+      "min_consecutive": 3,
+      "min_span_steps": 2000
+    },
+    "knockout_modes": [
+      "renormalized",
+      "non_renormalized"
+    ],
+    "primary_knockout": "renormalized",
+    "primary_s_causal_definition": "0.5 * sum_e abs(Delta_e,A - Delta_e,B), with Delta_e,T = accuracy_T_normal - accuracy_T_after_renormalized_knockout_e",
+    "primary_d_s_definition": "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s at step 20000",
+    "behavioral_equivalence": {
+      "minimum_condition_mean_accuracy_each_task": 0.95,
+      "maximum_absolute_blocked_minus_interleaved_mean_difference_each_task": 0.02
+    },
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 0,
+    "bootstrap_procedure": "paired-seed resampling with replacement; percentile 2.5% and 97.5% limits",
+    "paired_t_test": "two-sided one-sample t-test of D_s against zero",
+    "wilcoxon_test": "two-sided Wilcoxon signed-rank test of D_s against zero using SciPy defaults",
+    "cohens_dz": "mean(D_s) / sample_sd(D_s, ddof=1)",
+    "training_steps": 20000,
+    "curriculum_definition": "BLOCKED_AB",
+    "resolved_device": "mps:0",
+    "determinism": {
+      "enabled": true,
+      "warn_only": false,
+      "unsupported_operations": []
+    },
+    "model_seed": 101,
+    "condition": "BLOCKED_AB",
+    "git_commit": "639569694249e4190b7c669ef9c97a3fa79e5422",
+    "config_hash": "98418baa8ff0cbae73da1da4890c733826971c25f275c9a78eaffb2ed629b7cf",
+    "source_hash": "7134c58ae5317b2ee47d0aa59adf252783b37e5ef5edf63a1977304da3908a40",
+    "PyTorch_version": "2.13.0",
+    "Python_version": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "OS": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "configured_device": "auto",
+    "device": "mps:0",
+    "timestamp": "2026-08-13T21:15:22.912181+00:00"
+  }
+}
