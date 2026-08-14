@@ -1,4 +1,11 @@
-# DCI pilot
+# Developmental Computational Individuality
+
+This repository contains the implementation, frozen pilot, independent
+replication, causal expert-ablation analyses, and comparison artifacts for a
+minimal study of whether temporally different training histories can produce
+distinct mature causal organizations in behaviorally similar neural networks.
+
+## DCI pilot
 
 Minimal PyTorch implementation of the attached developmental computational
 individuality pilot. The frozen architecture, curriculum, optimizer and
@@ -44,8 +51,8 @@ After the sweep, `dci-analyze` regenerates the report and writes:
 - paired seed-level results and permutation-invariant organizational distances;
 - `results/summary/frozen_snapshot/` with the frozen config, requirements, `pip freeze`, runtime metadata, and SHA-256 checksums of all result files.
 
-The snapshot records that this workspace is not under Git, so the result is
-identified by its file checksums rather than a commit hash.
+The frozen snapshot includes file checksums so the result can be audited
+independently of the source commit.
 
 Generate the canonical source payload for the full English technical report:
 
