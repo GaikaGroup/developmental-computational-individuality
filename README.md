@@ -1,2 +1,1 @@
-# developmental-computational-individuality
-Code, data, and reproducible analyses for a hypothesis-driven study of developmental computational individuality in artificial neural networks
+This repository contains the implementation, frozen pilot, independent replication, causal expert-ablation analyses, and comparison artifacts for a minimal study of whether temporally different training histories can produce distinct mature causal organizations in behaviorally similar neural networks.
