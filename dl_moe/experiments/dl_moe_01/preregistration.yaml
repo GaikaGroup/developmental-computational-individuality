@@ -1,0 +1,74 @@
+experiment_id: DL-MoE-01
+short_name: Architecture x Development
+preregistration_version: 1.0
+status: preregistration_candidate
+historical_baseline: dci_pilot_immutable
+architectures:
+  - id: flat_moe
+    implementation: FlatMoE
+    total_experts: 8
+    routing: soft
+  - id: dl_moe
+    implementation: DLMoE
+    num_populations: 2
+    experts_per_population: 4
+    total_experts: 8
+    routing: soft
+    communication_enabled: true
+    comm_dim: 16
+developmental_conditions: [INT, AB, BA]
+sample_size:
+  primary_seed_blocks: 30
+  reserve_seed_blocks: 10
+  models_per_block: 6
+  planned_models: 180
+seed_generation:
+  root: DL-MOE-01-CONFIRMATORY-v1
+  fields: [model_init_seed, development_data_seed, common_data_seed, common_order_seed, eval_seed, bootstrap_seed]
+  range: 1..2147483646
+experience:
+  use_task_indicator: true
+  input_features: 16
+  developmental_steps: 4000
+  developmental_batches_per_task: 2000
+  common_steps: 16000
+  total_steps: 20000
+  checkpoints: [4000, 10000, 20000]
+  exact_common_manifest: true
+primary_endpoint:
+  name: architecture_amplification_a
+  checkpoint: 20000
+  knockout: expert
+  knockout_mode: renormalized
+  metric: s_expert_causal
+  formula: "mean_e(abs(delta_e_A - delta_e_B))"
+secondary_endpoints: [d_dl, d_flat, d_population_dl, architecture_amplification_a_unrenormalized, organizational_distance, communication_knockout, routing_diagnostics]
+hypotheses:
+  H1: mean(D_DL) > 0
+  H2: mean(A_s) > 0
+  H3: final_behavior_equivalence
+  H4: mean(D_population_DL) > 0
+  H5: mean(A_unrenormalized) > 0
+equivalence_margin: 0.02
+performance_floor: 0.95
+statistical_tests:
+  primary: one_sample_one_sided_t_test
+  alternative: greater_than_zero
+  alpha: 0.05
+  robustness: sign_flip_100000
+  bootstrap_samples: 10000
+  bootstrap_unit: seed_block
+  behavioral_equivalence: paired_tost
+  behavioral_ci: 0.90
+multiple_testing:
+  primary_correction: none
+  secondary_correction: holm
+exclusion_rules:
+  outcome_based_exclusion: false
+  numerical_failure: retain_and_flag
+  infrastructure_failure: resume_or_restart_same_seed
+  minimum_complete_primary_blocks: 28
+required_artifacts: [seed_manifest.csv, run_manifest.csv, behavior_metrics.csv, expert_knockout.csv, population_knockout.csv, communication_knockout.csv, routing_diagnostics.csv, communication_diagnostics.csv, run_summary.csv, seed_effects.csv, behavioral_equivalence.csv, organizational_distance.csv, statistical_summary.csv, exclusions_and_incidents.csv, protocol_hashes.csv]
+freeze_policy:
+  no_confirmatory_tuning: true
+  full_run_not_launched_by_preregistration_task: true

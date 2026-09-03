@@ -12,6 +12,13 @@ def causal_specialization_general(causal_effects: torch.Tensor) -> float:
     return float((causal_effects - causal_effects.mean(dim=1, keepdim=True)).abs().mean().item())
 
 
+def s_expert_causal(causal_effects: torch.Tensor) -> float:
+    """Preregistered DL-MoE-01 endpoint: mean absolute A/B contrast per expert."""
+    if causal_effects.ndim != 2 or causal_effects.shape[1] != 2:
+        raise ValueError("s_expert_causal requires [experts, 2] effects")
+    return float((causal_effects[:, 0] - causal_effects[:, 1]).abs().mean().item())
+
+
 def population_specialization(causal_effects: torch.Tensor) -> float:
     if tuple(causal_effects.shape) != (2, 2):
         raise ValueError("population metric requires [2, 2]")

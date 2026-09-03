@@ -46,3 +46,12 @@ The model receives an immutable intervention object at forward time.
 **Rationale:** historical DCI results are not a valid architecture control for
 an 8-expert system. A new flat 8-expert baseline must run under the same new
 protocol and seeds.
+
+## Decision: separate DL-MoE-01 primary metric
+
+The existing generalized diagnostic computes mean absolute deviation across
+tasks. DL-MoE-01 preregisters the explicit A/B contrast per expert,
+`s_expert_causal = mean_e(abs(delta_A - delta_B))`, because it is the
+architecture-comparable endpoint and reduces exactly to the historical metric
+when there are two experts. Both functions remain available and named
+separately.

@@ -4,7 +4,7 @@ import torch
 from torch import Tensor
 
 from .compatibility import make_dci_task, s_causal_original
-from .metrics import causal_specialization_general, population_specialization, routing_entropy
+from .metrics import causal_specialization_general, population_specialization, routing_entropy, s_expert_causal
 from .model import DLMoE, FlatMoE, Intervention
 
 
@@ -53,6 +53,7 @@ def evaluate_causal(model: DLMoE | FlatMoE, device: str, n: int, seed: int, reno
         "population_causal_effects": population_effects,
         "communication_effects": comm_effects,
         "s_causal_original": s_causal_original(expert_effects) if expert_effects.shape == (2, 2) else None,
+        "s_expert_causal": s_expert_causal(expert_effects),
         "causal_specialization_general": causal_specialization_general(expert_effects),
         "population_specialization": population_specialization(population_effects),
         "renormalized": renormalize,
