@@ -1,0 +1,60 @@
+experiment: dci_exact_independent_replication_v1
+seeds: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]
+seed: 100
+data_seed: 271828
+test_data_seed: 314159
+device: auto
+architecture:
+  input_dim: 18
+  encoder: ["Linear(18,128)", GELU, "Linear(128,128)", GELU]
+  router: ["Linear(128,2)", "Softmax(dim=-1)"]
+  experts: 2
+  expert: ["Linear(128,256)", GELU, "Linear(256,128)"]
+  mixture: soft_probability_weighted_sum
+  residual: h_plus_mixture
+  normalization: "LayerNorm(128)"
+  output: "Linear(128,1)"
+parameter_count: 151427
+tasks:
+  input_distribution: "16 independent standard-normal features"
+  A: "1[x0*x1 + x2*x3 > 0]"
+  B: "1[x8*x9 - x10*x11 > 0]"
+task_indicator:
+  A: [1, 0]
+  B: [0, 1]
+optimizer: AdamW
+batch_size: 256
+steps: 20000
+early_steps: 4000
+common_steps: 16000
+learning_rate: 0.0003
+lr_schedule: "500-step linear warmup then cosine decay"
+weight_decay: 0.0001
+gradient_clip_norm: 1.0
+balance_lambda: 0.01
+warmup_steps: 500
+test_examples: 50000
+checkpoints: [4000, 10000, 20000]
+eval_steps: [0, 250, 500, 1000, 2000, 3000, 4000, 5000, 7500, 10000, 15000, 20000]
+curricula:
+  INTERLEAVED: "deterministic randomized 50/50 early ordering"
+  BLOCKED_AB: "2000 Task A then 2000 Task B early steps"
+  BLOCKED_BA: "2000 Task B then 2000 Task A early steps"
+  common_phase: "identical deterministic randomized 50/50 ordering within each seed triplet"
+router_collapse:
+  threshold: 0.95
+  min_consecutive: 3
+  min_span_steps: 2000
+knockout_modes: [renormalized, non_renormalized]
+primary_knockout: renormalized
+primary_s_causal_definition: "0.5 * sum_e abs(Delta_e,A - Delta_e,B), with Delta_e,T = accuracy_T_normal - accuracy_T_after_renormalized_knockout_e"
+primary_d_s_definition: "mean(S_causal_BLOCKED_AB_s, S_causal_BLOCKED_BA_s) - S_causal_INTERLEAVED_s at step 20000"
+behavioral_equivalence:
+  minimum_condition_mean_accuracy_each_task: 0.95
+  maximum_absolute_blocked_minus_interleaved_mean_difference_each_task: 0.02
+bootstrap_samples: 10000
+bootstrap_seed: 0
+bootstrap_procedure: "paired-seed resampling with replacement; percentile 2.5% and 97.5% limits"
+paired_t_test: "two-sided one-sample t-test of D_s against zero"
+wilcoxon_test: "two-sided Wilcoxon signed-rank test of D_s against zero using SciPy defaults"
+cohens_dz: "mean(D_s) / sample_sd(D_s, ddof=1)"

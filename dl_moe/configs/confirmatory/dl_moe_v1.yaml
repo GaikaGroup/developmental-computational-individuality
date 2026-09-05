@@ -1,0 +1,43 @@
+model:
+  input_dim: 18
+  model_dim: 128
+  num_populations: 2
+  experts_per_population: 4
+  expert_hidden_dim: 256
+  comm_dim: 16
+  routing_mode: soft
+  top_k: 1
+  communication_enabled: true
+  communication_scale: 1.0
+  learned_communication_gate: true
+  dropout: 0.0
+  output_dim: 1
+data:
+  use_task_indicator: true
+  input_features: 16
+training:
+  total_steps: 20000
+  early_steps: 4000
+  batch_size: 256
+  optimizer: AdamW
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  scheduler: none
+  gradient_clip_norm: null
+  precision: float32
+evaluation:
+  checkpoints: [4000, 10000, 20000]
+  examples: 50000
+  epsilon_behavior: 0.02
+  primary_endpoint: final_checkpoint_renormalized_causal_knockout
+  knockout_mode: renormalized
+  balanced_accuracy: true
+  performance_floor: 0.95
+seeds:
+  model_init_seed: 0
+  train_data_seed: 1729
+  order_seed: 2718
+  eval_seed: 900000
+  exploratory: [0, 1, 2, 3, 4]
+  confirmatory_replication: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]
+device: auto

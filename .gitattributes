@@ -1,0 +1,7 @@
+# Preserve scientific artifacts byte-for-byte across platforms and Git settings.
+configs/default.yaml -text
+dl_moe/configs/confirmatory/dl_moe_v1.yaml -text
+dl_moe/experiments/dl_moe_01/preregistration.yaml -text
+dl_moe/experiments/dl_moe_01/seed_manifest.csv -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+dl_moe/experiments/dl_moe_01/protocol_hashes.csv -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+docs/preregistration/DL_MOE_01_PREREGISTRATION.md -text

@@ -1,0 +1,6 @@
+artifact,path,sha256,created_at
+preregistration.yaml,dl_moe/experiments/dl_moe_01/preregistration.yaml,ddae60bf2711cdad74cc7e4426c41f7f3a8922480e1cb289c164acd34ec42fcc,2026-08-25T20:30:36.940528+00:00
+preregistration.md,docs/preregistration/DL_MOE_01_PREREGISTRATION.md,4b47e1bf32dd84896530c605f00ad8bdeff98c966345dbd0725988fb045823f2,2026-08-25T20:30:36.940528+00:00
+seed_manifest.csv,dl_moe/experiments/dl_moe_01/seed_manifest.csv,f2f2bd7f0ff88ef921329e058b253ce64d6f52f9562b77135cfc2bdcc9966c83,2026-08-25T20:30:36.940528+00:00
+confirmatory_config,dl_moe/configs/confirmatory/dl_moe_v1.yaml,84be8ffdc3d0867117d4c6fdabc252d84777c56d873d4264c41a9c6453e6d9d5,2026-08-25T20:30:36.940528+00:00
+code_commit,git:HEAD,77a85af22599fae05bfe1b1cd2984d94cb3c063f,2026-08-25T20:30:36.940528+00:00
