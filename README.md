@@ -86,3 +86,12 @@ The independent `dl_moe` package implements the architecture × development
 protocol, technical validation, recoverable execution and analysis. Run
 `make ci` to check both packages. Scientific execution is separate from
 software validation; see [execution instructions](docs/DL_MOE_01_EXECUTION.md).
+
+## Completed DL-MoE-01 archive
+
+The completed study has 30 paired blocks and 180 models. The original positive
+amplification prediction was not supported. See the [archive guide](docs/archive/dl_moe_01/README.md)
+and [chronology disclosure](docs/archive/dl_moe_01/CHRONOLOGY.md). This is a
+retrospective public release, not public preregistration of the completed run.
+Author-owned code is MIT licensed; manuscript and DL-MoE-01 research data use
+[CC BY 4.0](LICENSE-CONTENT.md). Historical frozen source and raw bytes are preserved.
